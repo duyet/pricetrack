@@ -1,10 +1,16 @@
 const fetch = require('node-fetch')
 const functions = require('firebase-functions');
 const { db, functions_url, collection, url_for } = require('../utils');
+const CRONJOB_KEY = process.env.CRONJOB_KEY || ''
 
 module.exports = functions.https.onRequest((req, res) => {
 	console.log('Start cronjob ...')
 	let triggered = []
+	if (CRONJOB_KEY) {
+		if (!req.query.key || req.query.key !== CRONJOB_KEY) {
+			return res.status(400).json({error: 1, msg: 'Cronjob key is not valid: /cronjob?key=<CRONJOB_KEY>'})
+		}
+	}
 	
 	db.collection(collection.URLS).get()
 	.then(snapshot => {

@@ -1,4 +1,5 @@
 const functions = require('firebase-functions')
+const ServerValue = require('firebase-admin').database.ServerValue
 const { db, functions_url, collection, url_for } = require('../utils')
 
 module.exports = functions.https.onRequest((req, res) => {
@@ -13,6 +14,8 @@ module.exports = functions.https.onRequest((req, res) => {
 				raw: url_for('rawData', {url: doc.get('url')}),
 				price_series: url_for('priceSeries', {url: doc.get('url')}),
 			}
+			data['current_server_timestamp'] = new Date()
+
 			urls.push(data)
 		});
 		return res.json(urls)

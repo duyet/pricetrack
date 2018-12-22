@@ -1,6 +1,6 @@
 const functions = require('firebase-functions')
 const { db, url_parser, hash, collection } = require('../utils')
-var FieldValue = require('firebase-admin').firestore.FieldValue
+const FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions
 	.runWith({ memory: '256MB', timeoutSeconds: 120 })

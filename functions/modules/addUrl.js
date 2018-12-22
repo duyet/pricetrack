@@ -1,11 +1,11 @@
 
 const functions = require('firebase-functions')
-const { db, is_supported_url, hash, collection } = require('../utils')
-var FieldValue = require('firebase-admin').firestore.FieldValue
+const { db, is_supported_url, hash, collection, normalizeUrl } = require('../utils')
+const FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions.https.onRequest((req, res) => {
 	// Grab the text parameter.
-	const url = req.query.url
+	let url = req.query.url
 	url = normalizeUrl(url)
 
 	if (!is_supported_url(url)) {
