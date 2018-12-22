@@ -1,9 +1,9 @@
 const functions = require('firebase-functions')
-var admin = require('firebase-admin')
 const { db, url_parser, hash, collection } = require('../utils')
+var FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions
-	.runWith({ memory: '1GB', timeoutSeconds: 120 })
+	.runWith({ memory: '256MB', timeoutSeconds: 120 })
 	.https
 	.onRequest((req, res) => {
 		console.log('Start pullData', req.query)
@@ -20,7 +20,7 @@ module.exports = functions
 			.then(snapshot => {
 				return url_parser(url, json => {
 					console.log('Pull result:', json)
-					json['datetime'] = new Date()
+					json['datetime'] = FieldValue.serverTimestamp()
 
 					db.collection(collection.URLS).doc(url_hash).update({
 						last_pull_at: json['datetime']
@@ -31,7 +31,7 @@ module.exports = functions
 					
 					// TODO: add hook to aggeration
 					db.collection(collection.RAW_DATA).doc(url_hash).update({
-						price_series: admin.firestore.FieldValue.arrayUnion({
+						price_series: FieldValue.arrayUnion({
 							price: json.price,
 							datetime: json.datetime
 						})

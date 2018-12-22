@@ -1,6 +1,7 @@
 
-const functions = require('firebase-functions');
-const { db, is_supported_url, hash, collection } = require('../utils');
+const functions = require('firebase-functions')
+const { db, is_supported_url, hash, collection } = require('../utils')
+var FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions.https.onRequest((req, res) => {
 	// Grab the text parameter.
@@ -18,7 +19,7 @@ module.exports = functions.https.onRequest((req, res) => {
 	let urlDoc = db.collection(collection.URLS).doc(hash(url));
 	let setUrl = urlDoc.set({
 		url: url,
-		created_at: new Date(),
+		created_at: FieldValue.serverTimestamp(),
 		last_pull_at: null
 	}, {
 		merge: true
