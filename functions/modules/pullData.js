@@ -30,12 +30,12 @@ module.exports = functions
 					db.collection(collection.RAW_DATA).doc(url_hash).collection('raw').add(json)
 					
 					// TODO: add hook to aggeration
-					db.collection(collection.RAW_DATA).doc(url_hash).update({
-						price_series: FieldValue.arrayUnion({
-							price: json.price,
-							datetime: json.datetime
-						})
-					})
+					// db.collection(collection.RAW_DATA).doc(url_hash).set({
+					// 	price_series: FieldValue.arrayUnion({
+					// 		price: json.price,
+					// 		datetime: json.datetime
+					// 	})
+					// })
 
 					res.json({
 						msg: 'ok',
@@ -47,6 +47,7 @@ module.exports = functions
 				})
 			})
 			.catch(err => {
+				console.error(err)
 				res.status(400).json({
 					error: 1,
 					url,

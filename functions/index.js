@@ -31,4 +31,4 @@ exports.pullData = require('./modules/pullData')
 exports.rawData = require('./modules/rawData')
 
 // Price series
-exports.priceSeries = require('./modules/priceSeries')
+exports.query = require('./modules/query')

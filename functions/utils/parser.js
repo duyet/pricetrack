@@ -1,33 +1,41 @@
 const url = require('url')
 const fetch = require('node-fetch')
 
-// const { supported_domain } = require('./index')
-const supported_domain = ['tiki.vn']
-
+// const supported_domain = require('./index').supported_domain
+const supported_domain = ['tiki.vn', 'shopee.vn']
 
 const parse_config = {
 	'tiki.vn': {
-		'regex': /-p([0-9]+)/,
-		'product_api': 'https://tiki.vn/api/v2/products/{id}/info',
-		'format_func': (json) => json
+		productId: u => regexProcess(u, /-p([0-9]+)/)[1],
+		shopId: u => null,
+		product_api: 'https://tiki.vn/api/v2/products/{product_id}/info',
+		format_func: json => json
+	},
+	'shopee.vn': {
+		productId: u => regexProcess(u, /-i\.([0-9]+)\.([0-9]+)/)[2],
+		shopId: u => regexProcess(u, /-i\.([0-9]+)\.([0-9]+)/)[1],
+		product_api: 'https://shopee.vn/api/v2/item/get?itemid={product_id}&shopid={shop_id}',
+		format_func: json => json
 	}
 }
 
 const getProvider = u => url.parse(u).hostname
 
-const getItemId = (u, regex) => {
+const regexProcess = (u, regex) => {
 	console.log(`Parse ${u} with regex ${regex}`)
 	const provider = getProvider(u)
 	const pathname = url.parse(u).pathname
 	const parsePathname = pathname.match(regex)
 	
-	if (!parsePathname) return null;
-	return parsePathname[1];
+	return parsePathname
 }
 
 const parseUrlWithConfig = (u, config, cb, cb_error) => {
-	const product_id = getItemId(u, config.regex)
-	const product_api  = config.product_api.replace('{id}', product_id)
+	const product_id = config.productId(u)
+	const shop_id = config.shopId(u)
+	const product_api  = config.product_api
+									.replace('{product_id}', product_id)
+									.replace('{shop_id}', shop_id)
 
 	console.log('Product ID:', product_id)
 	console.log('Product API:', product_api)

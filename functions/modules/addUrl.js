@@ -4,9 +4,9 @@ const { db, is_supported_url, hash, collection, normalizeUrl } = require('../uti
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions.https.onRequest((req, res) => {
-	// Grab the text parameter.
+	// TODO: Add limit, paging
 	let url = req.query.url
-	url = normalizeUrl(url)
+	url = normalizeUrl(url) // TODO: fix this normalize, remove url params
 
 	if (!is_supported_url(url)) {
 		return res.status(400).json({
