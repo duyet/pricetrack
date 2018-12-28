@@ -46,6 +46,10 @@
 	![Test API](.screenshot/setup-test-4.png)
 
 
+5. **Setup the cronjob for /pullData**: https://cron-job.org
+
+	![Cronjob pulling](.screenshot/setup-cronjob.png)
+
 5. **Setup Redash on Heroku**: https://github.com/willnet/redash-on-heroku
 	![Redash on Heroku](.screenshot/setup-redash.png)
 
@@ -81,10 +85,11 @@
 	+ Web: Firebase Hosting
 - Visualization tools: Redash
 
-# Modules
+# Next Step
 
-- functions
-	+ add, remove, list url
-	+ pullData
-	+ cronjobs
-- web
+- Support for more domain
+- Move worker pullData to Google Scripts to reduce cost.
+- Web UI
+- Secure API
+- Add Alert, Price Tracing
+- Auto trigger BUY, Add to cart
