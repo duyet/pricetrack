@@ -1,5 +1,11 @@
 # Price Track Project
 
+Auto collect, visualize and alert for product items.
+
+![Raw API](.screenshot/intro-raw-api.png)
+![Raw API](.screenshot/intro-redash.png)
+
+
 # Installation
 
 1. **Set up Node.js and the Firebase CLI**
