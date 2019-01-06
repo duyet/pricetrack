@@ -4,7 +4,6 @@
   },
   "functions": {
     "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint"
     ],
     "source": "functions"
   },
@@ -12,7 +11,7 @@
     "rules": "storage.rules"
   },
   "hosting": {
-    "public": "public",
+    "public": "hosting/public",
     "ignore": [
       "firebase.json",
       "**/.*",
