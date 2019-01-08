@@ -8,19 +8,24 @@ export default class IndexComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      urls: []
+      urls: [],
+      loading: false
     }
   }
 
   componentDidMount() {
+    this.setState({loading: true})
     axios.get('/api/listUrls')
       .then(response => {
         let urls = response.data
-        this.setState({urls})
+        this.setState({urls, loading: false})
       })
   }
 
   renderListUrl() {
+    if (this.state.loading) return 'Loading ...'
+    if (!this.state.urls.length) return 'Nothing'
+
     let dom = []
     for (let url of this.state.urls) {
       dom.push(

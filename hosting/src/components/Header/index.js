@@ -9,7 +9,7 @@ import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
 
 const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout }) => (
-  <Navbar fixedTop fluid className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
     <Helmet bodyAttributes={{
         class: 'bg-light'
     }}>
@@ -36,25 +36,38 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout }) => (
         <li className="nav-item">
           <Link className="nav-link" to="/cronjob">Cronjob</Link>
         </li>
-        
       </ul>
+
+      <form className="form-inline">
+        <input className="form-control mr-sm-2" type="search" placeholder="URL e.g. tiki.vn, shopee.vn" aria-label="URL" />
+        <button className="btn btn-primary" type="submit">Track</button>
+      </form>
 
       <ul className="navbar-nav ml-auto">
         {!authUser ? (
-                      <NavItem id="nav-login-btn" onClick={onClickSignIn}>
+                      <li id="nav-login-btn" onClick={onClickSignIn}>
                         Login
-                      </NavItem>
+                      </li>
                     )
                   : (
-                      <NavDropdown className="nav-item" title={authUser.displayName} id="menu-user">
-                        <MenuItem onClick={onClickLogout}>Logout</MenuItem>
-                      </NavDropdown>
+                      <li className="nav-item dropdown">
+                        <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {authUser.displayName}
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a className="dropdown-item" href="#">Profile</a>
+                          <a className="dropdown-item" href="#">Tracking</a>
+                          <div className="dropdown-divider"></div>
+                          <a className="dropdown-item" href="javascript:;" onClick={onClickLogout}>Logout</a>
+                          
+                        </div>
+                      </li>
                     )
         }
       </ul>
 
     </div>
-  </Navbar>
+  </nav>
 )
 
 
