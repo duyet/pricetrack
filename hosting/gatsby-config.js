@@ -8,6 +8,6 @@ module.exports = {
   ],
   proxy: {
     prefix: '/api',
-    url: 'http://localhost:5005',
+    url: 'http://localhost:5000',
   }
 }

@@ -1,15 +1,16 @@
 const functions = require('firebase-functions')
-const { db, functions_url, collection, hash, redash_format } = require('../utils')
+const { db, functionsUrl, collection, documentIdFromHashOrUrl, redash_format } = require('../utils')
 
 module.exports = functions.https.onRequest((req, res) => {
-  const url = req.query.url
+  const url = '' + req.query.url
   const orderBy = req.query.order && req.query.order == 'desc' ? 'desc' : 'asc'
   const redash = req.query.redash || req.query.redash_format
   const limit = req.query.limit ? parseInt(req.query.limit) : 100
+  const urlHash = documentIdFromHashOrUrl(url)
 
   db
     .collection(collection.RAW_DATA)
-    .doc(hash(url))
+    .doc(urlHash)
     .collection('raw')
     .orderBy('datetime', orderBy)
     .limit(limit)

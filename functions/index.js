@@ -4,7 +4,6 @@ const functions = require('firebase-functions')
 // Lib
 const utils = require('./utils')
 const config = require('./config')
-const { db, functions_url } = utils
 
 // List urls
 exports.listUrls = require('./modules/listUrl')
@@ -27,6 +26,9 @@ exports.cronjob = require('./modules/cronjob')
 
 // Pull price
 exports.pullData = require('./modules/pullData')
+
+// Calc metrics
+// exports.onAddRawData = require('./modules/onAddRawData')
 
 // Raw Data
 exports.rawData = require('./modules/rawData')

@@ -1,5 +1,4 @@
-import React, { Component } from "react"
-import { Link } from "gatsby"
+import React, { Component, Fragment } from "react"
 import { Helmet } from "react-helmet"
 
 import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
@@ -7,67 +6,50 @@ import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
+import Menu from './menu'
 
-const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout }) => (
-  <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+import './header.css'
+import noti from './notification.svg'
+
+const LOGOUT_CONFIRM_TEXT = 'Are you sure?'
+
+const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout, onChangeInput, onSubmit }) => (
+  <Fragment>
     <Helmet bodyAttributes={{
         class: 'bg-light'
     }}>
       <meta charSet="utf-8" />
       <title>Price Track</title>
     </Helmet>
+    <header className="blog-header py-3">
+      <div className="row flex-nowrap justify-content-between align-items-center">
+        <div className="col-3 pt-1">
+          <a className="text-muted" href="#">Price Track</a>
+          {/*<a className="blog-header-logo text-dark" href="#">Price Track</a>*/}
+        </div>
+        <div className="col-6 text-center">
+          <form onSubmit={onSubmit}>
+            <input className="form-control mr-sm-2" type="search" 
+                   placeholder="URL e.g. tiki.vn, shopee.vn" 
+                   onChange={onChangeInput}
+                   aria-label="URL" />
+          </form>
+        </div>
+        <div className="col-3 d-flex justify-content-end align-items-center">
+          <a className="text-muted" href="#">
+            <img src={noti} style={{marginRight: 10}} />
+          </a>
 
-    <a className="navbar-brand mr-auto mr-lg-3" href="#">Price Tracker</a>
-    <button className="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-
-    <div className="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-      
-      <ul className="navbar-nav mr-auto">
-        <li className="nav-item active">
-          <Link className="nav-link" to="/">Dashboard <span className="sr-only">(current)</span></Link>
-        </li>
-
-        <li className="nav-item">
-          <Link className="nav-link" to="/manage">Manage</Link>
-        </li>
-
-        <li className="nav-item">
-          <Link className="nav-link" to="/cronjob">Cronjob</Link>
-        </li>
-      </ul>
-
-      <form className="form-inline">
-        <input className="form-control mr-sm-2" type="search" placeholder="URL e.g. tiki.vn, shopee.vn" aria-label="URL" />
-        <button className="btn btn-primary" type="submit">Track</button>
-      </form>
-
-      <ul className="navbar-nav ml-auto">
-        {!authUser ? (
-                      <li id="nav-login-btn" onClick={onClickSignIn}>
-                        Login
-                      </li>
-                    )
-                  : (
-                      <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          {authUser.displayName}
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <a className="dropdown-item" href="#">Profile</a>
-                          <a className="dropdown-item" href="#">Tracking</a>
-                          <div className="dropdown-divider"></div>
-                          <a className="dropdown-item" href="javascript:;" onClick={onClickLogout}>Logout</a>
-                          
-                        </div>
-                      </li>
-                    )
-        }
-      </ul>
-
-    </div>
-  </nav>
+          {
+            !authUser ? <a className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>Sign in</a>
+                     : <a className="btn btn-sm btn-outline-secondary" onClick={onClickLogout}>{authUser.displayName}</a>
+          }
+          
+        </div>
+      </div>
+    </header>
+    <Menu />
+  </Fragment>
 )
 
 
@@ -75,7 +57,7 @@ class NavBarBase extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { error: null };
+    this.state = { error: null, inputUrl: '' };
   }
 
   onClickSignIn = event => {
@@ -94,7 +76,18 @@ class NavBarBase extends Component {
   }
 
   onClickLogout = event => {
+    if (window.confirm(LOGOUT_CONFIRM_TEXT) == true) {
+      this.props.firebase.doSignOut()
+      window.location = ROUTES.HOME
+    }
+  }
 
+  onChangeInput = event => {
+     this.setState({inputUrl: event.target.value})
+  }
+
+  onSubmit = event => {
+    alert(this.state.inputUrl)
   }
 
   render() {
@@ -102,7 +95,9 @@ class NavBarBase extends Component {
       <AuthUserContext.Consumer>
         {authUser => <NavigationAuth authUser={authUser} 
                                      onClickSignIn={this.onClickSignIn}
-                                     onClickLogout={this.onClickLogout} />}
+                                     onClickLogout={this.onClickLogout}
+                                     onChangeInput={this.onChangeInput}
+                                     onSubmit={this.onSubmit} />}
       </AuthUserContext.Consumer>
     )
   }

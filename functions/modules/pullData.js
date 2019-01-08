@@ -1,5 +1,5 @@
 const functions = require('firebase-functions')
-const { db, url_parser, hash, collection } = require('../utils')
+const { db, urlParser, normalizeUrl, documentIdFromHashOrUrl, collection, validateToken } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions
@@ -7,31 +7,45 @@ module.exports = functions
   .https
   .onRequest((req, res) => {
     console.log('Start pullData', req.query)
-    // TODO: Read config
-    // TODO: make a request
-    // TODO: Storage
-    const url = req.query.url
+
+    let url = String(req.query.url || '')
+    url = normalizeUrl(url)
+
+    const token = String(req.query.token || '')
+    if (!validateToken(token)) {
+      return res.status(403).json({
+        status: 403,
+        error: 1,
+        msg: 'token is invalid!'
+      })
+    }
+
     if (!url) {
     	return res.status(400).json({ error: 1, msg: 'url is required!' })
     }
 
-    const url_hash = hash(url)
-    console.log(`Pull data from ${url}`)
+    const urlHash = documentIdFromHashOrUrl(url)
+    console.log(`Pulling data from ${url}`)
 
     db.collection(collection.URLS)
-      .doc(url_hash)
+      .doc(urlHash)
       .get()
       .then(snapshot => {
-        return url_parser(url, json => {
+        let data = snapshot.data()
+        let raw_count = snapshot.get('raw_count') || 0
+
+        return urlParser(url, json => {
           console.log('Pull result:', json)
           json['datetime'] = FieldValue.serverTimestamp()
 
-          db.collection(collection.URLS).doc(url_hash).update({
-            last_pull_at: json['datetime']
+          // Update statistic
+          db.collection(collection.URLS).doc(urlHash).update({
+            last_pull_at: json['datetime'],
+            raw_count: raw_count + 1
           })
 
           // Add raw
-          db.collection(collection.RAW_DATA).doc(url_hash).collection('raw').add(json)
+          db.collection(collection.RAW_DATA).doc(urlHash).collection('raw').add(json)
 
           res.json({
             msg: 'ok',

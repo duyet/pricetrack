@@ -14,10 +14,6 @@ body {
   overflow-x: hidden; /* Prevent scroll on narrow devices */
 }
 
-body {
-  padding-top: 56px;
-}
-
 @media (max-width: 991.98px) {
   .offcanvas-collapse {
     position: fixed;

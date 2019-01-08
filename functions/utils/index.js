@@ -22,18 +22,39 @@ const domain_colors = Object.keys(parseRules)
                               return result
                             }, {})
 
-const functions_url = process.env.FUNCTION_REGION == undefined
+const functionsUrl = process.env.FUNCTION_REGION == undefined
   ? `http://localhost:5000/duyet-price-tracker/us-central1`
   : `https://${process.env.FUNCTION_REGION}-${process.env.GCP_PROJECT}.cloudfunctions.net`
 
-const normalizeUrlConfig = {
-  forceHttps: true,
-  stripHash: true,
-  stripWWW: true,
-  removeTrailingSlash: true,
-  removeQueryParameters: [/.*/] // Remove all query parameters
+/**
+ * Normalize url with default config 
+ * 
+ * @param u {string} URL to normalize
+ * @return {string}
+ */
+const normalizeUrl = u => {
+  const normalizeUrlConfig = {
+    forceHttps: true,
+    stripHash: true,
+    stripWWW: true,
+    removeTrailingSlash: true,
+    removeQueryParameters: [/.*/] // Remove all query parameters
+  }
+  return normalUrl(u, normalizeUrlConfig)
 }
-const normalizeUrl = u => normalUrl(u, normalizeUrlConfig)
+
+/**
+ * Get config from firebase config
+ * config().pricetrack.<KEY>
+ * 
+ * @param key {string} Key to get
+ * @param default_val {object}
+ * @return {object}
+ */
+const getConfig = (key, default_val=false) => {
+  const config_set = functions.config().pricetrack || {}
+  return config_set[key] || default_val
+}
 
 module.exports = {
   db,
@@ -42,9 +63,9 @@ module.exports = {
 
   // List of collections
   collection,
-  functions_url,
+  functionsUrl,
   domain_colors,
-  normalizeUrl: normalizeUrl,
+  normalizeUrl,
   querystring,
 
   // Normalize and Hash URL
@@ -57,7 +78,7 @@ module.exports = {
   isSupportedUrl: u => supportedDomain.indexOf(url.parse(normalizeUrl(u)).hostname) > -1,
 
   // Url parser
-  url_parser: require('./parser/index'),
+  urlParser: require('./parser/index'),
 
   // Get domain name
   getHostname: u => url.parse(u).hostname,
@@ -74,14 +95,11 @@ module.exports = {
       .entries(qs)
       .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
       .join('&')
-    return functions_url + '/' + path + '?' + query
+    return functionsUrl + '/' + path + '?' + query
   },
 
   // Get Firebase Functions env config
-  get_config: (key, default_val=false) => {
-  	const config_set = functions.config().pricetrack || {}
-  	return config_set[key] || default_val
-  },
+  getConfig,
 
   // redash format JSON
   // e.g. {columns: [], rows: []}
@@ -102,5 +120,31 @@ module.exports = {
       columns: keys.map(key => { return { name: key, type: type_of(json_list[0][key]) } }),
       rows: json_list
     }
+  },
+
+  /**
+   * Return hash from url, if it already hashed, skip it
+   * 
+   * @param s {string} url hash or url
+   * @return {string}
+   */
+  documentIdFromHashOrUrl: s => {
+    str = String(s)
+    return (/^[a-fA-F0-9]+$/).test(s) 
+              ? s 
+              : require('crypto').createHash('sha1').update(normalizeUrl(str)).digest('hex')
+  },
+
+  /**
+   * Validate token, compare with pricetrack.admin_token
+   * Set token by: $ firebase functions:config:set pricetrack.admin_token=<YOUR_TOKEN>
+   * 
+   * @param token {string} validate admin token
+   * @return {bool}
+   */
+  validateToken: token => {
+    const adminToken = getConfig('admin_token')
+    console.log('adminToken', adminToken)
+    return token && adminToken === token
   }
 }
