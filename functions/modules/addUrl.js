@@ -2,11 +2,12 @@
 const functions = require('firebase-functions')
 const { db, isSupportedUrl, hash, collection, normalizeUrl } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
+const { getProductInfoFromUrl } = require('../utils/parser/utils')
 
-module.exports = functions.https.onRequest((req, res) => {
+module.exports = functions.https.onRequest(async (req, res) => {
   // TODO: Add limit, paging
   let url = req.query.url
-  url = normalizeUrl(url) // TODO: fix this normalize, remove url params
+  url = normalizeUrl(url)
 
   if (!isSupportedUrl(url)) {
     return res.status(400).json({
@@ -16,18 +17,33 @@ module.exports = functions.https.onRequest((req, res) => {
     })
   }
 
+  let info = await getProductInfoFromUrl(url) || {}
   let urlDoc = db.collection(collection.URLS).doc(hash(url))
-  let setUrl = urlDoc.set({
-    url: url,
-    created_at: FieldValue.serverTimestamp(),
-    last_pull_at: null
-  }, {
-    merge: true
+
+  urlDoc.get().then(snapshot => {
+    if (snapshot.exists) {
+      // Update info
+      let data = snapshot.data()
+      urlDoc.set({info}, { merge: true }).then(() => {
+        data['last_update_at'] = new Date()
+        data['is_update'] = true
+        return res.json(data)
+      })
+    }
+
+    urlDoc.set({
+      url,
+      info,
+      created_at: FieldValue.serverTimestamp(),
+      last_pull_at: null
+    }, { merge: true })
+    .then(() => {
+      urlDoc.get().then(snapshot => res.json(snapshot.data()))
+    })
+    .catch(err => {
+      return res.status(400).json(err)
+    })
+
   })
 
-  setUrl.then(snapshot => {
-    return res.json(snapshot)
-  }).catch(err => {
-    return res.status(400).json(err)
-  })
 })

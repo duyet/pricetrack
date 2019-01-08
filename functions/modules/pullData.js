@@ -3,7 +3,7 @@ const { db, url_parser, hash, collection } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions
-  .runWith({ memory: '256MB', timeoutSeconds: 120 })
+  .runWith({ memory: '256MB', timeoutSeconds: 60 })
   .https
   .onRequest((req, res) => {
     console.log('Start pullData', req.query)
@@ -32,14 +32,6 @@ module.exports = functions
 
           // Add raw
           db.collection(collection.RAW_DATA).doc(url_hash).collection('raw').add(json)
-
-          // TODO: add hook to aggeration
-          // db.collection(collection.RAW_DATA).doc(url_hash).set({
-          // 	price_series: FieldValue.arrayUnion({
-          // 		price: json.price,
-          // 		datetime: json.datetime
-          // 	})
-          // })
 
           res.json({
             msg: 'ok',

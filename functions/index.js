@@ -6,15 +6,14 @@ const utils = require('./utils')
 const config = require('./config')
 const { db, functions_url } = utils
 
-// Sentry
-const Sentry = require('@sentry/node')
-Sentry.init({ dsn: (functions.config().sentry || {}).dsn })
-
 // List urls
 exports.listUrls = require('./modules/listUrl')
 
 // Add new URL
 exports.addUrl = require('./modules/addUrl')
+
+// Subscribe to URL
+exports.subscribeUrl = require('./modules/subscribeUrl')
 
 // Delete an URL
 exports.removeUrl = require('./modules/removeUrl')

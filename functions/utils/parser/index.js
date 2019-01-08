@@ -5,7 +5,6 @@ const supportedDomain = getSupportedDomain(ruleDir)
 const parseRules = loadRules(ruleDir)
 
 console.log('Supported:', supportedDomain)
-console.log('parseRules:', parseRules)
 
 module.exports = (u, cb, cb_err) => {
   const provider = getProvider(u)

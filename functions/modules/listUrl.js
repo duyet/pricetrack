@@ -3,8 +3,16 @@ const ServerValue = require('firebase-admin').database.ServerValue
 const { db, functions_url, collection, url_for, getHostname, domain_colors } = require('../utils')
 
 module.exports = functions.https.onRequest((req, res) => {
-  db.collection(collection.URLS).orderBy('created_at', 'desc').get()
+  let startAt = req.query.startAt || null
+  let limit = req.query.limit ? parseInt(req.query.limit) : 10
+
+  let query = db.collection(collection.URLS).orderBy('created_at', 'desc')
+  if (startAt) query = query.startAfter(startAt)
+  
+  query.limit(limit).get()
     .then(snapshot => {
+      var lastVisible = snapshot.docs[snapshot.docs.length-1].get('created_at').toDate()
+      
       let urls = []
       snapshot.forEach((doc) => {
         let data = doc.data()
@@ -13,9 +21,15 @@ module.exports = functions.https.onRequest((req, res) => {
           raw: url_for('rawData', { url: doc.get('url') }),
           query: url_for('query', { url: doc.get('url'), limit: 100, fields: 'price' })
         }
+        data['id'] = doc.id
         data['current_timestamp'] = new Date()
         data['domain'] = getHostname(doc.get('url'))
         data['color'] = domain_colors[getHostname(doc.get('url'))]
+        data['last_pull_at'] = data['last_pull_at'] ? data['last_pull_at'].toDate() : null
+        data['created_at'] = data['created_at'] ? data['created_at'].toDate() : null
+        
+        // Paging
+        res.set('next_page', url_for('listUrls', { startAt: lastVisible, limit }))
 
         urls.push(data)
       })
