@@ -1,4 +1,3 @@
-
 const functions = require('firebase-functions')
 const { db, isSupportedUrl, hash, collection, cleanEmail } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue

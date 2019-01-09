@@ -5,8 +5,6 @@ module.exports = functions.https.onRequest((req, res) => {
   const url = String(req.query.url || '')
   const token = String(req.query.token || '')
 
-  console.log('xxx', typeof token, token)
-
   if (!validateToken(token)) {
     return res.status(403).json({
       status: 403,

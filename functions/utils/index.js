@@ -1,4 +1,5 @@
 const url = require('url')
+const crypto = require('crypto')
 const normalUrl = require('normalize-url')
 const querystring = require('querystring')
 
@@ -74,7 +75,7 @@ module.exports = {
   querystring,
 
   // Normalize and Hash URL
-  hash: u => require('crypto').createHash('sha1').update(normalizeUrl(u)).digest('hex'),
+  hash: u => crypto.createHash('sha1').update(normalizeUrl(u)).digest('hex'),
 
   // TODO: clean email
   cleanEmail: e => e,
@@ -137,7 +138,7 @@ module.exports = {
     str = String(s)
     return (/^[a-fA-F0-9]+$/).test(s) 
               ? s 
-              : require('crypto').createHash('sha1').update(normalizeUrl(str)).digest('hex')
+              : crypto.createHash('sha1').update(normalizeUrl(str)).digest('hex')
   },
 
   /**
