@@ -63,7 +63,7 @@ module.exports = functions
             num_price_change_up = price_change_percent > 0 ? num_price_change_up + 1 : num_price_change_up
             num_price_change_down = price_change_percent < 0 ? num_price_change_down + 1 : num_price_change_down
 
-            update_json += {
+            update_json = Object.assign(update_json, {
               // Price change
               latest_price: new_price,
               price_change,
@@ -72,7 +72,7 @@ module.exports = functions
               num_price_change,
               num_price_change_up,
               num_price_change_down
-            }
+            })
           }
 
           db.collection(collection.URLS).doc(urlHash).update(update_json)

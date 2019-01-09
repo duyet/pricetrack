@@ -1,4 +1,4 @@
-const { regexProcess } = require('../utils')
+const { regexProcess } = require('../utils/parser/utils')
 
 module.exports = {
   website: 'Tiki',

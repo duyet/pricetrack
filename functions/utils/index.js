@@ -13,7 +13,7 @@ admin.initializeApp(functions.config().firebase)
 var db = admin.firestore()
 db.settings({timestampsInSnapshots: true})
 
-const ruleDir = __dirname + '/parser/rules'
+const ruleDir = __dirname + '/../config'
 const supportedDomain = getSupportedDomain(ruleDir)
 const parseRules = loadRules(ruleDir)
 const domain_colors = Object.keys(parseRules)
@@ -40,7 +40,12 @@ const normalizeUrl = u => {
     removeTrailingSlash: true,
     removeQueryParameters: [/.*/] // Remove all query parameters
   }
-  return normalUrl(u, normalizeUrlConfig)
+
+  try {
+    return normalUrl(u, normalizeUrlConfig)
+  } catch(e) {
+    throw new Error(e)
+  }
 }
 
 /**

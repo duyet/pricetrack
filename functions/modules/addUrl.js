@@ -45,6 +45,13 @@ module.exports = functions.https.onRequest(async (req, res) => {
                 last_pull_at: null
             }, { merge: true })
             .then(() => {
+                // Update Metadata
+                let statisticDoc = db.collection(collection.METADATA).doc('statistics')
+                statisticDoc.get().then(doc => {
+                    const url_count = (doc.data('url_count') || 0) + 1;
+                    statisticDoc.set({url_count}, { merge: true })
+                })
+
                 // Response
                 urlDoc.get().then(snapshot => res.json(snapshot.data()))
             })

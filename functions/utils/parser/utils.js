@@ -117,7 +117,7 @@ const getSupportedDomain = dir => {
  */
 const getProductInfoFromUrl = async (u) => {
   const domain = getProvider(u)
-  const ruleDir = __dirname + '/rules'
+  const ruleDir = __dirname + '/../../config'
   const config = loadRules(ruleDir)[domain]
 
   const product_id = config.productId(u)

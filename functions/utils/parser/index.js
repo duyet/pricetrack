@@ -1,6 +1,6 @@
 const { loadRules, getSupportedDomain, getProvider, parseUrlWithConfig } = require('./utils')
 
-const ruleDir = __dirname + '/rules'
+const ruleDir = __dirname + '/../../config'
 const supportedDomain = getSupportedDomain(ruleDir)
 const parseRules = loadRules(ruleDir)
 
