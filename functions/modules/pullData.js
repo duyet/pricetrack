@@ -33,16 +33,49 @@ module.exports = functions
       .then(snapshot => {
         let data = snapshot.data()
         let raw_count = snapshot.get('raw_count') || 0
+        let latest_price = snapshot.get('latest_price') || 0
+        let num_price_change = snapshot.get('num_price_change') || 0
+        let num_price_change_up = snapshot.get('num_price_change_up') || 0
+        let num_price_change_down = snapshot.get('num_price_change_down') || 0
 
         return urlParser(url, json => {
           console.log('Pull result:', json)
+
           json['datetime'] = FieldValue.serverTimestamp()
+          let new_price = json['price']
+
+          let update_json = {
+            last_pull_at: json['datetime'],
+            raw_count: raw_count + 1,
+          }
 
           // Update statistic
-          db.collection(collection.URLS).doc(urlHash).update({
-            last_pull_at: json['datetime'],
-            raw_count: raw_count + 1
-          })
+          if (new_price - latest_price != 0) {
+            // Price change in VND and percentage          
+            let price_change = new_price - latest_price
+            let price_change_percent = (latest_price > 0) ? (100 * price_change / latest_price) : 100
+
+            // Is price up or down?
+            let is_price_up = price_change > 0
+
+            // How many time the price change?
+            num_price_change = price_change_percent > 0 ? num_price_change + 1 : num_price_change
+            num_price_change_up = price_change_percent > 0 ? num_price_change_up + 1 : num_price_change_up
+            num_price_change_down = price_change_percent < 0 ? num_price_change_down + 1 : num_price_change_down
+
+            update_json += {
+              // Price change
+              latest_price: new_price,
+              price_change,
+              price_change_percent,
+              is_price_up,
+              num_price_change,
+              num_price_change_up,
+              num_price_change_down
+            }
+          }
+
+          db.collection(collection.URLS).doc(urlHash).update(update_json)
 
           // Add raw
           db.collection(collection.RAW_DATA).doc(urlHash).collection('raw').add(json)
