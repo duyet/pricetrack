@@ -4,7 +4,11 @@ require("dotenv").config({
 
 module.exports = {
   plugins: [
-    `gatsby-plugin-react-helmet`
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/view/*`] },
+    },
   ],
   proxy: {
     prefix: '/api',

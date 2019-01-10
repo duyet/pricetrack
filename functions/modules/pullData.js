@@ -31,6 +31,11 @@ module.exports = functions
       .doc(urlHash)
       .get()
       .then(snapshot => {
+        if (!snapshot.exists) {
+          console.error(`Trigger not found URL ${url}, urlHash=${urlHash}`)
+          return res.status(500).json({ err: 1 })
+        }
+
         let data = snapshot.data()
         let raw_count = snapshot.get('raw_count') || 0
         let latest_price = snapshot.get('latest_price') || 0
@@ -75,10 +80,10 @@ module.exports = functions
             })
           }
 
-          db.collection(collection.URLS).doc(urlHash).update(update_json)
+          db.collection(collection.URLS).doc(urlHash).set(update_json, {merge: true})
 
           // Add raw
-          db.collection(collection.RAW_DATA).doc(urlHash).collection('raw').add(json)
+          db.collection(collection.URLS).doc(urlHash).collection('raw').add(json)
 
           res.json({
             msg: 'ok',

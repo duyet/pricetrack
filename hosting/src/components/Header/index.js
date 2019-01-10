@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react"
 import { Helmet } from "react-helmet"
+import { navigate } from "gatsby"
 
 import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
 
@@ -7,13 +8,14 @@ import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
 import Menu from './menu'
+import AddUrlForm from './addUrlForm'
 
 import './header.css'
 import noti from './notification.svg'
 
 const LOGOUT_CONFIRM_TEXT = 'Are you sure?'
 
-const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout, onChangeInput, onSubmit }) => (
+const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onChangeInput, onSubmit, inputUrl }) => (
   <Fragment>
     <Helmet bodyAttributes={{
         class: 'bg-light'
@@ -25,15 +27,9 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout, onChangeInput,
       <div className="row flex-nowrap justify-content-between align-items-center">
         <div className="col-3 pt-1">
           <a className="text-muted" href="#">Price Track</a>
-          {/*<a className="blog-header-logo text-dark" href="#">Price Track</a>*/}
         </div>
         <div className="col-6 text-center">
-          <form onSubmit={onSubmit}>
-            <input className="form-control mr-sm-2" type="search" 
-                   placeholder="URL e.g. tiki.vn, shopee.vn" 
-                   onChange={onChangeInput}
-                   aria-label="URL" />
-          </form>
+          <AddUrlForm authUser={authUser} inputUrl={inputUrl} />
         </div>
         <div className="col-3 d-flex justify-content-end align-items-center">
           <a className="text-muted" href="#">
@@ -54,25 +50,21 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout, onChangeInput,
 
 
 class NavBarBase extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { error: null, inputUrl: '' };
-  }
+  state = { error: null, inputUrl: this.props.inputUrl }
 
   onClickSignIn = event => {
     this.props.firebase
       .doSignInWithGoogle()
       .then(socialAuthUser => {
         console.log('socialAuthUser', socialAuthUser)
-        this.setState({ error: null });
-        this.props.history.push(ROUTES.HOME);
+        this.setState({ error: null })
+        navigate(ROUTES.HOME)
       })
       .catch(error => {
-        this.setState({ error });
+        this.setState({ error })
       });
 
-    event.preventDefault();
+    event.preventDefault()
   }
 
   onClickLogout = event => {
@@ -82,14 +74,6 @@ class NavBarBase extends Component {
     }
   }
 
-  onChangeInput = event => {
-     this.setState({inputUrl: event.target.value})
-  }
-
-  onSubmit = event => {
-    alert(this.state.inputUrl)
-  }
-
   render() {
     return (
       <AuthUserContext.Consumer>
@@ -97,7 +81,8 @@ class NavBarBase extends Component {
                                      onClickSignIn={this.onClickSignIn}
                                      onClickLogout={this.onClickLogout}
                                      onChangeInput={this.onChangeInput}
-                                     onSubmit={this.onSubmit} />}
+                                     onSubmit={this.onSubmit}
+                                     inputUrl={this.state.inputUrl} />}
       </AuthUserContext.Consumer>
     )
   }

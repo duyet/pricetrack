@@ -11,8 +11,12 @@ exports.listUrls = require('./modules/listUrl')
 // Add new URL
 exports.addUrl = require('./modules/addUrl')
 
+// Get URL Info
+exports.getUrl = require('./modules/getUrl')
+
 // Subscribe to URL
 exports.subscribeUrl = require('./modules/subscribeUrl')
+exports.getSubscriber = require('./modules/getSubscriber')
 
 // Delete an URL
 exports.removeUrl = require('./modules/removeUrl')

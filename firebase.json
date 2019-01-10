@@ -18,9 +18,12 @@
       "**/node_modules/**"
     ],
     "rewrites": [
-      {
-        "source": "/api/listUrls", "function": "listUrls"
-      },
+      { "source": "/api/listUrls", "function": "listUrls" },
+      { "source": "/api/getUrl", "function": "getUrl" },
+      { "source": "/api/addUrl", "function": "addUrl" },
+      { "source": "/api/query", "function": "query" },
+      { "source": "/api/statistics", "function": "statistics" },
+      { "source": "/api/about", "function": "about" },
       {
         "source": "**",
         "destination": "/index.html"

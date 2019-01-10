@@ -9,7 +9,7 @@ module.exports = functions.https.onRequest((req, res) => {
   const urlHash = documentIdFromHashOrUrl(url)
 
   db
-    .collection(collection.RAW_DATA)
+    .collection(collection.URLS)
     .doc(urlHash)
     .collection('raw')
     .orderBy('datetime', orderBy)

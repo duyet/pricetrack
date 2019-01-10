@@ -14,7 +14,7 @@ module.exports = functions.https.onRequest((req, res) => {
   console.log(fields, limit)
 
   db
-    .collection(collection.RAW_DATA)
+    .collection(collection.URLS)
     .doc(urlHash)
     .collection('raw')
     .orderBy('datetime', orderBy)

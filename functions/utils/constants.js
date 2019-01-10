@@ -1,7 +1,7 @@
 module.exports = {
   collection: {
     URLS: 'urls',
-    RAW_DATA: 'raw_data',
+    RAW_DATA: 'raw',
     SUBSCRIBE: 'subscribe',
     METADATA: 'metadata'
   },

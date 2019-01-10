@@ -24,7 +24,7 @@ const domain_colors = Object.keys(parseRules)
                             }, {})
 
 const functionsUrl = process.env.FUNCTION_REGION == undefined
-  ? `http://localhost:5000/duyet-price-tracker/us-central1`
+  ? `http://localhost:5001/duyet-price-tracker/us-central1`
   : `https://${process.env.FUNCTION_REGION}-${process.env.GCP_PROJECT}.cloudfunctions.net`
 
 /**
