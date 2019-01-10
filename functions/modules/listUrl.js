@@ -25,6 +25,7 @@ module.exports = functions.https.onRequest((req, res) => {
                 // List helper urls
                 if (helpers === true) {
                     data['helpers'] = {
+                        getUrl: url_for('getUrl', { url: doc.get('url') }),
                         pull: url_for('pullData', { url: doc.get('url'), token: 'YOUR_TOKEN' }),
                         raw: url_for('rawData', { url: doc.get('url') }),
                         query: url_for('query', { url: doc.get('url'), limit: 100, fields: 'price' }),
