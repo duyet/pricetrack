@@ -14,6 +14,7 @@ module.exports = {
   format_func: json => {
     let item = json.item
     let { price, itemid, item_status, is_hot_sales } = item
+    price = price / 100000
     return { price, is_deal: is_hot_sales, qty: 0, product_id: itemid, inventory_status: item_status }
   },
 
