@@ -16,6 +16,8 @@ module.exports = functions.https.onRequest(async (req, res) => {
             return res.status(404).json({ err: 1, msg: 'not found' })
         }
 
+        let data = snapshot.data()
+        data['last_pull_at'] = data['last_pull_at'].toDate()
         return res.json(snapshot.data())
     })
 

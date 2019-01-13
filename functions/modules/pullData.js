@@ -78,6 +78,8 @@ module.exports = functions
               num_price_change_up,
               num_price_change_down
             })
+
+            json['is_change'] = true
           }
 
           db.collection(collection.URLS).doc(urlHash).set(update_json, {merge: true})

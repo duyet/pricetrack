@@ -55,7 +55,8 @@ module.exports = functions.https.onRequest(async (req, res) => {
                 number_of_add: 1, // How many time this url is added?
                 raw_count: 0,
                 created_at: FieldValue.serverTimestamp(),
-                last_pull_at: null
+                last_pull_at: null,
+                add_by: email,
             }, { merge: true })
             .then(() => {
                 // Update Metadata

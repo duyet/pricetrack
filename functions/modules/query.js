@@ -28,7 +28,10 @@ module.exports = functions.https.onRequest((req, res) => {
           let row = {}
           for (let field of fields) {
             let _item = {}
-            _item[field] = doc.get(field)
+            
+            if (field == 'datetime') _item[field] = doc.get(field).toDate()
+            else _item[field] = doc.get(field)
+
             row = Object.assign(row, _item)
           }
           docs.push(row)
