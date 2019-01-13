@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "axios-progress-bar": "^1.2.0",
     "bootstrap": "^4.2.1",
     "firebase": "^5.7.2",
     "gatsby": "^2.0.76",

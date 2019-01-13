@@ -1,9 +1,14 @@
 import React, { Component } from "react"
+import { loadProgressBar } from 'axios-progress-bar'
+import 'axios-progress-bar/dist/nprogress.css'
+
 import { Link } from "gatsby"
 import axios from "axios"
 import moment from "moment"
 
 import Layout from "../components/layout"
+
+loadProgressBar()
 
 export default class IndexComponent extends Component {
     constructor(props) {
