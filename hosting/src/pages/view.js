@@ -60,13 +60,33 @@ class ViewPage extends Component {
         }
     }
 
+    formatPrice(price, plus_sign=false) {
+        var sign = price > 0 ? '+' : ''
+        return (plus_sign ? sign : '') + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
 
     render() {
+        if (!this.state.data.url) {
+            return (
+                <Layout>Loading ...</Layout>
+            )
+        }
+
         return (
             <Layout inputUrl={this.state.inputUrl}>
-                <div className="row">
-                    <div className="col mb-5">
-                        Tên sản phẩm: <a href={this.state.data.url}>{this.state.data.info ? this.state.data.info.name : ''}</a>
+                
+                <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+                    <div className="lh-100">
+                        <a href={this.state.data.url}>
+                            <h6 className="mb-0 text-white lh-100">{this.state.data.info.name}</h6>
+                        </a>
+                        <br />
+                        <small style={{ color: '#fff' }}>
+                            {this.formatPrice(this.state.data.latest_price)} VND 
+                            <span style={{ fontWeight: 700, color: this.state.data.price_change < 0 ? '#0eff45' : '#fd4d16' }} className='ml-1'>
+                                ({this.formatPrice(this.state.data.price_change, true)} VND)
+                            </span>
+                        </small>
                     </div>
                 </div>
 
