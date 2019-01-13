@@ -27,6 +27,10 @@ export default class IndexComponent extends Component {
             })
     }
 
+    formatPrice(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
+
     renderListUrl() {
         if (this.state.loading) return 'Loading ...'
         if (this.state.error) return 'Some thing went wrong'
@@ -38,9 +42,13 @@ export default class IndexComponent extends Component {
                 <div className="media text-muted pt-3" key={url.url}>
           <svg className="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect fill={url.color} width="100%" height="100%"/><text fill="#fff" dy=".3em" x="50%" y="50%">{url.domain.indexOf('shopee') > -1 ? 'S' : 'tiki'}</text></svg>
           <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong className="d-block text-gray-dark">
             <Link to={'/view/' + url.id}>
-              <strong className="d-block text-gray-dark">{url.info.name || url.domain}</strong>
+              {url.info.name || url.domain}
             </Link>
+            <strong className="text-success ml-2">{this.formatPrice(url.latest_price)} VND</strong>
+            </strong>
+            <br />
             
             <a href={url.url} target="_blank">{url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}</a>
             <br /><br />

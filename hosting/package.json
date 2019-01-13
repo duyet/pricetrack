@@ -19,11 +19,18 @@
     "gatsby-plugin-create-client-paths": "^2.0.3",
     "gatsby-plugin-manifest": "^2.0.13",
     "gatsby-plugin-react-helmet": "^3.0.5",
+    "highcharts": "^7.0.1",
+    "highcharts-react-official": "^2.0.0",
     "moment": "^2.23.0",
+    "plotly": "^1.0.6",
+    "plotly.js": "^1.43.2",
+    "plotly.js-dist": "^1.43.2",
     "react": "^16.5.1",
     "react-bootstrap": "^0.32.4",
+    "react-chartkick": "^0.3.0",
     "react-dom": "^16.5.1",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "react-plotly.js": "^2.2.0"
   },
   "repository": {
     "type": "git",
@@ -31,5 +38,10 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.5",
+    "ify-loader": "^1.1.0",
+    "transform-loader": "^0.2.4"
   }
 }
