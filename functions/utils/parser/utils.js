@@ -62,8 +62,7 @@ const parseUrlWithConfig = (u, config, cb, cb_error) => {
 
   const cb_wrapper = (json) => {
     console.log('Product JSON:', json)
-    if (config.format_func) return cb(config.format_func(json))
-    return cb(json)
+    return cb(config.format_func(json))
   }
 
   // TODO: sync function
