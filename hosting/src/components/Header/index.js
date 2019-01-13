@@ -26,13 +26,13 @@ const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onCh
     <header className="blog-header py-3">
       <div className="row flex-nowrap justify-content-between align-items-center">
         <div className="col-3 pt-1">
-          <a className="text-muted" href="#">Price Track</a>
+          <a className="text-muted" href="/">Price Track</a>
         </div>
         <div className="col-6 text-center">
           <AddUrlForm authUser={authUser} inputUrl={inputUrl} />
         </div>
         <div className="col-3 d-flex justify-content-end align-items-center">
-          <a className="text-muted" href="#">
+          <a className="text-muted" href="/">
             <img src={noti} style={{marginRight: 10}} />
           </a>
 
