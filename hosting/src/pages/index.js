@@ -48,7 +48,7 @@ export default class IndexComponent extends Component {
                 <div className="media text-muted pt-3" key={url.url}>
                   <svg className="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect fill={url.color} width="100%" height="100%"/><text fill="#fff" dy=".3em" x="50%" y="50%">{url.domain.indexOf('shopee') > -1 ? 'S' : 'tiki'}</text></svg>
                   <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <strong className="d-block text-gray-dark">
+                    <strong className="text-gray-dark">
                     <Link to={'/view/' + url.id}>
                       {url.info.name || url.domain}
                     </Link>
