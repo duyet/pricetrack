@@ -62,6 +62,13 @@ const getConfig = (key, default_val=false) => {
   return config_set[key] || default_val
 }
 
+const getSortKey = key => {
+  const default_key = 'created_at'
+  const validKeys = ['created_at', ]
+  if (!key || validKeys.indexOf(key) == -1) return default_key
+  return key
+}
+
 module.exports = {
   db,
   supportedDomain,
@@ -152,5 +159,7 @@ module.exports = {
     const adminToken = getConfig('admin_token')
     console.log('adminToken', adminToken)
     return token && adminToken === token
-  }
+  },
+
+  getSortKey,
 }

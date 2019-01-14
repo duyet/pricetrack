@@ -1,5 +1,5 @@
 const functions = require('firebase-functions')
-const { db, isSupportedUrl, documentIdFromHashOrUrl, collection, normalizeUrl, cleanEmail } = require('../utils')
+const { db, isSupportedUrl, documentIdFromHashOrUrl, collection, normalizeUrl, cleanEmail, domain_colors, getHostname } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions.https.onRequest(async (req, res) => {
@@ -17,8 +17,11 @@ module.exports = functions.https.onRequest(async (req, res) => {
         }
 
         let data = snapshot.data()
-        data['last_pull_at'] = data['last_pull_at'].toDate()
-        return res.json(snapshot.data())
+        data['last_pull_at'] = data['last_pull_at'] ? data['last_pull_at'].toDate() : data['last_pull_at']
+        data['color'] = domain_colors[getHostname(snapshot.get('url'))]
+        data['domain'] = getHostname(snapshot.get('url'))
+
+        return res.json(data)
     })
 
 })

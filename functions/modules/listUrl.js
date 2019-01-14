@@ -1,10 +1,11 @@
 const functions = require('firebase-functions')
-const { db, functionsUrl, collection, url_for, getHostname, domain_colors } = require('../utils')
+const { db, getSortKey, collection, url_for, getHostname, domain_colors } = require('../utils')
 
 module.exports = functions.https.onRequest((req, res) => {
     let startAt = req.query.startAt || null
     let limit = req.query.limit ? parseInt(req.query.limit) : 10
     let helpers = req.query.helper || req.query.helpers ? true : false
+    let sortKey = getSortKey(req.query.sort)
 
     let query = db.collection(collection.URLS).orderBy('created_at', 'desc')
     if (startAt) {

@@ -52,10 +52,11 @@ module.exports = functions
           let update_json = {
             last_pull_at: json['datetime'],
             raw_count: raw_count + 1,
+            latest_price: new_price,
           }
 
           // Update statistic
-          if (new_price - latest_price != 0) {
+          if (latest_price && new_price - latest_price != 0) {
             // Price change in VND and percentage          
             let price_change = new_price - latest_price
             let price_change_percent = (latest_price > 0) ? (100 * price_change / latest_price) : 100

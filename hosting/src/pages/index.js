@@ -1,14 +1,27 @@
 import React, { Component } from "react"
 import { loadProgressBar } from 'axios-progress-bar'
 import 'axios-progress-bar/dist/nprogress.css'
-
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHistory, faCaretDown, faCaretUp, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "gatsby"
 import axios from "axios"
 import moment from "moment"
+import 'moment/locale/vi'
 
 import Layout from "../components/layout"
+import { formatPrice, getAccessTradeDeepLink } from "../utils"
+import { HeadColorBar } from '../components/Block'
 
+library.add(faHistory, faCaretDown, faCaretUp, faShoppingCart)
 loadProgressBar()
+
+const ORDER_NOW = 'Mua ngay'
+const VIEW_HISTORY = 'Lịch sử giá'
+const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
+const ADD_BY = 'Thêm bởi'
+const CREATED_AT = 'Lúc'
+const LAST_PULL_AT = 'Cập nhật'
 
 export default class IndexComponent extends Component {
     constructor(props) {
@@ -32,9 +45,10 @@ export default class IndexComponent extends Component {
             })
     }
 
-    formatPrice(price, plus_sign=false) {
-        var sign = price > 0 ? '+' : ''
-        return (plus_sign ? sign : '') + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    openDeepLink(url) {
+        var deepLink = getAccessTradeDeepLink(url)
+        if (typeof window != 'undefined') window.open(deepLink, '_blank')
+        return false
     }
 
     renderListUrl() {
@@ -46,32 +60,46 @@ export default class IndexComponent extends Component {
         for (let url of this.state.urls) {
             dom.push(
                 <div className="media text-muted pt-3" key={url.url}>
-                  <svg className="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect fill={url.color} width="100%" height="100%"/><text fill="#fff" dy=".3em" x="50%" y="50%">{url.domain.indexOf('shopee') > -1 ? 'S' : 'tiki'}</text></svg>
-                  <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                  
+                  <HeadColorBar url={url} />
+                  
+                  <p className="media-body ml-3 pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <strong className="text-gray-dark">
                     <Link to={'/view/' + url.id}>
                       {url.info.name || url.domain}
                     </Link>
                     </strong>
                     
-                        <span className="ml-2">{this.formatPrice(url.latest_price)} VND </span>
+                        <span className="ml-3">{formatPrice(url.latest_price)} </span>
                         {
                             url.price_change ? 
-                                <span style={{ fontWeight: 700, color: url.price_change < 0 ? '#28a745' : '#f44336' }}>
-                                    ({this.formatPrice(url.price_change, true)} VND)
+                                <span className="ml-2" style={{ fontWeight: 700, color: url.price_change < 0 ? '#28a745' : '#f44336' }}>
+                                    <FontAwesomeIcon icon={url.price_change < 0 ? 'caret-down' : 'caret-up' } /> 
+                                    {formatPrice(url.price_change, true)}
                                 </span>
                                 : ''
                         }
                     <br />
                     
-                    <a href={url.url} target="_blank">{url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}</a>
-                    <br /><br />
+                    <Link to={url.url} onClick={e => { this.openDeepLink(url.url); e.preventDefault() }}>
+                        {url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}
+                    </Link>
+                    <br />
+
+                    <Link to={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
+                        onClick={e => { this.openDeepLink(url.url); e.preventDefault() }}>
+                        <FontAwesomeIcon icon="shopping-cart" /> {ORDER_NOW}
+                    </Link>
+                    <Link className='btn btn-default btn-sm mt-2 mb-2 mr-1' to={'/view/' + url.id}>
+                        <FontAwesomeIcon icon="history" /> {VIEW_HISTORY}
+                    </Link>
+
+                    <br />
+
                     <small>
-                    <a href={url.helpers.query} target="_blank">Query</a> | &nbsp;
-                    <a href={url.helpers.raw} target="_blank">Raw data</a> | &nbsp;
-                    <a href={url.helpers.pull} target="_blank">Refresh data</a> | &nbsp;
-                    Created at {moment(url.created_at).fromNow()} | &nbsp;
-                    Last pull: {moment(url.last_pull_at).fromNow()}</small>
+                    <a href={'/view/' + url.id}>{ADD_BY} {url.add_by}</a> | &nbsp;
+                    {CREATED_AT} {moment(url.created_at).fromNow()} | &nbsp;
+                    {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}</small>
                   </p>
                 </div>
             )
@@ -86,7 +114,7 @@ export default class IndexComponent extends Component {
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
                     <img className="mr-3" src="http://getbootstrap.com/docs/4.2/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48" />
                     <div className="lh-100">
-                      <h6 className="mb-0 text-white lh-100">Price Tracker</h6>
+                      <h6 className="mb-0 text-white lh-100">{HEAD_LINE_PRICE_TRACKER}</h6>
                       <small>beta</small>
                     </div>
                 </div>
