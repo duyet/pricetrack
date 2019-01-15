@@ -5,9 +5,10 @@ module.exports = functions.https.onRequest((req, res) => {
     let startAt = req.query.startAt || null
     let limit = req.query.limit ? parseInt(req.query.limit) : 10
     let helpers = req.query.helper || req.query.helpers ? true : false
-    let sortKey = getSortKey(req.query.sort)
+    let orderBy = getSortKey(req.query.orderBy)
+    let desc = req.query.desc && req.query.desc != 'true' ? 'asc' : 'desc'
 
-    let query = db.collection(collection.URLS).orderBy('created_at', 'desc')
+    let query = db.collection(collection.URLS).orderBy(orderBy, desc)
     if (startAt) {
         console.log('startAt', startAt)
         startAt = new Date(startAt)
@@ -22,6 +23,9 @@ module.exports = functions.https.onRequest((req, res) => {
             let urls = []
             snapshot.forEach((doc) => {
                 let data = doc.data()
+
+                // TODO: fix invalid url in DB
+                if (!doc.get('url')) return
 
                 // List helper urls
                 if (helpers === true) {

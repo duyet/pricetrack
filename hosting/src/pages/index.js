@@ -22,19 +22,51 @@ const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
 const ADD_BY = 'Thêm bởi'
 const LAST_PULL_AT = 'Cập nhật'
 
+const SORT_TEXT = {
+    'price_change': 'Giá mới thay đổi',
+    'last_added': 'Mới thêm',
+}
+
 export default class IndexComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
             urls: [],
             loading: false,
-            error: false
+            error: false,
+            
+            orderBy: 'price_change', // created_at last_pull_at price_change
+            desc: 'true',
+            currentMode: 'price_change',
+            limit: 25
         }
     }
 
+    orderByModes = Object.keys(SORT_TEXT)
+
+    setOtherBy(mode) {
+        let currentMode = mode 
+
+        if (mode == 'price_change') this.setState({ currentMode, orderBy: 'price_change', desc: 'true' })
+        if (mode == 'last_added') this.setState({ currentMode, orderBy: 'created_at' })
+
+        this._loadData()
+    }
+
     componentDidMount() {
+        this._loadData()
+    }
+
+    _loadData() {
         this.setState({ loading: true })
-        axios.get('/api/listUrls?helpers=1')
+
+        let params = {
+            helpers: 1,
+            orderBy: this.state.orderBy,
+            desc: this.state.desc,
+            limit: this.state.limit,
+        }
+        axios.get('/api/listUrls', { params })
             .then(response => {
                 let urls = response.data
                 this.setState({ urls, loading: false })
@@ -59,7 +91,7 @@ export default class IndexComponent extends Component {
                   <p className="media-body ml-3 pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <strong className="text-gray-dark">
                         <Link to={'/view/' + url.id}>
-                          {url.info.name || url.domain}
+                          {url.info ? url.info.name : url.domain}
                         </Link>
                     </strong>
                     
@@ -75,9 +107,9 @@ export default class IndexComponent extends Component {
 
                     <br />
                     
-                    <Link to={url.url} onClick={e => { openDeepLink(url.url); e.preventDefault() }} style={{ color: '#797979 !important' }}>
+                    <a href={url.url} onClick={e => { openDeepLink(url.url); e.preventDefault() }} style={{ color: '#797979 !important' }}>
                         {url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}
-                    </Link>
+                    </a>
                     <br />
 
                     <Link to={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
@@ -102,6 +134,21 @@ export default class IndexComponent extends Component {
         return dom
     }
 
+    sortControl() {
+        let controls = []
+        for (let mode of this.orderByModes) {
+            controls.push(
+                <span className="text-white mr-2 btn" 
+                    onClick={() => this.setOtherBy(mode)}
+                    style={{ fontWeight: this.state.currentMode == mode ? 700 : 300 }}>
+                    {SORT_TEXT[mode]}
+                </span>
+            )
+        }
+
+        return controls
+    }
+
     render() {
         return (
             <Layout>
@@ -115,8 +162,8 @@ export default class IndexComponent extends Component {
                     </div>
 
                     <div className="lh-100 mr-0 p-2 bd-highlight text-white">
-                        <Link className="text-white" to="/">xxx</Link>
-                    </div>
+                        {this.sortControl()}
+                   </div>
                 </div>
 
                 <div className="my-3 p-3 bg-white rounded shadow-sm" id="listUrls">

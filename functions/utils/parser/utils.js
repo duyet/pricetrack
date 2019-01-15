@@ -55,7 +55,7 @@ const regexProcess = (u, regex, pos=null) => {
         const pathname = url.parse(u).pathname
         const parsePathname = pathname.match(regex)
 
-        if (pos !== null) return regexProcess[pos]
+        if (pos !== null) return parsePathname[pos]
         return parsePathname
     } catch (e) {
         console.error(e)
@@ -170,6 +170,8 @@ const validateUrlPath = u => {
 
     const product_id = config.productId(u)
     const shop_id = config.shopId(u)
+
+    console.log(`Parse ${u} => product_id=${product_id} shop_id=${shop_id}`)
 
     if (config.required) {
         if (!product_id && config.required.indexOf('productId') > -1) return false

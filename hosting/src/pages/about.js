@@ -51,13 +51,12 @@ export default class IndexComponent extends Component {
                           <small>beta</small>
                         </div>
                     </div>
-
-                    <div className="lh-100 mr-0 p-2 bd-highlight text-white">
-                        <Link className="text-white" to="/">xxx</Link>
-                    </div>
                 </div>
 
-                <div className="my-3 p-3 bg-white rounded shadow-sm" id="listUrls">
+                <div className="my-3 p-3 bg-white rounded shadow-sm">
+                    PriceTrack là ứng dụng theo dõi giá trên các trang TMDT lớn như tiki.vn, shopee.vn, ... <br />
+                    PriceTrack sẽ được một phần hoa hồng nhỏ khi bạn mua sản phẩm. <br /><br />
+                    Liên hệ info[a]pricetrack.com
                 </div>
 
           </Layout>

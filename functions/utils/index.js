@@ -65,7 +65,7 @@ const getConfig = (key, default_val=false) => {
 
 const getSortKey = key => {
   const default_key = 'created_at'
-  const validKeys = ['created_at', ]
+  const validKeys = ['created_at', 'last_pull_at', 'created_at', 'last_update_at', 'price_change']
   if (!key || validKeys.indexOf(key) == -1) return default_key
   return key
 }

@@ -29,7 +29,7 @@ class AddUrlForm extends Component {
             })
             .catch(err => {
                 console.error(err)
-                alert(ERROR_MESSAGE)
+                alert(err.msg || ERROR_MESSAGE)
             })
 
         event.preventDefault()

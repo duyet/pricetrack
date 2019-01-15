@@ -27,15 +27,24 @@ module.exports = {
 
     const dom = new JSDOM(html)
 
+    let currency = 'VND'
     let name = dom.window.document.getElementById('product-name').textContent.trim()
-    let description = dom.window.document.getElementsByClassName('top-feature-item')[0].textContent.trim()
-    description = description.replace(/\s{2,}/g, ' ')
+    
+    let description = ''
+    try {
+      description = dom.window.document.getElementsByClassName('top-feature-item')[0].textContent.trim()
+      description = description.replace(/\s{2,}/g, ' ')
+    } catch (e) {
+      console.error(e)
+    }
+
+    let image = dom.window.document.querySelector('.product-image img').src 
 
     return {
       name,
       description,
-      currency: 'VND',
-      image: ''
+      currency,
+      image
     }
   },
   product_info: json => json
