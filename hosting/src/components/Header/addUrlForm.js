@@ -2,8 +2,7 @@ import React, { Component } from "react"
 import { navigate } from "gatsby"
 import axios from "axios"
 
-import { withFirebase } from '../Firebase'
-import { AuthUserContext, withAuthentication } from '../Session'
+import { withAuthentication } from '../Session'
 
 const ERROR_MESSAGE = 'Lỗi, vui lòng thử lại sau'
 const ERROR_MESSAGE_NOT_LOGIN = 'Vui lòng đăng nhập'
@@ -50,4 +49,4 @@ class AddUrlForm extends Component {
     }
 }
 
-export default AddUrlForm
+export default withAuthentication(AddUrlForm)

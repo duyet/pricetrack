@@ -2,8 +2,6 @@ import React, { Component, Fragment } from "react"
 import { Helmet } from "react-helmet"
 import { navigate } from "gatsby"
 
-import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
-
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';

@@ -3,13 +3,12 @@ import axios from 'axios'
 
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
+import { Link } from "gatsby"
 
 import Layout from '../components/layout'
 import { withAuthentication } from '../components/Session'
-import { formatPrice } from '../utils'
+import { formatPrice, openDeepLink } from '../utils'
 import { HeadColorBar } from '../components/Block'
-
-const CHART_TITLE = 'Price Chart'
 
 class ViewPage extends Component {
     constructor(props) {
@@ -78,9 +77,9 @@ class ViewPage extends Component {
                     <HeadColorBar url={url} />
                     
                     <div className="lh-100 ml-3">
-                        <a href={this.state.data.url}>
+                        <Link to={this.state.data.url} onClick={e => { openDeepLink(url.url); e.preventDefault() }}>
                             <h6 className="mb-0 text-white lh-100">{this.state.data.info.name}</h6>
-                        </a>
+                        </Link>
                         <br />
                         <small style={{ color: '#fff' }}>
                             {formatPrice(this.state.data.latest_price)} 

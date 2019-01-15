@@ -10,7 +10,7 @@ import moment from "moment"
 import 'moment/locale/vi'
 
 import Layout from "../components/layout"
-import { formatPrice, getAccessTradeDeepLink } from "../utils"
+import { formatPrice, openDeepLink } from "../utils"
 import { HeadColorBar } from '../components/Block'
 
 library.add(faHistory, faCaretDown, faCaretUp, faShoppingCart)
@@ -20,7 +20,6 @@ const ORDER_NOW = 'Mua ngay'
 const VIEW_HISTORY = 'Lịch sử giá'
 const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
 const ADD_BY = 'Thêm bởi'
-const CREATED_AT = 'Lúc'
 const LAST_PULL_AT = 'Cập nhật'
 
 export default class IndexComponent extends Component {
@@ -45,12 +44,6 @@ export default class IndexComponent extends Component {
             })
     }
 
-    openDeepLink(url) {
-        var deepLink = getAccessTradeDeepLink(url)
-        if (typeof window != 'undefined') window.open(deepLink, '_blank')
-        return false
-    }
-
     renderListUrl() {
         if (this.state.loading) return 'Loading ...'
         if (this.state.error) return 'Some thing went wrong'
@@ -65,29 +58,30 @@ export default class IndexComponent extends Component {
                   
                   <p className="media-body ml-3 pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <strong className="text-gray-dark">
-                    <Link to={'/view/' + url.id}>
-                      {url.info.name || url.domain}
-                    </Link>
+                        <Link to={'/view/' + url.id}>
+                          {url.info.name || url.domain}
+                        </Link>
                     </strong>
                     
-                        <span className="ml-3">{formatPrice(url.latest_price)} </span>
-                        {
-                            url.price_change ? 
-                                <span className="ml-2" style={{ fontWeight: 700, color: url.price_change < 0 ? '#28a745' : '#f44336' }}>
-                                    <FontAwesomeIcon icon={url.price_change < 0 ? 'caret-down' : 'caret-up' } /> 
-                                    {formatPrice(url.price_change, true)}
-                                </span>
-                                : ''
-                        }
+                    <span className="ml-3">{formatPrice(url.latest_price)} </span>
+                    {
+                        url.price_change ? 
+                            <span className="ml-2" style={{ fontWeight: 700, color: url.price_change < 0 ? '#28a745' : '#f44336' }}>
+                                <FontAwesomeIcon icon={url.price_change < 0 ? 'caret-down' : 'caret-up' } /> 
+                                {formatPrice(url.price_change, true)}
+                            </span>
+                            : ''
+                    }
+
                     <br />
                     
-                    <Link to={url.url} onClick={e => { this.openDeepLink(url.url); e.preventDefault() }}>
+                    <Link to={url.url} onClick={e => { openDeepLink(url.url); e.preventDefault() }} style={{ color: '#797979 !important' }}>
                         {url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}
                     </Link>
                     <br />
 
                     <Link to={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
-                        onClick={e => { this.openDeepLink(url.url); e.preventDefault() }}>
+                        onClick={e => { openDeepLink(url.url); e.preventDefault() }}>
                         <FontAwesomeIcon icon="shopping-cart" /> {ORDER_NOW}
                     </Link>
                     <Link className='btn btn-default btn-sm mt-2 mb-2 mr-1' to={'/view/' + url.id}>
@@ -98,7 +92,7 @@ export default class IndexComponent extends Component {
 
                     <small>
                     <a href={'/view/' + url.id}>{ADD_BY} {url.add_by}</a> | &nbsp;
-                    {CREATED_AT} {moment(url.created_at).fromNow()} | &nbsp;
+                    {moment(url.created_at).fromNow()} | &nbsp;
                     {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}</small>
                   </p>
                 </div>
@@ -111,11 +105,17 @@ export default class IndexComponent extends Component {
     render() {
         return (
             <Layout>
-                <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-                    <img className="mr-3" src="http://getbootstrap.com/docs/4.2/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48" />
-                    <div className="lh-100">
-                      <h6 className="mb-0 text-white lh-100">{HEAD_LINE_PRICE_TRACKER}</h6>
-                      <small>beta</small>
+                <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{background: '#03A9F4'}}>
+                    <div className="d-flex flex-grow-1 align-items-center">
+                        <img className="mr-3" src="http://getbootstrap.com/docs/4.2/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48" />
+                        <div className="lh-100">
+                          <h6 className="mb-0 text-white lh-100">{HEAD_LINE_PRICE_TRACKER}</h6>
+                          <small>beta</small>
+                        </div>
+                    </div>
+
+                    <div className="lh-100 mr-0 p-2 bd-highlight text-white">
+                        <Link className="text-white" to="/">xxx</Link>
                     </div>
                 </div>
 

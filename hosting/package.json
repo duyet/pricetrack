@@ -23,6 +23,7 @@
     "gatsby-plugin-react-helmet": "^3.0.5",
     "highcharts": "^7.0.1",
     "highcharts-react-official": "^2.0.0",
+    "jsdom": "^13.1.0",
     "moment": "^2.23.0",
     "plotly": "^1.0.6",
     "plotly.js": "^1.43.2",
