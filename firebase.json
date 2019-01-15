@@ -23,7 +23,7 @@
       { "source": "/api/addUrl", "function": "addUrl" },
       { "source": "/api/query", "function": "query" },
       { "source": "/api/statistics", "function": "statistics" },
-      { "source": "/api/about", "function": "about" },
+      { "source": "/api/about/*", "function": "about" },
       {
         "source": "**",
         "destination": "/index.html"

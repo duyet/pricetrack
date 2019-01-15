@@ -1,7 +1,7 @@
 const functions = require('firebase-functions')
 const { db, isSupportedUrl, documentIdFromHashOrUrl, collection, normalizeUrl, cleanEmail } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
-const { getProductInfoFromUrl } = require('../utils/parser/utils')
+const { getProductInfoFromUrl, validateUrlPath } = require('../utils/parser/utils')
 
 module.exports = functions.https.onRequest(async (req, res) => {
     // TODO: Add limit, paging
@@ -20,6 +20,16 @@ module.exports = functions.https.onRequest(async (req, res) => {
             status: 400,
             error: 1,
             msg: 'Sorry, this url does not supported yet!'
+        })
+    }
+
+    // Validate valid url
+    if (!validateUrlPath(url)) {
+        console.log('validateUrlPath(url)', validateUrlPath(url), url)
+        return res.status(400).json({
+            status: 400,
+            error: 1,
+            msg: 'Sorry, this url does invalid, please using product url!'
         })
     }
 

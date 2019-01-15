@@ -2,6 +2,7 @@ const url = require('url')
 const crypto = require('crypto')
 const normalUrl = require('normalize-url')
 const querystring = require('querystring')
+const fetch = require('node-fetch')
 
 // The Firebase Admin SDK to access the FireStore DB.
 const functions = require('firebase-functions')
@@ -68,6 +69,7 @@ const getSortKey = key => {
   if (!key || validKeys.indexOf(key) == -1) return default_key
   return key
 }
+
 
 module.exports = {
   db,
@@ -161,5 +163,5 @@ module.exports = {
     return token && adminToken === token
   },
 
-  getSortKey,
+  getSortKey
 }

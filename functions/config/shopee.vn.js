@@ -5,10 +5,12 @@ module.exports = {
   domain: 'shopee.vn',
   color: '#ff531d',
   time_check: 15,
+  active: true,
 
   // Get {productId} and {shopId}
-  productId: u => regexProcess(u, /-i\.([0-9]+)\.([0-9]+)/)[2],
-  shopId: u => regexProcess(u, /-i\.([0-9]+)\.([0-9]+)/)[1],
+  productId: u => regexProcess(u, /-i\.([0-9]+)\.([0-9]+)/, 2),
+  shopId: u => regexProcess(u, /-i\.([0-9]+)\.([0-9]+)/, 1),
+  required: ['productId', 'shopId'],
 
   product_api: 'https://shopee.vn/api/v2/item/get?itemid={product_id}&shopid={shop_id}',
   format_func: json => {
