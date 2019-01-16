@@ -4,6 +4,6 @@ import Layout from '../components/layout';
 
 export default () => (
   <Layout>
-    TODO
+    Coming soon
   </Layout>
 );

@@ -35,9 +35,9 @@ export default class IndexComponent extends Component {
             loading: false,
             error: false,
             
-            orderBy: 'price_change', // created_at last_pull_at price_change
+            orderBy: 'created_at', // created_at last_pull_at price_change
             desc: 'true',
-            currentMode: 'price_change',
+            currentMode: 'last_added',
             limit: 25
         }
     }
@@ -46,11 +46,18 @@ export default class IndexComponent extends Component {
 
     setOtherBy(mode) {
         let currentMode = mode 
+        let orderBy = this.state.orderBy
+        let desc = this.state.desc
 
-        if (mode == 'price_change') this.setState({ currentMode, orderBy: 'price_change', desc: 'true' })
-        if (mode == 'last_added') this.setState({ currentMode, orderBy: 'created_at' })
+        if (mode === 'price_change') {
+            orderBy = 'price_change'
+            desc = 'true'
+        } else if (mode === 'last_added') {
+            orderBy = 'created_at'
+            desc = 'true'
+        }
 
-        this._loadData()
+        this.setState({ currentMode, orderBy, desc }, () => this._loadData())
     }
 
     componentDidMount() {
@@ -95,12 +102,12 @@ export default class IndexComponent extends Component {
                         </Link>
                     </strong>
                     
-                    <span className="ml-3">{formatPrice(url.latest_price)} </span>
+                    <span className="ml-3">{formatPrice(url.latest_price, false, url.info.currency)} </span>
                     {
                         url.price_change ? 
                             <span className="ml-2" style={{ fontWeight: 700, color: url.price_change < 0 ? '#28a745' : '#f44336' }}>
                                 <FontAwesomeIcon icon={url.price_change < 0 ? 'caret-down' : 'caret-up' } /> 
-                                {formatPrice(url.price_change, true)}
+                                {formatPrice(url.price_change, true, url.info.currency)}
                             </span>
                             : ''
                     }
@@ -139,8 +146,9 @@ export default class IndexComponent extends Component {
         for (let mode of this.orderByModes) {
             controls.push(
                 <span className="text-white mr-2 btn" 
+                    key={mode}
                     onClick={() => this.setOtherBy(mode)}
-                    style={{ fontWeight: this.state.currentMode == mode ? 700 : 300 }}>
+                    style={{ fontWeight: this.state.currentMode === mode ? 700 : 300 }}>
                     {SORT_TEXT[mode]}
                 </span>
             )
