@@ -11,7 +11,8 @@ import AddUrlForm from './addUrlForm'
 import './header.css'
 import noti from './notification.svg'
 
-const LOGOUT_CONFIRM_TEXT = 'Are you sure?'
+const LOGOUT_CONFIRM_TEXT = 'Bạn có chắc?'
+const SIGN_IN = 'Đăng nhập'
 
 const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onChangeInput, onSubmit, inputUrl }) => (
   <Fragment>
@@ -35,7 +36,7 @@ const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onCh
           </a>
 
           {
-            !authUser ? <a className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>Sign in</a>
+            !authUser ? <a className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>{SIGN_IN}</a>
                      : <a className="btn btn-sm btn-outline-secondary" onClick={onClickLogout}>{authUser.displayName}</a>
           }
           
