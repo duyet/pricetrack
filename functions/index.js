@@ -11,6 +11,9 @@ exports.listUrls = require('./modules/listUrl')
 // Add new URL
 exports.addUrl = require('./modules/addUrl')
 
+// Update info
+exports.updateInfo = require('./modules/updateInfo')
+
 // Get URL Info
 exports.getUrl = require('./modules/getUrl')
 

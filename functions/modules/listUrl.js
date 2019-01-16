@@ -36,7 +36,8 @@ module.exports = functions.https.onRequest((req, res) => {
                         query: url_for('query', { url: doc.get('url'), limit: 100, fields: 'price' }),
                         remove: url_for('removeUrl', { url: doc.get('url'), token: 'YOUR_TOKEN' }),
                         subscribe: url_for('subscribeUrl', { url: doc.get('url'), email: 'YOUR_EMAIL' }),
-                        getSubscriber: url_for('getSubscriber', { url: doc.get('url'), token: 'YOUR_TOKEN' })
+                        getSubscriber: url_for('getSubscriber', { url: doc.get('url'), token: 'YOUR_TOKEN' }),
+                        updateInfo: url_for('updateInfo', { url: doc.get('url'), token: 'YOUR_TOKEN' })
                     }
                 }
                 

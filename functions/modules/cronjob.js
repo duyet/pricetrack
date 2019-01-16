@@ -6,7 +6,18 @@ const CRONJOB_KEY = getConfig('cronjob_key')
 const ADMIN_TOKEN = getConfig('admin_token')
 
 module.exports = functions.https.onRequest((req, res) => {
-    console.log('Start cronjob ...')
+    let validTask = ['pullData', 'updateInfo']
+    let task = req.query.task || 'pullData'
+
+    if (!task || validTask.indexOf(task) == -1) {
+        return res.status(400).json({
+            err: 1,
+            msg: 'Invalid cronjob task'
+        })
+    }
+
+    console.log(`Start cronjob task ${task} ...`)
+
     let triggered = []
     if (CRONJOB_KEY) {
         if (!req.query.key || req.query.key !== CRONJOB_KEY) {
@@ -18,7 +29,15 @@ module.exports = functions.https.onRequest((req, res) => {
         .then(snapshot => {
             snapshot.forEach(doc => {
                 let url = doc.get('url')
-                let trigger_url = url_for('pullData', { url, token: ADMIN_TOKEN })
+
+                // Fix: remove wrong collection snapshot
+                if (!url) {
+                    console.log(`Document ${doc.id} may be wrong ${doc.data()}, delete it`)
+                    doc.ref.delete()
+                    return
+                }
+
+                let trigger_url = url_for(task, { url, token: ADMIN_TOKEN })
 
                 console.log(`Query for ${url}`)
                 console.log(`Trigger ${trigger_url}`)
@@ -27,7 +46,25 @@ module.exports = functions.https.onRequest((req, res) => {
                 fetch(trigger_url)
                 triggered.push(url)
             })
-            return res.json({ triggered })
+
+            // Update counter in Metadata
+            let cronjobLogs = db.collection(collection.METADATA)
+                                .doc('statistics')
+                                .collection(collection.CRONJOB_LOGS)
+            cronjobLogs.add({
+                num_triggered: triggered.length,
+                triggered,
+                task
+            }).then(doc => {
+                // Update cronjob counter
+                let statisticDoc = db.collection(collection.METADATA).doc('statistics')
+                statisticDoc.get().then(doc => {
+                    const num_url_cronjob_triggered = parseInt(doc.get('num_url_cronjob_triggered') || 0) + triggered.length;
+                    statisticDoc.set({num_url_cronjob_triggered}, { merge: true })
+                })
+            })
+
+            return res.json({ task, triggered, triggered_at: new Date() })
         })
         .catch(err => {
             console.log('The read failed: ', err)

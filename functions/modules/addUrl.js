@@ -72,7 +72,7 @@ module.exports = functions.https.onRequest(async (req, res) => {
                 // Update Metadata
                 let statisticDoc = db.collection(collection.METADATA).doc('statistics')
                 statisticDoc.get().then(doc => {
-                    const url_count = (doc.data('url_count') || 0) + 1;
+                    const url_count = parseInt(doc.get('url_count') || 0) + 1;
                     statisticDoc.set({url_count}, { merge: true })
                 })
 
