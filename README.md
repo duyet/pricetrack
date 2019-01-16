@@ -5,6 +5,7 @@ Auto collect, visualize and alert for product items.
 **Live**: [https://tracker.duyet.net](https://tracker.duyet.net)
 
 ![Home page](.screenshot/screenshot-home.png)
+![Home page](.screenshot/screenshot-detail.png)
 ![Raw API](.screenshot/intro-raw-api.png)
 ![Raw API](.screenshot/intro-redash.png)
 
