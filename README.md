@@ -1,4 +1,4 @@
-# Price Track Project
+# Price Track Project (inprogress)
 
 Auto collect, visualize and alert for product items.
 
