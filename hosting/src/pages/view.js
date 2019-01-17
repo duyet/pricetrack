@@ -8,7 +8,7 @@ import { Link } from "gatsby"
 import Layout from '../components/layout'
 import { withAuthentication } from '../components/Session'
 import { formatPrice, openDeepLink } from '../utils'
-import { HeadColorBar } from '../components/Block'
+import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
 
 class ViewPage extends Component {
     constructor(props) {
@@ -74,7 +74,7 @@ class ViewPage extends Component {
             <Layout inputUrl={this.state.inputUrl}>
                 
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm" style={{background: url.color}}>
-                    <HeadColorBar url={url} />
+                    <LogoPlaceHolder url={url} />
                     
                     <div className="lh-100 ml-3">
                         <Link to={this.state.data.url} onClick={e => { openDeepLink(url.url); e.preventDefault() }}>

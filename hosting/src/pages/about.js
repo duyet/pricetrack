@@ -1,46 +1,17 @@
 import React, { Component } from "react"
-import axios from "axios"
-import { Link } from "gatsby"
 
 import Layout from "../components/layout"
+import CrawlerStatus from "../components/Block/CrawlerStatus"
+
+/**
+ * This page is ad hoc, please modify it
+ */
 
 export default class IndexComponent extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            status: {},
-            about: {},
+    about_image = '//images.unsplash.com/photo-1533727352519-7553fbcbf061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=80'
+    about_image_credit = 'Photo by Alvaro Reyes on Unsplash'
 
-            loading: false,
-            error: false
-        }
-    }
-
-    componentDidMount() {
-        this.setState({ loading: true })
-        axios.get('/api/about')
-            .then(response => {
-                let about = response.data
-                this.setState({ about, loading: false })
-            })
-            .catch(err => {
-                this.setState({ loading: false, error: true })
-            })
-
-        axios.get('/api/status')
-            .then(response => {
-                let status = response.data
-                this.setState({ status, loading: false })
-            })
-            .catch(err => {
-                this.setState({ loading: false, error: true })
-            })
-    }
-
-    render() {
-        if (this.state.loading) return <Layout>Loading ...</Layout>
-        // if (this.state.error) return <Layout>Some thing went wrong</Layout>
-        
+    render() {        
         return (
           <Layout>
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{background: '#03A9F4'}}>
@@ -53,10 +24,25 @@ export default class IndexComponent extends Component {
                     </div>
                 </div>
 
-                <div className="my-3 p-3 bg-white rounded shadow-sm">
-                    PriceTrack là ứng dụng theo dõi giá trên các trang TMDT lớn như tiki.vn, shopee.vn, ... <br />
-                    PriceTrack sẽ được một phần hoa hồng nhỏ khi bạn mua sản phẩm. <br /><br />
-                    Liên hệ info[a]pricetrack.com
+                <div className="my-3 p-3 bg-white rounded shadow-sm row">
+                    <div className="col mb-3">
+                        Pricetrack là ứng dụng theo dõi giá trên các trang TMDT lớn như tiki.vn, shopee.vn,... hoàn toàn miễn phí <br />
+                        Pricetrack sẽ được một phần hoa hồng nhỏ khi bạn mua sản phẩm. <br />
+                        Pricetrack là phần mềm <a href="https://github.com/duyetdev/pricetracker" target="_blank">nguồn mở</a>. <br />
+
+                        <br /><br />
+                        <h4>Trạng thái hệ thống</h4>
+                        <CrawlerStatus />
+
+                        <br />
+                        <hr />
+                        Liên hệ info [at] pricetrack.com
+                    </div>
+                    
+                    <div className="col-md-5 col-xs-12 text-center">
+                        <img className="img-fluid " src={this.about_image} alt="" />
+                        <small>{this.about_image_credit}</small>
+                    </div>
                 </div>
 
           </Layout>
