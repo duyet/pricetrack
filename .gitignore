@@ -66,5 +66,6 @@ node_modules/
 .envrc
 
 # Firebase token
+*local*
 .runtimeconfig.json
 duyet-price-tracker-8b683b4e75b0.json
