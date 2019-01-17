@@ -5,6 +5,14 @@ const { db, functionsUrl, collection, url_for, getConfig } = require('../utils')
 const CRONJOB_KEY = getConfig('cronjob_key')
 const ADMIN_TOKEN = getConfig('admin_token')
 
+/**
+ * List of Cronjobs:
+ *
+ *   - pullData: every 15 or 30 minutes
+ *   - updateInfo: daily
+ *   - removeUnsubscriberUrl10: daily
+ */
+
 module.exports = functions.https.onRequest((req, res) => {
     let validTask = ['pullData', 'updateInfo']
     let task = req.query.task || 'pullData'
