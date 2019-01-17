@@ -150,7 +150,7 @@ const loadRules = dir => {
  */
 const getSupportedDomain = dir => {
     let rules = getRuleProviders(dir)
-    return rules.map(filename => path.parse(filename).name)
+    return rules.filter(c => c.active).map(filename => path.parse(filename).name)
 }
 
 const getData = async (url, config) => {
