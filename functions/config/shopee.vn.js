@@ -4,6 +4,7 @@ module.exports = {
   website: 'Shopee',
   domain: 'shopee.vn',
   color: '#ff531d',
+  logo: 'https://i.imgur.com/yNu6MC5.png',
   time_check: 15,
   active: true,
 

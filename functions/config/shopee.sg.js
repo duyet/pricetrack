@@ -3,6 +3,7 @@ const shopeeVN = require('./shopee.vn')
 
 module.exports = {
   ...shopeeVN,
+  logo: 'https://i.imgur.com/a59T2FW.png',
   website: 'Shopee SG',
   domain: 'shopee.sg',
   color: '#ff531d',

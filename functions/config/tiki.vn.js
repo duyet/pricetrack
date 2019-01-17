@@ -5,6 +5,7 @@ module.exports = {
   website: 'Tiki',
   domain: 'tiki.vn',
   color: '#189eff',
+  logo: 'https://i.imgur.com/Tqa8FCc.png',
   time_check: 15,
   active: true,
 

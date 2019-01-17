@@ -4,6 +4,7 @@ module.exports = {
   website: 'Lotte',
   domain: 'lotte.vn',
   color: '#f2655c',
+  logo: 'https://i.imgur.com/IKaf79s.png',
   time_check: 15,
   active: true,
 
