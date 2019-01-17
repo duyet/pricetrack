@@ -9,7 +9,7 @@ module.exports = {
   active: true,
 
   // Get {productId} and {shopId}
-  productId: u => regexProcess(u, /\/product\/([0-9]+)\//)[1],
+  productId: u => regexProcess(u, /\/product\/([0-9]+)\//, 1),
   shopId: u => null,
   required: ['productId'],
 

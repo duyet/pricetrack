@@ -3,6 +3,7 @@ const url = require('url')
 const path = require('path')
 const fetch = require('node-fetch')
 
+let SUPPORTED_DOMAIN = []
 
 /**
  * Get domain name
@@ -149,8 +150,16 @@ const loadRules = dir => {
  * @return {array} List of domain name
  */
 const getSupportedDomain = dir => {
+    if (SUPPORTED_DOMAIN.length) return SUPPORTED_DOMAIN
+
     let rules = getRuleProviders(dir)
-    return rules.filter(c => c.active).map(filename => path.parse(filename).name)
+    SUPPORTED_DOMAIN = rules.map(filename => {
+        let rule = require(filename)
+        if (rule && rule.active) return rule.domain
+        else return false
+    }).filter(domain => !!domain)
+
+    return SUPPORTED_DOMAIN
 }
 
 const getData = async (url, config) => {
