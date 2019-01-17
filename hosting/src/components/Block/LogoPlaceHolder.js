@@ -1,8 +1,7 @@
 import React from "react"
 
-
-export const HeadColorBar = ({ url }) => url.info && url.info.image ?
-    <img src={url.info.image} width={64} height={64} /> :
+export default ({ url }) => url.info && url.info.image ?
+    <img src={url.info.image} width={64} height={64} alt="" /> :
     <svg className="bd-placeholder-img mr-2 rounded" style={{border: '1px solid #fff'}} width="64" height="64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
         <title>Placeholder</title>
         <rect fill={url.color} width="100%" height="100%"/>
