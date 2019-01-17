@@ -2,11 +2,14 @@ import React, { Component, Fragment } from "react"
 import { Helmet } from "react-helmet"
 import { navigate } from "gatsby"
 
-import { withFirebase } from '../Firebase';
-import { AuthUserContext } from '../Session';
-import * as ROUTES from '../../constants/routes';
+import { withFirebase } from '../Firebase'
+import { AuthUserContext } from '../Session'
+import * as ROUTES from '../../constants/routes'
 import Menu from './menu'
 import AddUrlForm from './addUrlForm'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 import './header.css'
 import noti from './notification.svg'
@@ -32,12 +35,16 @@ const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onCh
         </div>
         <div className="col-3 d-flex justify-content-end align-items-center">
           <a className="text-muted" href="/">
-            <img src={noti} style={{marginRight: 10}} />
+            <img src={noti} style={{marginRight: 10}} alt="" />
           </a>
 
           {
-            !authUser ? <a className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>{SIGN_IN}</a>
-                     : <a className="btn btn-sm btn-outline-secondary" onClick={onClickLogout}>{authUser.displayName}</a>
+            !authUser ? <button className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>
+                          {SIGN_IN} <FontAwesomeIcon icon={faGoogle} size="xs" /> 
+                        </button>
+                     : <button className="btn btn-sm btn-outline-secondary" onClick={onClickLogout}>
+                          {authUser.displayName}
+                       </button>
           }
           
         </div>
@@ -67,7 +74,7 @@ class NavBarBase extends Component {
   }
 
   onClickLogout = event => {
-    if (window.confirm(LOGOUT_CONFIRM_TEXT) == true) {
+    if (window.confirm(LOGOUT_CONFIRM_TEXT) === true) {
       this.props.firebase.doSignOut()
       window.location = ROUTES.HOME
     }

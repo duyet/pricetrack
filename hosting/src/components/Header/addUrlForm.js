@@ -41,7 +41,6 @@ class AddUrlForm extends Component {
                 <input className="form-control mr-sm-2" type="search" 
                        placeholder="URL e.g. tiki.vn, shopee.vn" 
                        onChange={this.onChangeInput}
-                       type="url"
                        value={this.state.inputUrl}
                        aria-label="URL" />
             </form>

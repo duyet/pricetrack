@@ -4,6 +4,7 @@ import 'axios-progress-bar/dist/nprogress.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHistory, faCaretDown, faCaretUp, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { Link } from "gatsby"
 import axios from "axios"
 import moment from "moment"
@@ -11,9 +12,10 @@ import 'moment/locale/vi'
 
 import Layout from "../components/layout"
 import { formatPrice, openDeepLink } from "../utils"
-import { HeadColorBar } from '../components/Block'
+import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
 
-library.add(faHistory, faCaretDown, faCaretUp, faShoppingCart)
+library.add(faHistory, faCaretDown, faCaretUp, faShoppingCart, faGoogle)
+
 loadProgressBar()
 
 const ORDER_NOW = 'Mua ngay'
@@ -21,11 +23,6 @@ const VIEW_HISTORY = 'Lịch sử giá'
 const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
 const ADD_BY = 'Thêm bởi'
 const LAST_PULL_AT = 'Cập nhật'
-
-const SORT_TEXT = {
-    'price_change': 'Giá mới thay đổi',
-    'last_added': 'Mới thêm',
-}
 
 export default class IndexComponent extends Component {
     constructor(props) {
@@ -42,7 +39,11 @@ export default class IndexComponent extends Component {
         }
     }
 
-    orderByModes = Object.keys(SORT_TEXT)
+    SORT_TEXT = {
+        'price_change': 'Giá mới thay đổi',
+        'last_added': 'Mới thêm',
+    }
+    orderByModes = () => Object.keys(this.SORT_TEXT)
 
     setOtherBy(mode) {
         let currentMode = mode 
@@ -93,7 +94,7 @@ export default class IndexComponent extends Component {
             dom.push(
                 <div className="media text-muted pt-3" key={url.url}>
                   
-                  <HeadColorBar url={url} />
+                  <LogoPlaceHolder url={url} />
                   
                   <p className="media-body ml-3 pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <strong className="text-gray-dark">
@@ -121,10 +122,10 @@ export default class IndexComponent extends Component {
 
                     <Link to={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
                         onClick={e => { openDeepLink(url.url); e.preventDefault() }}>
-                        <FontAwesomeIcon icon="shopping-cart" /> {ORDER_NOW}
+                        <FontAwesomeIcon icon={faShoppingCart} /> {ORDER_NOW}
                     </Link>
                     <Link className='btn btn-default btn-sm mt-2 mb-2 mr-1' to={'/view/' + url.id}>
-                        <FontAwesomeIcon icon="history" /> {VIEW_HISTORY}
+                        <FontAwesomeIcon icon={faHistory} /> {VIEW_HISTORY}
                     </Link>
 
                     <br />
@@ -143,13 +144,13 @@ export default class IndexComponent extends Component {
 
     sortControl() {
         let controls = []
-        for (let mode of this.orderByModes) {
+        for (let mode of this.orderByModes()) {
             controls.push(
                 <span className="text-white mr-2 btn" 
                     key={mode}
                     onClick={() => this.setOtherBy(mode)}
                     style={{ fontWeight: this.state.currentMode === mode ? 700 : 300 }}>
-                    {SORT_TEXT[mode]}
+                    {this.SORT_TEXT[mode]}
                 </span>
             )
         }
