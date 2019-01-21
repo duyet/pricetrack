@@ -1,7 +1,12 @@
+const fetch = require('node-fetch')
 const functions = require('firebase-functions')
-const { db, isSupportedUrl, documentIdFromHashOrUrl, collection, normalizeUrl, cleanEmail } = require('../utils')
+const { db, isSupportedUrl, documentIdFromHashOrUrl, 
+        collection, normalizeUrl, cleanEmail, url_for,
+        verifyUserTokenId, getConfig } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getProductInfoFromUrl, validateUrlPath } = require('../utils/parser/utils')
+
+const ADMIN_TOKEN = getConfig('admin_token')
 
 module.exports = functions.https.onRequest(async (req, res) => {
     // TODO: Add limit, paging
@@ -12,7 +17,7 @@ module.exports = functions.https.onRequest(async (req, res) => {
     let email = cleanEmail(req.query.email)
 
     if (!email || !url) {
-        return res.status(400).json({ err: 1, msg: 'URL and email is required' })
+        return res.status(400).json({ err: 1, msg: 'url, email are required' })
     }
 
     if (!isSupportedUrl(url)) {
@@ -35,13 +40,16 @@ module.exports = functions.https.onRequest(async (req, res) => {
 
     let info = await getProductInfoFromUrl(url) || {}
     let urlDoc = db.collection(collection.URLS).doc(documentIdFromHashOrUrl(url))
-
+    
+    // Fetch the first data
+    const pullDataUrl = url_for('pullData', { url: url, token: ADMIN_TOKEN })
+                
     urlDoc.get().then(snapshot => {
         if (snapshot.exists) {
             // Subscribe email
             urlDoc.collection(collection.SUBSCRIBE).doc(email).set({
                 email,
-                active: true,
+                active: false,
                 create_at: new Date()
             }, { merge: true })
 
@@ -55,6 +63,9 @@ module.exports = functions.https.onRequest(async (req, res) => {
                 data['is_update'] = true
                 return res.json({id: snapshot.id, ...data})
             })
+
+            fetch(pullDataUrl)
+            console.log(`update data ${pullDataUrl}`)
 
             return true
         }
@@ -73,15 +84,18 @@ module.exports = functions.https.onRequest(async (req, res) => {
                 let statisticDoc = db.collection(collection.METADATA).doc('statistics')
                 statisticDoc.get().then(doc => {
                     const url_count = parseInt(doc.get('url_count') || 0) + 1;
-                    statisticDoc.set({url_count}, { merge: true })
+                    statisticDoc.set({ url_count }, { merge: true })
                 })
 
                 // Subscribe email
                 urlDoc.collection(collection.SUBSCRIBE).doc(email).set({
                     email,
-                    active: true,
+                    active: false,
                     create_at: new Date()
                 }, { merge: true })
+
+                fetch(pullDataUrl)
+                console.log(`Fetch the first data ${pullDataUrl}`)
 
                 // Response
                 urlDoc.get().then(snapshot => res.json({id: snapshot.id, ...snapshot.data()}))
@@ -91,5 +105,4 @@ module.exports = functions.https.onRequest(async (req, res) => {
             })
 
     })
-
 })
