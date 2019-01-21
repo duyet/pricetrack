@@ -1,5 +1,5 @@
 const functions = require('firebase-functions')
-const { db, isSupportedUrl, hash, collection, cleanEmail } = require('../utils')
+const { db, validateToken, hash, collection } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
 module.exports = functions.https.onRequest((req, res) => {
@@ -20,6 +20,7 @@ module.exports = functions.https.onRequest((req, res) => {
         if (!docSnapshot.exists) {
             return res.status(400).json({ err: 1, msg: 'URL is not exist' })
         }
+
         urlDoc.onSnapshot(doc => {
             urlDoc.collection(collection.SUBSCRIBE).get()
             .then(snapshot => {

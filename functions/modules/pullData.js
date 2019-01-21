@@ -1,18 +1,20 @@
+const fetch = require('node-fetch')
 const functions = require('firebase-functions')
-const { db, urlParser, normalizeUrl, documentIdFromHashOrUrl, collection, validateToken } = require('../utils')
+const { db, url_for, urlParser, normalizeUrl, documentIdFromHashOrUrl, collection, validateToken, getConfig } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
+
+const ADMIN_TOKEN = getConfig('admin_token')
 
 module.exports = functions
   .runWith({ memory: '256MB', timeoutSeconds: 60 })
   .https
   .onRequest((req, res) => {
-    console.log('Start pullData', req.query)
-
     let url = String(req.query.url || '')
     url = normalizeUrl(url)
 
     const token = String(req.query.token || '')
     if (!validateToken(token)) {
+      console.error(`[pullDataa] invalid token: ${token}`)
       return res.status(403).json({
         status: 403,
         error: 1,
@@ -77,16 +79,25 @@ module.exports = functions
               is_price_up,
               num_price_change,
               num_price_change_up,
-              num_price_change_down
+              num_price_change_down,
+              is_deal: json['is_deal']
             })
 
             json['is_change'] = true
           }
 
+          // Update URL info
           db.collection(collection.URLS).doc(urlHash).set(update_json, {merge: true})
 
-          // Add raw
+          // Add raw price
           db.collection(collection.URLS).doc(urlHash).collection('raw').add(json)
+
+          // Trigger alert
+          if ('is_change' in json) {
+            const alertTriggerUrl = url_for('alert', { url: doc.get('url'), token: ADMIN_TOKEN })
+            fetch(alertTriggerUrl)
+            console.info(`Trigger alert ${alertTriggerUrl}`)
+          }
 
           res.json({
             msg: 'ok',
