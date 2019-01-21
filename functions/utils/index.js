@@ -63,11 +63,45 @@ const getConfig = (key, default_val=false) => {
   return config_set[key] || default_val
 }
 
+/**
+ * Get sort key from req.params
+ * @param  {[type]} key [description]
+ * @return {[type]}     [description]
+ */
 const getSortKey = key => {
   const default_key = 'created_at'
   const validKeys = ['created_at', 'last_pull_at', 'created_at', 'last_update_at', 'price_change']
   if (!key || validKeys.indexOf(key) == -1) return default_key
   return key
+}
+
+/**
+ * Format price
+ * @param  {[type]}  price     [description]
+ * @param  {Boolean} plus_sign [description]
+ * @param  {String}  currency  [description]
+ * @return {[type]}            [description]
+ */
+const formatPrice = (price, plus_sign = false, currency = 'VND') => {
+    if (!price) return ''
+    let sign = plus_sign && price > 0 ? '+' : ''
+    return sign + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + currency
+}
+
+/**
+ * Verify User Token (Google Token)
+ * @param  {string} token.    Token to verify
+ * @param  {function} success success callback function
+ * @param  {function} error   error callback function
+ */
+const verifyUserTokenId = (token, success, error) => {
+  admin.auth().verifyIdToken(idToken)
+    .then(function(decodedToken) {
+      var uid = decodedToken.uid;
+      success(uid)
+    }).catch(function(err) {
+      error(err)
+    })
 }
 
 
@@ -163,5 +197,7 @@ module.exports = {
     return token && adminToken === token
   },
 
-  getSortKey
+  getSortKey,
+  formatPrice,
+  verifyUserTokenId,
 }

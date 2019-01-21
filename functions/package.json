@@ -16,7 +16,9 @@
     "firebase-functions": "^2.1.0",
     "jsdom": "^13.1.0",
     "node-fetch": "^2.3.0",
-    "normalize-url": "^4.1.0"
+    "nodemailer": "^5.1.1",
+    "normalize-url": "^4.1.0",
+    "puppeteer": "^1.11.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
