@@ -46,9 +46,7 @@ module.exports = functions.https.onRequest((req, res) => {
                 }
 
                 let trigger_url = url_for(task, { url, token: ADMIN_TOKEN })
-
-                console.log(`Query for ${url}`)
-                console.log(`Trigger ${trigger_url}`)
+                console.log(`Fetch data for ${url} => triggered ${trigger_url}`)
 
                 // Start fetch() to trigger
                 fetch(trigger_url)
