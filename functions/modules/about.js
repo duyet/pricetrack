@@ -1,24 +1,20 @@
-const express = require('express')
 const functions = require('firebase-functions')
-const { supportedDomain, parseRules } = require('../utils')
+const { db, supportedDomain, parseRules, collection } = require('../utils')
+const packages = require('../package.json')
 
-const app = express()
-
-
-// Credits
-app.get('*/credits', (req, res) => {
-    const packages = require('../package.json')
-    res.json(Object.keys(packages.dependencies))
+module.exports = functions.https.onRequest(async (req, res) => {
+    db.collection(collection.METADATA)
+      .doc('statistics')
+      .get()
+      .then(snapshot => {
+        res.json({
+            info: {
+                app: 'pricetrack',
+                version: require('../package.json').version || ''
+            },
+            status: parseRules,
+            credits: Object.keys(packages.dependencies), 
+            statistics: snapshot.data()
+        })
+      })
 })
-
-app.get('*/status', (req, res) => {
-    res.json(parseRules)
-})
-
-// About
-app.get('*', (req, res) => res.json({
-    app: 'pricetrack',
-    version: require('../package.json').version || ''
-}))
-
-module.exports = functions.https.onRequest(app)
