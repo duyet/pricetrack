@@ -10,6 +10,8 @@ import { withAuthentication } from '../components/Session'
 import { formatPrice, openDeepLink } from '../utils'
 import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
 
+const PRICE_TEXT = 'giá'
+
 class ViewPage extends Component {
     constructor(props) {
         super(props)
@@ -52,7 +54,7 @@ class ViewPage extends Component {
                 text: this.state.data.info && this.state.data.info.name
             },
             series: [{
-                name: 'Giá',
+                name: PRICE_TEXT,
                 data: this.state.history_data.map(
                     t => [new Date(t.datetime).getTime(), t.price]
                 )

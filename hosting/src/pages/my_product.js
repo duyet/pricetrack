@@ -1,6 +1,3 @@
-import React from 'react';
-
-import Layout from '../components/layout';
 import IndexComponent from './index'
 
 export default class MyProduct extends IndexComponent {

@@ -25,6 +25,16 @@ const withAuthentication = Component => {
               'authUser',
               JSON.stringify(authUser),
             );
+            authUser.getIdToken(true).then(function(idToken) {
+              localStorage.setItem(
+                'authUserIdToken',
+                idToken
+              )
+            }).catch(function(error) {
+              console.error(error)
+            });
+            console.log('authUser', authUser)
+            
             this.setState({ authUser });
           },
           () => {

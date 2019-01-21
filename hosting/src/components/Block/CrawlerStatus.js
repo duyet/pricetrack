@@ -4,12 +4,19 @@ import axios from "axios"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
+let LogoOrDomain = ({logo, domain}) => {
+    if (logo) 
+        return (<img src={logo} className="img-fluid" style={{width: 100}} title={domain} alt={domain} />)
+    return domain || null
+}
+
 export default class CrawlerStatus extends Component {
     constructor(props) {
         super(props)
         this.state = {
             status: {},
-            about: {},
+            info: {},
+            credits: {},
 
             loading: false,
             error: false
@@ -18,19 +25,10 @@ export default class CrawlerStatus extends Component {
 
     componentDidMount() {
         this.setState({ loading: true })
-        axios.get('/api/about/about')
+        axios.get('/api/about')
             .then(response => {
-                let about = response.data
-                this.setState({ about, loading: false })
-            })
-            .catch(err => {
-                this.setState({ loading: false, error: true })
-            })
-
-        axios.get('/api/about/status')
-            .then(response => {
-                let status = response.data
-                this.setState({ status, loading: false })
+                let { info, status, credits } = response.data
+                this.setState({ info, status, credits, loading: false })
             })
             .catch(err => {
                 this.setState({ loading: false, error: true })
@@ -44,16 +42,15 @@ export default class CrawlerStatus extends Component {
 
         let active = <FontAwesomeIcon icon={faCheckCircle} color="green" />
         let deactive = <FontAwesomeIcon icon={faTimesCircle} color="red" />
-        let LogoOrDomain = ({logo, domain}) => {
-            if (logo) return <img src={logo} className="img-fluid" style={{width: 100}} title={domain} alt={domain} />
-            return domain
-        }
 
         let _table = []
         for (let index in this.state.status) {
             let domain = this.state.status[index]
+
             let row = (<tr key={domain.domain}>
-              <th scope="row"><LogoOrDomain logo={domain.logo} domain={domain.domain} /></th>
+              <th scope="row">
+                <LogoOrDomain logo={domain.logo} domain={domain.domain} />
+            </th>
               <td>{domain.time_check} phút</td>
               <td>{domain.active ? active : deactive}</td>
             </tr>)

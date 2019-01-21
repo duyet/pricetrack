@@ -2,6 +2,7 @@ import React, { Component } from "react"
 
 import Layout from "../components/layout"
 import CrawlerStatus from "../components/Block/CrawlerStatus"
+import Stats from "../components/Block/Stats"
 
 /**
  * This page is ad hoc, please modify it
@@ -28,11 +29,14 @@ export default class IndexComponent extends Component {
                     <div className="col mb-3">
                         Pricetrack là ứng dụng theo dõi giá trên các trang TMDT lớn như tiki.vn, shopee.vn,... hoàn toàn miễn phí <br />
                         Pricetrack sẽ được một phần hoa hồng nhỏ khi bạn mua sản phẩm. <br />
-                        Pricetrack là phần mềm <a href="https://github.com/duyetdev/pricetracker" target="_blank">nguồn mở</a>. <br />
+                        Pricetrack là phần mềm <a href="https://github.com/duyetdev/pricetracker" target="_blank" rel="noopener noreferrer">nguồn mở</a>. <br />
 
                         <br /><br />
                         <h4>Trạng thái hệ thống</h4>
                         <CrawlerStatus />
+
+                        <h4>Thống kê</h4>
+                        <Stats />
 
                         <br />
                         <hr />
