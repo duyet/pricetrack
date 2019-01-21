@@ -90,7 +90,10 @@ module.exports = functions.https.onRequest(async (req, res) => {
                 // Subscribe email
                 urlDoc.collection(collection.SUBSCRIBE).doc(email).set({
                     email,
-                    active: false,
+                    active: true,
+                    expect_when: 'any',
+                    expect_price: 0,
+                    methods: 'email',
                     create_at: new Date()
                 }, { merge: true })
 

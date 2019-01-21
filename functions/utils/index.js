@@ -46,6 +46,7 @@ const normalizeUrl = u => {
   try {
     return normalUrl(u, normalizeUrlConfig)
   } catch(e) {
+    console.error(`Error parse url=${u}, ${e}`)
     throw new Error(e)
   }
 }

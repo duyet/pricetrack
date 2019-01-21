@@ -94,7 +94,7 @@ module.exports = functions
 
           // Trigger alert
           if ('is_change' in json) {
-            const alertTriggerUrl = url_for('alert', { url: doc.get('url'), token: ADMIN_TOKEN })
+            const alertTriggerUrl = url_for('alert', { url: snapshot.get('url'), token: ADMIN_TOKEN })
             fetch(alertTriggerUrl)
             console.info(`Trigger alert ${alertTriggerUrl}`)
           }

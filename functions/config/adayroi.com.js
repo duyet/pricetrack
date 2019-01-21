@@ -4,9 +4,9 @@ const puppeteer = require('puppeteer')
 
 const adayroiSnippetData = async (params) => {
   const url = `https://www.adayroi.com/abc-p-${params.product_id}`
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto(url);
+  const browser = await puppeteer.launch({headless: true, args:['--no-sandbox']});
+  const page = await browser.newPage()
+  await page.goto(url)
 
   // Get the "viewport" of the page, as reported by the page.
   const json = await page.evaluate(() => {
