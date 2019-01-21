@@ -33,10 +33,10 @@ module.exports = {
     
     let description = ''
     try {
-      description = dom.window.document.getElementsByClassName('top-feature-item')[0].textContent.trim()
+      description = dom.window.document.querySelector('.top-feature-item').textContent.trim()
       description = description.replace(/\s{2,}/g, ' ')
     } catch (e) {
-      console.error(e)
+      console.error(e, url)
     }
 
     let image = dom.window.document.querySelector('.product-image img').src 
@@ -48,5 +48,5 @@ module.exports = {
       image
     }
   },
-  product_info: json => json
+  format_product_info: json => json
 }

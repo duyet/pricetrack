@@ -22,8 +22,10 @@ module.exports = {
   },
 
   product_info_api: 'https://shopee.vn/api/v2/item/get?itemid={product_id}&shopid={shop_id}',
-  product_info: json => {
+  format_product_info: json => {
+    console.log(json)
     let info = json.item
+    console.log(json, info, 'infoo ')
     let image = `https://cf.shopee.vn/file/${info.images[0]}`
     const { name, description, currency } = info
     return { name, description, currency, image }

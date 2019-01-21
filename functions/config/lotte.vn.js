@@ -21,7 +21,7 @@ module.exports = {
   },
 
   product_info_api: 'https://www.lotte.vn/api/v1/products/{product_id}/detail',
-  product_info: json => {
+  format_product_info: json => {
     let image = 'https:' + json.media_gallery.big[0]
     let currency = 'VND'
     const { name, description } = json
