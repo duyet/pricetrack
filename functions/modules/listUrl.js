@@ -22,7 +22,9 @@ module.exports = functions.https.onRequest((req, res) => {
 
     query.limit(limit).get()
         .then(snapshot => {
-            var lastVisible = snapshot.docs[snapshot.docs.length - 1].get('created_at').toDate()
+            var lastVisible = (snapshot.docs && snapshot.docs.length) 
+                                ? snapshot.docs[snapshot.docs.length - 1].get('created_at').toDate()
+                                : null
 
             let urls = []
             snapshot.forEach((doc) => {

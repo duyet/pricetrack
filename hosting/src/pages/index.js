@@ -51,7 +51,7 @@ export default class IndexComponent extends Component {
         let desc = this.state.desc
 
         if (mode === 'price_change') {
-            orderBy = 'price_change'
+            orderBy = 'price_change_at'
             desc = 'true'
         } else if (mode === 'last_added') {
             orderBy = 'created_at'

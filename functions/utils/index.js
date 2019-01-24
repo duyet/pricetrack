@@ -24,8 +24,8 @@ const domain_colors = Object.keys(parseRules)
                               return result
                             }, {})
 
-const IS_PROD = process.env.FUNCTION_REGION && process.env.GCP_PROJECT ? true : false
-
+const IS_PROD = process.env.GCP_PROJECT ? true : false
+console.log(`IS_PROD: ${IS_PROD}`)
 
 /**
  * Normalize url with default config 
