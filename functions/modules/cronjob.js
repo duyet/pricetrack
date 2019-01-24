@@ -1,6 +1,6 @@
-const fetch = require('node-fetch')
 const functions = require('firebase-functions')
-const { db, functionsUrl, collection, url_for, getConfig } = require('../utils')
+const { db, functionsUrl, collection, url_for, domainOf, 
+        getConfig, fetchRetry } = require('../utils')
 
 const CRONJOB_KEY = getConfig('cronjob_key')
 const ADMIN_TOKEN = getConfig('admin_token')
@@ -44,12 +44,20 @@ module.exports = functions.https.onRequest((req, res) => {
                     doc.ref.delete()
                     return
                 }
+                // Fix: add missing domain
+                if (!doc.get('domain')) {
+                    let domain = domainOf(url)
+                    console.info(`Fix: Set domain=${domain} for ${url}`)
+                    doc.ref.set({
+                        domain
+                    }, { merge: true })
+                }
 
                 let trigger_url = url_for(task, { url, token: ADMIN_TOKEN })
                 console.log(`Fetch data for ${url} => triggered ${trigger_url}`)
 
-                // Start fetch() to trigger
-                fetch(trigger_url)
+                // Start fetch(), if fail retry x3 times
+                fetchRetry(trigger_url, {}, 3)
                 triggered.push(url)
             })
 

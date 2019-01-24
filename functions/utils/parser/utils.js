@@ -1,7 +1,7 @@
 const fs = require('fs')
 const url = require('url')
 const path = require('path')
-const fetch = require('node-fetch')
+const fetch = require('@zeit/fetch-retry')(require('node-fetch'))
 
 let SUPPORTED_DOMAIN = []
 
@@ -70,19 +70,6 @@ const getCrawlerHttpHeaderOptions = () => {
  */
 const getProvider = u => url.parse(u).hostname
 
-
-/**
- * Node fetch with retry
- * @param  {string} url
- * @param  {object} options
- * @param  {number} n = 3
- * @return {[type]} fetch object
- */
-const fetchRetry = (url, options, n = 3) => fetch(url, options).catch(function(error) {
-    if (n === 1) throw error;
-    return fetch_retry(url, options, n - 1);
-})
-
 /**
  * Node fetch to get json or html
  * @param {string}    url  [description]
@@ -92,7 +79,7 @@ const fetchRetry = (url, options, n = 3) => fetch(url, options).catch(function(e
 const fetchContent = async (url, json = false) => {
     try {
         const options = getCrawlerHttpHeaderOptions()
-        const response = await fetchRetry(url, options, 3)
+        const response = await fetch(url, options)
         if (json) return await response.json()
 
         return await response.text()
@@ -163,7 +150,7 @@ const parseUrlWithConfig = async (u, config, cb, cb_error) => {
         }
 
         const options = getCrawlerHttpHeaderOptions()
-        const response = await fetchRetry(product_api, options, 3)
+        const response = await fetch(product_api, options)
         const json = await response.json()
         return config.format_func(json)
     }
@@ -293,7 +280,6 @@ const getProductInfoFromUrl = async (u) => {
 
 module.exports = {
     loadRules,
-    fetchRetry,
     getProvider,
     fetchContent,
     regexProcess,

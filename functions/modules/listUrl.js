@@ -7,6 +7,7 @@ module.exports = functions.https.onRequest((req, res) => {
     let helpers = req.query.helper || req.query.helpers ? true : false
     let orderBy = getSortKey(req.query.orderBy)
     let desc = req.query.desc && req.query.desc != 'true' ? 'asc' : 'desc'
+    let domain = req.query.domain ? req.query.domain : ''
 
     let query = db.collection(collection.URLS).orderBy(orderBy, desc)
     if (startAt) {
@@ -14,6 +15,9 @@ module.exports = functions.https.onRequest((req, res) => {
         startAt = new Date(startAt)
         console.log('startAt', startAt)
         query = query.startAfter(startAt)
+    }
+    if (domain) {
+        query = query.where("domain", "==", domain)
     }
 
     query.limit(limit).get()
@@ -43,11 +47,11 @@ module.exports = functions.https.onRequest((req, res) => {
                 
                 data['id'] = doc.id
                 data['current_timestamp'] = new Date()
-                data['domain'] = getHostname(doc.get('url'))
                 data['color'] = domain_colors[getHostname(doc.get('url'))]
                 data['last_pull_at'] = data['last_pull_at'] ? data['last_pull_at'].toDate() : null
                 data['created_at'] = data['created_at'] ? data['created_at'].toDate() : null
                 data['last_update_at'] = data['last_update_at'] ? data['last_update_at'].toDate() : null
+                data['price_change_at'] = data['price_change_at'] ? data['price_change_at'].toDate() : null
 
                 // Paging
                 res.set('next_page', url_for('listUrls', { startAt: lastVisible, limit }))

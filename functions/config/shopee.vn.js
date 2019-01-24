@@ -18,14 +18,14 @@ module.exports = {
     let item = json.item
     let { price, itemid, item_status, is_hot_sales } = item
     price = price / 100000
-    return { price, is_deal: is_hot_sales, qty: 0, product_id: itemid, inventory_status: item_status }
+    let inventory_status = item_status == 'normal' ? true : false
+    return { price, is_deal: is_hot_sales, qty: 0, product_id: itemid, inventory_status }
   },
 
   product_info_api: 'https://shopee.vn/api/v2/item/get?itemid={product_id}&shopid={shop_id}',
   format_product_info: json => {
     console.log(json)
     let info = json.item
-    console.log(json, info, 'infoo ')
     let image = `https://cf.shopee.vn/file/${info.images[0]}`
     const { name, description, currency } = info
     return { name, description, currency, image }

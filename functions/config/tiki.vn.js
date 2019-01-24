@@ -17,6 +17,7 @@ module.exports = {
   product_api: 'https://tiki.vn/api/v2/products/{product_id}/info',
   format_func: json => {
     let { price, is_deal, qty, product_id, inventory_status } = json
+    inventory_status = inventory_status == 'available' ? true : false
     return { price, is_deal, qty, product_id, inventory_status }
   },
 

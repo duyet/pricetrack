@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const functions = require('firebase-functions')
 const { db, isSupportedUrl, documentIdFromHashOrUrl, 
         collection, normalizeUrl, cleanEmail, url_for,
-        verifyUserTokenId, getConfig } = require('../utils')
+        domainOf, verifyUserTokenId, getConfig } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getProductInfoFromUrl, validateUrlPath } = require('../utils/parser/utils')
 
@@ -72,6 +72,7 @@ module.exports = functions.https.onRequest(async (req, res) => {
 
         urlDoc.set({
                 url,
+                domain: domainOf(url),
                 info,
                 number_of_add: 1, // How many time this url is added?
                 raw_count: 0,

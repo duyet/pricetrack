@@ -25,6 +25,8 @@ const triggerNoti = async (req, res) => {
         }
         
         const urlData = urlSnapshot.data()
+        urlData['id'] = urlSnapshot.id
+
         if (!urlData.price_change) {
             console.error(`Trigger when price is not changed, url=${url} urlData=${urlData} token=${token}`)
             return res.status(500).json({ err: 1, msg: 'Price not change' })
@@ -65,14 +67,24 @@ const triggerNoti = async (req, res) => {
                             triggered: false,
                             reason: `Expect ${doc.get('expect_price')}, but the price is ${urlData.latest_price}`
                         })
+                        return false
                     }
 
                     // OK, fine!
                     let send_to = alertUser.email
                     let params = {...urlData}
 
-                    const triggerProvider = require(`./alertProvider/${alertUser.methods}`)
+                    if (!alertUser.methods) {
+                        console.error(`No alert provider method ${JSON.stringify(alertUser)}`)
+                        triggerInfo.push({
+                            alertUser,
+                            triggered: false,
+                            reason: `No alert method`
+                        })
+                        return false
+                    }
 
+                    const triggerProvider = require(`./alertProvider/${alertUser.methods}`)
                     triggerInfo.push({
                         alertUser,
                         triggered: triggerProvider(alertUser.email, params)

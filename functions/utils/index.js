@@ -2,7 +2,7 @@ const url = require('url')
 const crypto = require('crypto')
 const normalUrl = require('normalize-url')
 const querystring = require('querystring')
-const fetch = require('node-fetch')
+const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {retries: 3})
 
 // The Firebase Admin SDK to access the FireStore DB.
 const functions = require('firebase-functions')
@@ -24,9 +24,8 @@ const domain_colors = Object.keys(parseRules)
                               return result
                             }, {})
 
-const functionsUrl = process.env.FUNCTION_REGION == undefined
-  ? `http://localhost:5001/duyet-price-tracker/us-central1`
-  : `https://${process.env.FUNCTION_REGION}-${process.env.GCP_PROJECT}.cloudfunctions.net`
+const IS_PROD = process.env.FUNCTION_REGION && process.env.GCP_PROJECT ? true : false
+
 
 /**
  * Normalize url with default config 
@@ -71,7 +70,8 @@ const getConfig = (key, default_val=false) => {
  */
 const getSortKey = key => {
   const default_key = 'created_at'
-  const validKeys = ['created_at', 'last_pull_at', 'created_at', 'last_update_at', 'price_change']
+  const validKeys = ['created_at', 'last_pull_at', 'created_at', 
+                     'last_update_at', 'price_change', 'price_change_at']
   if (!key || validKeys.indexOf(key) == -1) return default_key
   return key
 }
@@ -105,6 +105,30 @@ const verifyUserTokenId = (token, success, error) => {
     })
 }
 
+/**
+ * Node fetch with retry
+ * @param  {string} url
+ * @param  {object} options
+ * @return {[type]} fetch object
+ */
+const fetchRetry = (url, options) => fetch(url, options)
+
+/**
+ * Firebase functions url
+ * @type {[type]}
+ */
+const functionsUrl = IS_PROD
+  ? `http://localhost:5001/duyet-price-tracker/us-central1`
+  : `https://${process.env.FUNCTION_REGION}-${process.env.GCP_PROJECT}.cloudfunctions.net`
+
+/**
+ * Hosting root url
+ * @type {[type]}
+ */
+const hostingUrl = IS_PROD
+  ? `http://localhost:8000`
+  : getConfig('hosting_url', 'https://tracker.duyet.net')
+
 
 module.exports = {
   db,
@@ -114,6 +138,7 @@ module.exports = {
   // List of collections
   collection,
   functionsUrl,
+  hostingUrl,
   domain_colors,
   normalizeUrl,
   querystring,
@@ -126,6 +151,12 @@ module.exports = {
 
   // Check is in supported domain
   isSupportedUrl: u => supportedDomain.indexOf(url.parse(normalizeUrl(u)).hostname) > -1,
+
+  domainOf: u => {
+    let parsed = url.parse(normalizeUrl(u))
+    if (!parsed) return ''
+    return parsed.hostname || ''
+  },
 
   // Url parser
   urlParser: require('./parser/index'),
@@ -201,4 +232,5 @@ module.exports = {
   getSortKey,
   formatPrice,
   verifyUserTokenId,
+  fetchRetry
 }

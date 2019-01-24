@@ -1,10 +1,9 @@
 const { regexProcess, fetchContent } = require('../utils/parser/utils')
 const puppeteer = require('puppeteer')
 
-
 const adayroiSnippetData = async (params) => {
+  const browser = await puppeteer.launch({headless: true, args:['--no-sandbox']})
   const url = `https://www.adayroi.com/abc-p-${params.product_id}`
-  const browser = await puppeteer.launch({headless: true, args:['--no-sandbox']});
   const page = await browser.newPage()
   await page.goto(url)
 
@@ -14,6 +13,9 @@ const adayroiSnippetData = async (params) => {
   })
 
   json['product_id'] = params.product_id
+
+  delete json.review
+  console.info(json)
 
   return json
 }
@@ -34,11 +36,12 @@ module.exports = {
 
   product_api: adayroiSnippetData,
   format_func: json => {
-    let price = json.offers.price
+    let offers = json.offers || {}
+    let price = offers.price || 0
     let is_deal = false
     let qty = 0
     let product_id = json.product_id
-    let inventory_status = ''
+    let inventory_status = price > 0 ? true : false
     return { price, is_deal, qty, product_id, inventory_status }
   },
 
@@ -47,7 +50,7 @@ module.exports = {
   format_product_info: json => {
     let offers = json.offers || {}
     let { name, description, image } = json
-    let priceCurrency = offers.priceCurrency
+    let priceCurrency = offers.priceCurrency || ''
     return { name, description, currency: priceCurrency, image }
   }
 }

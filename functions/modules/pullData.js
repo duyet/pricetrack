@@ -6,7 +6,7 @@ const FieldValue = require('firebase-admin').firestore.FieldValue
 const ADMIN_TOKEN = getConfig('admin_token')
 
 module.exports = functions
-  .runWith({ memory: '256MB', timeoutSeconds: 60 })
+  .runWith({ memory: '512MB', timeoutSeconds: 30 })
   .https
   .onRequest((req, res) => {
     let url = String(req.query.url || '')
@@ -14,7 +14,7 @@ module.exports = functions
 
     const token = String(req.query.token || '')
     if (!validateToken(token)) {
-      console.error(`[pullDataa] invalid token: ${token}`)
+      console.error(`[pullData] invalid token: ${token}`)
       return res.status(403).json({
         status: 403,
         error: 1,
@@ -50,11 +50,13 @@ module.exports = functions
 
           json['datetime'] = FieldValue.serverTimestamp()
           let new_price = json['price']
+          let inventory_status = 'inventory_status' in json ? json['inventory_status'] : ''
 
           let update_json = {
             last_pull_at: json['datetime'],
             raw_count: raw_count + 1,
             latest_price: new_price,
+            inventory_status,
           }
 
           // Update statistic
@@ -76,6 +78,7 @@ module.exports = functions
               latest_price: new_price,
               price_change,
               price_change_percent,
+              price_change_at: new Date(),
               is_price_up,
               num_price_change,
               num_price_change_up,

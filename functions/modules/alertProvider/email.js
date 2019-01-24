@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const functions = require('firebase-functions')
-const { db, formatPrice } = require('../../utils')
+const { db, formatPrice, hostingUrl } = require('../../utils')
 
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
@@ -34,7 +34,7 @@ const sendEmail = (email, params) => {
     Sản phẩm bạn đang theo dõi vừa thay đổi giá: <br />
     
     <ul>
-        <li>Sản phẩm: <a href="#">${params.info.name}</a></li>
+        <li>Sản phẩm: <a href="${hostingUrl}/view/${params.id}">${params.info.name}</a></li>
         <li>
             Giá cập nhật: ${formatPrice(params.latest_price, false, params.info.currency)} 
             <strong style="color: ${params.price_change < 0 ? '#2e7d32' : '#c62828'}">
@@ -43,8 +43,8 @@ const sendEmail = (email, params) => {
         </li>
 
     </ul>
-    <br /><br />
-    Thân`;
+    <br />
+    <i>PricetrackBot</i>`;
     
     return mailTransport.sendMail(mailOptions).then(() => {
         return console.log('Email sent to:', email);
