@@ -24,8 +24,10 @@ const domain_colors = Object.keys(parseRules)
                               return result
                             }, {})
 
-const IS_PROD = process.env.GCP_PROJECT ? true : false
-console.log(`IS_PROD: ${IS_PROD}`)
+const IS_PROD = process.env.GCP_PROJECT && process.env.FUNCTION_REGION ? true : false
+console.log(`IS_PROD: ${IS_PROD} `
+            + `GCP_PROJECT="${process.env.GCP_PROJECT}" `
+            + `FUNCTION_REGION="${process.env.FUNCTION_REGION}"`)
 
 /**
  * Normalize url with default config 
@@ -117,7 +119,7 @@ const fetchRetry = (url, options) => fetch(url, options)
  * Firebase functions url
  * @type {[type]}
  */
-const functionsUrl = IS_PROD
+const functionsUrl = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
   : `https://${process.env.FUNCTION_REGION}-${process.env.GCP_PROJECT}.cloudfunctions.net`
 
@@ -125,7 +127,7 @@ const functionsUrl = IS_PROD
  * Hosting root url
  * @type {[type]}
  */
-const hostingUrl = IS_PROD
+const hostingUrl = !IS_PROD
   ? `http://localhost:8000`
   : getConfig('hosting_url', 'https://tracker.duyet.net')
 
