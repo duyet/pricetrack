@@ -39,7 +39,7 @@ module.exports = functions.https.onRequest((req, res) => {
             }
             urlDoc.onSnapshot(doc => {
                 urlDoc.collection(collection.SUBSCRIBE).doc(email).set(subscribe, { merge: true }).then(docRef => {
-                        console.log(`Added ${email}: ${docRef}`)
+                        console.log(`Added ${email}: ${JSON.stringify(docRef)}`)
                         res.json({ msg: 'ok', subscribe, hashUrl })
                     })
                     .catch(error => {

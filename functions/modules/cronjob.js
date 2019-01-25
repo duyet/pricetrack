@@ -57,7 +57,7 @@ module.exports = functions.https.onRequest((req, res) => {
                 console.log(`Fetch data for ${url} => triggered ${trigger_url}`)
 
                 // Start fetch(), if fail retry x3 times
-                fetchRetry(trigger_url, {}, 3)
+                fetchRetry(trigger_url, {})
                 triggered.push(url)
             })
 
