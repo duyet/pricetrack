@@ -1,6 +1,5 @@
 const fetch = require('node-fetch')
-const functions = require('firebase-functions')
-const { db, isSupportedUrl, documentIdFromHashOrUrl, 
+const { httpsFunctions, db, isSupportedUrl, documentIdFromHashOrUrl, 
         collection, normalizeUrl, cleanEmail, url_for,
         domainOf, verifyUserTokenId, getConfig } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
@@ -8,7 +7,7 @@ const { getProductInfoFromUrl, validateUrlPath } = require('../utils/parser/util
 
 const ADMIN_TOKEN = getConfig('admin_token')
 
-module.exports = functions.https.onRequest(async (req, res) => {
+module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
     url = normalizeUrl(url)
@@ -42,7 +41,7 @@ module.exports = functions.https.onRequest(async (req, res) => {
     let urlDoc = db.collection(collection.URLS).doc(documentIdFromHashOrUrl(url))
     
     // Fetch the first data
-    const pullDataUrl = url_for('pullData', { url: url, token: ADMIN_TOKEN })
+    const pullDataUrl = url_for('pullData', { region: 'asia', url: url, token: ADMIN_TOKEN })
                 
     urlDoc.get().then(snapshot => {
         if (snapshot.exists) {

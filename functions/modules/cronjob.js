@@ -1,5 +1,5 @@
 const functions = require('firebase-functions')
-const { db, functionsUrl, collection, url_for, domainOf, 
+const { asiaRegion, db, functionsUrl, collection, url_for, domainOf, 
         getConfig, fetchRetry } = require('../utils')
 
 const CRONJOB_KEY = getConfig('cronjob_key')
@@ -13,7 +13,7 @@ const ADMIN_TOKEN = getConfig('admin_token')
  *   - removeUnsubscriberUrl10: daily
  */
 
-module.exports = functions.https.onRequest((req, res) => {
+module.exports = functions.region(asiaRegion).https.onRequest((req, res) => {
     let validTask = ['pullData', 'updateInfo']
     let task = req.query.task || 'pullData'
 
@@ -56,8 +56,11 @@ module.exports = functions.https.onRequest((req, res) => {
                 let trigger_url = url_for(task, { url, token: ADMIN_TOKEN })
                 console.log(`Fetch data for ${url} => triggered ${trigger_url}`)
 
-                // Start fetch(), if fail retry x3 times
+                // Start fetch()
                 fetchRetry(trigger_url, {})
+                    .then(res => res.json())
+                    .then(json => console.log(`Trigger pullData ${trigger_url}: ${JSON.stringify(json)}`))
+                    .catch(err => console.error(`Fail trigger ${trigger_url}: ${JSON.stringify(err)}`))
                 triggered.push(url)
             })
 

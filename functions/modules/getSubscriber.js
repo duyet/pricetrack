@@ -1,8 +1,8 @@
 const functions = require('firebase-functions')
-const { db, validateToken, hash, collection } = require('../utils')
+const { httpsFunctions, db, validateToken, hash, collection } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
-module.exports = functions.https.onRequest((req, res) => {
+module.exports = httpsFunctions.onRequest((req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
 

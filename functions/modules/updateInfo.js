@@ -1,9 +1,9 @@
-const functions = require('firebase-functions')
-const { db, isSupportedUrl, documentIdFromHashOrUrl, collection, normalizeUrl, cleanEmail } = require('../utils')
+const { httpsFunctions, db, isSupportedUrl, documentIdFromHashOrUrl,
+        collection, normalizeUrl, cleanEmail } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getProductInfoFromUrl, validateUrlPath } = require('../utils/parser/utils')
 
-module.exports = functions.https.onRequest(async (req, res) => {
+module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
     url = normalizeUrl(url)

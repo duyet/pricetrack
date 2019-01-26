@@ -11,9 +11,14 @@ const admin = require('firebase-admin')
 const { getSupportedDomain, loadRules } = require('./parser/utils')
 const { collection } = require('./constants')
 
+// Setting DB
 admin.initializeApp(functions.config().firebase)
 var db = admin.firestore()
 db.settings({timestampsInSnapshots: true})
+
+// Setting functions region
+const httpsFunctions = functions.https
+const asiaRegion = 'asia-northeast1'
 
 const ruleDir = __dirname + '/../config'
 const supportedDomain = getSupportedDomain(ruleDir)
@@ -122,6 +127,10 @@ const fetchRetry = (url, options) => fetch(url, options)
 const functionsUrl = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
   : `https://${process.env.FUNCTION_REGION}-${process.env.GCP_PROJECT}.cloudfunctions.net`
+const functionsUrlAsia = !IS_PROD
+  ? `http://localhost:5001/duyet-price-tracker/us-central1`
+  : `https://asia-northeast1-${process.env.GCP_PROJECT}.cloudfunctions.net`
+
 
 /**
  * Hosting root url
@@ -134,12 +143,15 @@ const hostingUrl = !IS_PROD
 
 module.exports = {
   db,
+  httpsFunctions,
+  asiaRegion,
   supportedDomain,
   parseRules,
 
   // List of collections
   collection,
   functionsUrl,
+  functionsUrlAsia,
   hostingUrl,
   domain_colors,
   normalizeUrl,
@@ -178,6 +190,11 @@ module.exports = {
       .entries(qs)
       .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
       .join('&')
+
+    if (qs.hasOwnProperty('region') && qs.region == 'asia') {
+      return functionsUrlAsia + '/' + path + '?' + query
+    }
+
     return functionsUrl + '/' + path + '?' + query
   },
 
@@ -227,7 +244,6 @@ module.exports = {
    */
   validateToken: token => {
     const adminToken = getConfig('admin_token')
-    console.log('adminToken', adminToken)
     return token && adminToken === token
   },
 

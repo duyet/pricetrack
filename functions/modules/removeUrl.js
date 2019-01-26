@@ -1,7 +1,7 @@
-const functions = require('firebase-functions')
-const { db, documentIdFromHashOrUrl, collection, validateToken } = require('../utils')
+const { httpsFunctions, db, documentIdFromHashOrUrl,
+        collection, validateToken } = require('../utils')
 
-module.exports = functions.https.onRequest((req, res) => {
+module.exports = httpsFunctions.onRequest((req, res) => {
   const url = String(req.query.url || '')
   const token = String(req.query.token || '')
 

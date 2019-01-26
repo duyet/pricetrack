@@ -1,7 +1,7 @@
-const functions = require('firebase-functions')
-const { db, getSortKey, collection, url_for, getHostname, domain_colors } = require('../utils')
+const { httpsFunctions, db, getSortKey, collection,
+        url_for, getHostname, domain_colors } = require('../utils')
 
-module.exports = functions.https.onRequest((req, res) => {
+module.exports = httpsFunctions.onRequest((req, res) => {
     let startAt = req.query.startAt || null
     let limit = req.query.limit ? parseInt(req.query.limit) : 10
     let helpers = req.query.helper || req.query.helpers ? true : false

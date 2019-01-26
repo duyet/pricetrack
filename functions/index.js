@@ -1,9 +1,6 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
-const functions = require('firebase-functions')
-
-// Lib
-const utils = require('./utils')
-const config = require('./config')
+/**
+ * Pricetrack firebase functions
+ */
 
 // List urls
 exports.listUrls = require('./modules/listUrl')
@@ -26,17 +23,16 @@ exports.alert = require('./modules/alert')
 exports.removeUrl = require('./modules/removeUrl')
 
 // Ping
-exports.ping = functions.runWith({ memory: '128MB' })
-  .https.onRequest((req, res) => res.json({ msg: 'pong' }))
+exports.ping = require('firebase-functions')
+                    .runWith({ memory: '128MB' })
+                    .https
+                    .onRequest((req, res) => res.json({ msg: 'pong' }))
 
 // Cronjob
 exports.cronjob = require('./modules/cronjob')
 
 // Pull price
 exports.pullData = require('./modules/pullData')
-
-// Calc metrics
-// exports.onAddRawData = require('./modules/onAddRawData')
 
 // Raw Data
 exports.rawData = require('./modules/rawData')

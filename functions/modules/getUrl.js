@@ -1,8 +1,8 @@
-const functions = require('firebase-functions')
-const { db, isSupportedUrl, documentIdFromHashOrUrl, collection, normalizeUrl, cleanEmail, domain_colors, getHostname } = require('../utils')
+const { httpsFunctions, db, isSupportedUrl, documentIdFromHashOrUrl, 
+        collection, normalizeUrl, cleanEmail, domain_colors, getHostname } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
-module.exports = functions.https.onRequest(async (req, res) => {
+module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
     if (!url) {

@@ -1,5 +1,5 @@
-const functions = require('firebase-functions')
-const { db, documentIdFromHashOrUrl, collection, validateToken } = require('../utils')
+const { httpsFunctions, db, documentIdFromHashOrUrl, 
+        collection, validateToken } = require('../utils')
 
 const triggerNoti = async (req, res) => {
     let url = req.query.url
@@ -96,4 +96,4 @@ const triggerNoti = async (req, res) => {
         })
 }
 
-module.exports = functions.https.onRequest(triggerNoti)
+module.exports = httpsFunctions.onRequest(triggerNoti)

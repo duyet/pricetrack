@@ -1,8 +1,7 @@
-const functions = require('firebase-functions')
-const { db, hash, collection, cleanEmail } = require('../utils')
+const { httpsFunctions, db, hash, collection, cleanEmail } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
-module.exports = functions.https.onRequest((req, res) => {
+module.exports = httpsFunctions.onRequest((req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
     let email = cleanEmail(req.query.email)

@@ -1,12 +1,13 @@
 const fetch = require('node-fetch')
 const functions = require('firebase-functions')
-const { db, url_for, urlParser, normalizeUrl, documentIdFromHashOrUrl, collection, validateToken, getConfig } = require('../utils')
+const { asiaRegion, db, url_for, urlParser, normalizeUrl, documentIdFromHashOrUrl, collection, validateToken, getConfig } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
 const ADMIN_TOKEN = getConfig('admin_token')
 
 module.exports = functions
-  .runWith({ memory: '512MB', timeoutSeconds: 30 })
+  .region(asiaRegion)
+  .runWith({ memory: '512MB', timeoutSeconds: 60 })
   .https
   .onRequest((req, res) => {
     let url = String(req.query.url || '')

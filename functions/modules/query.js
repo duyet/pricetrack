@@ -1,7 +1,7 @@
-const functions = require('firebase-functions')
-const { db, functionsUrl, collection, documentIdFromHashOrUrl, redash_format } = require('../utils')
+const { httpsFunctions, db, functionsUrl, collection, 
+        documentIdFromHashOrUrl, redash_format } = require('../utils')
 
-module.exports = functions.https.onRequest((req, res) => {
+module.exports = httpsFunctions.onRequest((req, res) => {
   const url = '' + req.query.url
   let fields = (req.query.fields ? '' + req.query.fields : 'price')
   const orderBy = req.query.order && req.query.order == 'desc' ? 'desc' : 'asc'

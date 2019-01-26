@@ -1,8 +1,7 @@
-const functions = require('firebase-functions')
-const { db, supportedDomain, parseRules, collection } = require('../utils')
+const { httpsFunctions, db, supportedDomain, parseRules, collection } = require('../utils')
 const packages = require('../package.json')
 
-module.exports = functions.https.onRequest(async (req, res) => {
+module.exports = httpsFunctions.onRequest(async (req, res) => {
     db.collection(collection.METADATA)
       .doc('statistics')
       .get()
