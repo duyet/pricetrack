@@ -50,7 +50,7 @@ const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onCh
         </div>
       </div>
     </header>
-    <Menu />
+    <Menu authUser={authUser} />
   </Fragment>
 )
 
@@ -94,5 +94,5 @@ class NavBarBase extends Component {
   }
 }
 
-const NavBar = withFirebase(NavBarBase);
-export default NavBar; 
+const NavBar = withFirebase(NavBarBase)
+export default NavBar

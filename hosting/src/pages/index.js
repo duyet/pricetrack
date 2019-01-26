@@ -1,10 +1,8 @@
 import React, { Component } from "react"
 import { loadProgressBar } from 'axios-progress-bar'
 import 'axios-progress-bar/dist/nprogress.css'
-import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHistory, faCaretDown, faCaretUp, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { Link } from "gatsby"
 import axios from "axios"
 import moment from "moment"
@@ -13,18 +11,20 @@ import 'moment/locale/vi'
 import Layout from "../components/layout"
 import { formatPrice, openDeepLink } from "../utils"
 import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
+import Loading from '../components/Block/Loading'
 
-library.add(faHistory, faCaretDown, faCaretUp, faShoppingCart, faGoogle)
+import { AuthUserContext, withAuthentication } from '../components/Session'
 
 loadProgressBar()
 
-const ORDER_NOW = 'Mua ngay'
+const GO_TO = 'Tới'
 const VIEW_HISTORY = 'Lịch sử giá'
 const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
 const ADD_BY = 'Thêm bởi'
 const LAST_PULL_AT = 'Cập nhật'
+const OUT_OF_STOCK = 'Hết hàng'
 
-export default class IndexComponent extends Component {
+class IndexComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -34,6 +34,7 @@ export default class IndexComponent extends Component {
             
             orderBy: 'created_at', // created_at last_pull_at price_change
             desc: 'true',
+            add_by: '',
             currentMode: 'last_added',
             limit: 25
         }
@@ -47,8 +48,7 @@ export default class IndexComponent extends Component {
 
     setOtherBy(mode) {
         let currentMode = mode 
-        let orderBy = this.state.orderBy
-        let desc = this.state.desc
+        let { orderBy, desc, add_by } = this.state.orderBy
 
         if (mode === 'price_change') {
             orderBy = 'price_change_at'
@@ -56,6 +56,8 @@ export default class IndexComponent extends Component {
         } else if (mode === 'last_added') {
             orderBy = 'created_at'
             desc = 'true'
+        } else if (mode === 'my_product') {
+            add_by = ''
         }
 
         this.setState({ currentMode, orderBy, desc }, () => this._loadData())
@@ -85,7 +87,7 @@ export default class IndexComponent extends Component {
     }
 
     renderListUrl() {
-        if (this.state.loading) return 'Loading ...'
+        if (this.state.loading) return <Loading />
         if (this.state.error) return 'Some thing went wrong'
         if (!this.state.urls.length) return 'Nothing'
 
@@ -98,6 +100,10 @@ export default class IndexComponent extends Component {
                   
                   <p className="media-body ml-3 pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <strong className="text-gray-dark">
+                        { url.inventory_status === false 
+                            ? <span className="badge badge-danger mr-1" style={{fontSize: '1em', fontWeight: 300}}>{OUT_OF_STOCK}</span>
+                            : '' }
+
                         <Link to={'/view/' + url.id}>
                           {url.info ? url.info.name : url.domain}
                         </Link>
@@ -107,7 +113,7 @@ export default class IndexComponent extends Component {
                     {
                         url.price_change ? 
                             <span className="ml-2" style={{ fontWeight: 700, color: url.price_change < 0 ? '#28a745' : '#f44336' }}>
-                                <FontAwesomeIcon icon={url.price_change < 0 ? 'caret-down' : 'caret-up' } /> 
+                                <FontAwesomeIcon icon={url.price_change < 0 ? faCaretDown : faCaretUp } /> 
                                 {formatPrice(url.price_change, true, url.info.currency)}
                             </span>
                             : ''
@@ -122,7 +128,7 @@ export default class IndexComponent extends Component {
 
                     <Link to={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
                         onClick={e => { openDeepLink(url.url); e.preventDefault() }}>
-                        <FontAwesomeIcon icon={faShoppingCart} /> {ORDER_NOW}
+                        <FontAwesomeIcon icon={faShoppingCart} /> {GO_TO} {url.domain}
                     </Link>
                     <Link className='btn btn-default btn-sm mt-2 mb-2 mr-1' to={'/view/' + url.id}>
                         <FontAwesomeIcon icon={faHistory} /> {VIEW_HISTORY}
@@ -182,3 +188,5 @@ export default class IndexComponent extends Component {
         )
     }
 }
+
+export default withAuthentication(IndexComponent)

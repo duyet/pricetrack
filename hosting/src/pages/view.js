@@ -9,6 +9,7 @@ import Layout from '../components/layout'
 import { withAuthentication } from '../components/Session'
 import { formatPrice, openDeepLink } from '../utils'
 import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
+import Loading from '../components/Block/Loading'
 
 const PRICE_TEXT = 'giá'
 
@@ -65,9 +66,7 @@ class ViewPage extends Component {
 
     render() {
         if (!this.state.data.url) {
-            return (
-                <Layout>Loading ...</Layout>
-            )
+            return <Layout><Loading /></Layout>
         }
 
         let url = this.state.data
