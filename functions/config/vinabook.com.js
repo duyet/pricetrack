@@ -21,7 +21,7 @@ const getRawHtml = async (params) => {
     availability: document.querySelector('[itemprop="availability"]').href     || '',
     price:        document.querySelector('[itemprop="price"]').textContent       || '',
     image:        document.querySelector('[itemprop="image"]').src             || '',
-    qty:          document.querySelector('.qty_expected-group').textContent      || '',
+    qty:          '0',
   }
 
   console.log(url, `=>`, json)
@@ -46,7 +46,7 @@ module.exports = {
   product_api: getRawHtml,
   format_func: json => {
     let price = (json.price || '').replace(/[^0-9]+/g, '')
-    let inventory_status = (json.is_deal || '').indexOf('InStock') > -1 ? true : false
+    let inventory_status = (json.availability || '').indexOf('InStock') > -1 ? true : false
     let qty = (json.qty || '').replace(/[^0-9]+/g, '')
     let product_id = json.product_id
     let is_deal = false
