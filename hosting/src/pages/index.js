@@ -13,15 +13,16 @@ import { formatPrice, openDeepLink } from "../utils"
 import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
 import Loading from '../components/Block/Loading'
 
-import { AuthUserContext, withAuthentication } from '../components/Session'
+import { withAuthentication } from '../components/Session'
 
 loadProgressBar()
 
 const GO_TO = 'Tới'
 const VIEW_HISTORY = 'Lịch sử giá'
 const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
+const CREATE_AT = 'Tạo'
 const ADD_BY = 'Thêm bởi'
-const LAST_PULL_AT = 'Cập nhật'
+const LAST_PULL_AT = 'Cập nhật giá'
 const OUT_OF_STOCK = 'Hết hàng'
 
 class IndexComponent extends Component {
@@ -121,25 +122,30 @@ class IndexComponent extends Component {
 
                     <br />
                     
-                    <a href={url.url} onClick={e => { openDeepLink(url.url); e.preventDefault() }} style={{ color: '#797979 !important' }}>
+                    <a href={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }} style={{ color: '#797979 !important' }}>
                         {url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}
                     </a>
                     <br />
 
                     <Link to={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
-                        onClick={e => { openDeepLink(url.url); e.preventDefault() }}>
+                        onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
                         <FontAwesomeIcon icon={faShoppingCart} /> {GO_TO} {url.domain}
                     </Link>
                     <Link className='btn btn-default btn-sm mt-2 mb-2 mr-1' to={'/view/' + url.id}>
                         <FontAwesomeIcon icon={faHistory} /> {VIEW_HISTORY}
                     </Link>
 
+                    <Link to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                        <img class="ml-3 img-fluid" style={{height: 20}} src={url.domain_logo} alt="" />
+                    </Link>
+
                     <br />
 
                     <small>
-                    <a href={'/view/' + url.id}>{ADD_BY} {url.add_by}</a> | &nbsp;
-                    {moment(url.created_at).fromNow()} | &nbsp;
-                    {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}</small>
+                        <a href={'/view/' + url.id}>{ADD_BY} {url.add_by}</a> | &nbsp;
+                        {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
+                        {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}
+                    </small>
                   </p>
                 </div>
             )

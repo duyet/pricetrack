@@ -3,8 +3,14 @@ module.exports = {
         "es6": true,
         "node": true
     },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
     "extends": "eslint:recommended",
     "rules": {
-        "camelcase": [2, {"properties": "never"}]
+        "camelcase": [2, {"properties": "never"}],
+        "no-console": 0
     }
 };

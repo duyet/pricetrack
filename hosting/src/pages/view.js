@@ -4,6 +4,8 @@ import axios from 'axios'
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
 import { Link } from "gatsby"
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Layout from '../components/layout'
 import { withAuthentication } from '../components/Session'
@@ -56,9 +58,25 @@ class ViewPage extends Component {
             },
             series: [{
                 name: PRICE_TEXT,
+                type: 'area',
                 data: this.state.history_data.map(
                     t => [new Date(t.datetime).getTime(), t.price]
-                )
+                ),
+                tooltip: {
+                    valueDecimals: 0
+                },
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
             }],
             responsive: true
         }
@@ -74,12 +92,16 @@ class ViewPage extends Component {
         return (
             <Layout inputUrl={this.state.inputUrl}>
                 
-                <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm" style={{background: url.color}}>
+                <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm" 
+                     style={{background: url.color}}>
                     <LogoPlaceHolder url={url} />
                     
                     <div className="lh-100 ml-3">
-                        <Link to={this.state.data.url} onClick={e => { openDeepLink(url.url); e.preventDefault() }}>
-                            <h6 className="mb-0 text-white lh-100">{this.state.data.info.name}</h6>
+                        <Link to={this.state.data.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                            <h6 className="mb-0 text-white lh-100">
+                                {this.state.data.info.name} 
+                                <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" style={{fontWeight: 300, fontSize: 12}} />
+                            </h6>
                         </Link>
                         <br />
                         <small style={{ color: '#fff' }}>
@@ -92,6 +114,10 @@ class ViewPage extends Component {
                                 }
                             </span>
                         </small>
+                    </div>
+
+                    <div className="lh-100 my-3">
+                        
                     </div>
                 </div>
 

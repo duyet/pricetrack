@@ -1,8 +1,14 @@
 const { regexProcess, fetchContent } = require('../utils/parser/utils')
+const chromium = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer')
 
 const adayroiSnippetData = async (params) => {
-  const browser = await puppeteer.launch({headless: true, args:['--no-sandbox']})
+  let browser = null
+  browser = await puppeteer.launch({
+    headless: chromium.headless,
+    args: chromium.args
+  })
+  
   const url = `https://www.adayroi.com/abc-p-${params.product_id}`
   const page = await browser.newPage()
   await page.goto(url)
@@ -18,6 +24,7 @@ const adayroiSnippetData = async (params) => {
   console.info(json)
 
   return json
+  
 }
 
 module.exports = {

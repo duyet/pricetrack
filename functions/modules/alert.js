@@ -1,40 +1,54 @@
-const { httpsFunctions, db, documentIdFromHashOrUrl, 
-        collection, validateToken } = require('../utils')
+const {
+    httpsFunctions,
+    db,
+    documentIdFromHashOrUrl,
+    collection,
+    validateToken
+} = require('../utils')
 
 const triggerNoti = async (req, res) => {
     let url = req.query.url
     const token = String(req.query.token || '')
     if (!validateToken(token)) {
-      return res.status(403).json({
-        status: 403,
-        error: 1,
-        msg: 'token is invalid!'
-      })
+        return res.status(403).json({
+            status: 403,
+            error: 1,
+            msg: 'token is invalid!'
+        })
     }
 
-    if (!url ) {
-        return res.status(400).json({ err: 1, msg: 'URL is required' })
+    if (!url) {
+        return res.status(400).json({
+            err: 1,
+            msg: 'URL is required'
+        })
     }
 
-    let urlHash = documentIdFromHashOrUrl(url) 
+    let urlHash = documentIdFromHashOrUrl(url)
     const urlDoc = db.collection(collection.URLS).doc(urlHash)
     urlDoc.get().then(urlSnapshot => {
         if (!urlSnapshot.exists) {
             console.error(`Trigger but url not found: url=${url} token=${token}`)
-            return res.status(403).json({ err: 1, msg: 'URL not found' })
+            return res.status(403).json({
+                err: 1,
+                msg: 'URL not found'
+            })
         }
-        
+
         const urlData = urlSnapshot.data()
         urlData['id'] = urlSnapshot.id
 
         if (!urlData.price_change) {
             console.error(`Trigger when price is not changed, url=${url} urlData=${urlData} token=${token}`)
-            return res.status(500).json({ err: 1, msg: 'Price not change' })
+            return res.status(500).json({
+                err: 1,
+                msg: 'Price not change'
+            })
         }
 
         urlDoc.collection(collection.SUBSCRIBE)
-              .get()
-              .then(snapshot => {
+            .get()
+            .then(snapshot => {
                 triggerInfo = []
 
                 snapshot.forEach(doc => {
@@ -72,7 +86,8 @@ const triggerNoti = async (req, res) => {
 
                     // OK, fine!
                     let send_to = alertUser.email
-                    let params = {...urlData}
+                    let params = { ...urlData
+                    }
 
                     if (!alertUser.methods) {
                         console.error(`No alert provider method ${JSON.stringify(alertUser)}`)
@@ -93,7 +108,7 @@ const triggerNoti = async (req, res) => {
 
                 return res.json(triggerInfo)
             })
-        })
+    })
 }
 
 module.exports = httpsFunctions.onRequest(triggerNoti)

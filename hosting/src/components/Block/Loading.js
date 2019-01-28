@@ -5,7 +5,7 @@ const spinners = []
 
 for (let i of spinnersClass) {
     spinners.push(
-        <div className={'spinner-grow text-' + i} role="status">
+        <div className={'spinner-grow text-' + i} role="status" key={i}>
           <span className="sr-only">Loading...</span>
         </div>
     )

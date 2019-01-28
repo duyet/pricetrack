@@ -1,6 +1,10 @@
-const functions = require('firebase-functions')
-const { httpsFunctions, db, functionsUrl, collection, 
-        documentIdFromHashOrUrl, redash_format } = require('../utils')
+const {
+  httpsFunctions,
+  db,
+  collection,
+  documentIdFromHashOrUrl,
+  redashFormat
+} = require('../utils')
 
 module.exports = httpsFunctions.onRequest((req, res) => {
   const url = '' + req.query.url
@@ -24,7 +28,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
           docs.push(doc.data())
         })
 
-        return redash ? res.json(redash_format(docs)) : res.json(docs)
+        return redash ? res.json(redashFormat(docs)) : res.json(docs)
       }
     })
     .catch(err => {

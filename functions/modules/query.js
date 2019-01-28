@@ -1,5 +1,10 @@
-const { httpsFunctions, db, functionsUrl, collection, 
-        documentIdFromHashOrUrl, redash_format } = require('../utils')
+const {
+  httpsFunctions,
+  db,
+  collection,
+  documentIdFromHashOrUrl,
+  redashFormat
+} = require('../utils')
 
 module.exports = httpsFunctions.onRequest((req, res) => {
   const url = '' + req.query.url
@@ -28,7 +33,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
           let row = {}
           for (let field of fields) {
             let _item = {}
-            
+
             if (field == 'datetime') _item[field] = doc.get(field).toDate()
             else _item[field] = doc.get(field)
 
@@ -36,7 +41,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
           }
           docs.push(row)
         })
-        return redash ? res.json(redash_format(docs)) : res.json(docs)
+        return redash ? res.json(redashFormat(docs)) : res.json(docs)
       }
     })
     .catch(err => {

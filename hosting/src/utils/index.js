@@ -8,7 +8,6 @@ export function formatPrice(price, plus_sign = false, currency = 'VND') {
 }
 
 export function openDeepLink(url) {
-    var deepLink = getAccessTradeDeepLink(url)
-    if (typeof window !== 'undefined') window.open(deepLink, '_blank')
+    if (typeof window !== 'undefined') window.open(url, '_blank')
     return false
 }

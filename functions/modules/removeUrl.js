@@ -1,5 +1,10 @@
-const { httpsFunctions, db, documentIdFromHashOrUrl,
-        collection, validateToken } = require('../utils')
+const {
+  httpsFunctions,
+  db,
+  documentIdFromHashOrUrl,
+  collection,
+  validateToken
+} = require('../utils')
 
 module.exports = httpsFunctions.onRequest((req, res) => {
   const url = String(req.query.url || '')
@@ -29,8 +34,12 @@ module.exports = httpsFunctions.onRequest((req, res) => {
       // Update counter in Metadata
       let statisticDoc = db.collection(collection.METADATA).doc('statistics')
       statisticDoc.get().then(doc => {
-          const url_count = parseInt(doc.get('url_count') || 0) - 1;
-          statisticDoc.set({url_count}, { merge: true })
+        const url_count = parseInt(doc.get('url_count') || 0) - 1;
+        statisticDoc.set({
+          url_count
+        }, {
+          merge: true
+        })
       })
 
       return res.json(snapshot)
