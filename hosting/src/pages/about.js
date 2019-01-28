@@ -40,7 +40,7 @@ export default class IndexComponent extends Component {
 
                         <br />
                         <hr />
-                        Liên hệ info [at] pricetrack.com
+                        Liên hệ me [at] duyet dot net
                     </div>
                     
                     <div className="col-md-5 col-xs-12 text-center">
