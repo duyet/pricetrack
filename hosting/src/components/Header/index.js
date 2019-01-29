@@ -16,8 +16,9 @@ import noti from './notification.svg'
 
 const LOGOUT_CONFIRM_TEXT = 'Bạn có chắc?'
 const SIGN_IN = 'Đăng nhập'
+const LOGOUT = 'Thoát'
 
-const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onChangeInput, onSubmit, inputUrl }) => (
+const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout, inputUrl }) => (
   <Fragment>
     <Helmet bodyAttributes={{
         class: 'bg-light'
@@ -27,13 +28,13 @@ const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onCh
     </Helmet>
     <header className="blog-header py-3">
       <div className="row flex-nowrap justify-content-between align-items-center">
-        <div className="col-3 pt-1">
+        <div className="col">
           <a className="text-muted" href="/">Price Track</a>
         </div>
-        <div className="col-6 text-center">
+        <div className="col text-center">
           <AddUrlForm authUser={authUser} inputUrl={inputUrl} />
         </div>
-        <div className="col-3 d-flex justify-content-end align-items-center">
+        <div className="col d-flex justify-content-end align-items-center">
           <a className="text-muted" href="/">
             <img src={noti} style={{marginRight: 10}} alt="" />
           </a>
@@ -42,7 +43,7 @@ const NavigationAuth = ({ authUser, firebase, onClickSignIn, onClickLogout, onCh
             !authUser ? <button className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>
                           {SIGN_IN} <FontAwesomeIcon icon={faGoogle} size="xs" /> 
                         </button>
-                     : <button className="btn btn-sm btn-outline-secondary" onClick={onClickLogout}>
+                     : <button className="btn btn-sm btn-outline-secondary" onClick={onClickLogout} title={LOGOUT}>
                           {authUser.displayName}
                        </button>
           }

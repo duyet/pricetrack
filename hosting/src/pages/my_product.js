@@ -17,9 +17,11 @@ export default class MyProduct extends IndexComponent {
             currentMode: 'my_product',
             limit: 25
         }
+
+        this.SORT_TEXT = {
+            'my_product': 'Sản phẩm của tôi',
+        }
     }
 
-    SORT_TEXT = {
-        'my_product': 'Sản phẩm của tôi',
-    }
+    
 }

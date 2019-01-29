@@ -11,6 +11,8 @@
     "rules": "storage.rules"
   },
   "hosting": {
+    "cleanUrls": true,
+    "trailingSlash": false,
     "public": "hosting/public",
     "ignore": [
       "firebase.json",
@@ -24,6 +26,10 @@
       { "source": "/api/query", "function": "query" },
       { "source": "/api/statistics", "function": "statistics" },
       { "source": "/api/about", "function": "about" },
+      {
+        "source": "view/**", 
+        "destination": "/view/index.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"

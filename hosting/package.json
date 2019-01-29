@@ -1,18 +1,19 @@
 {
-  "name": "gatsby-starter-hello-world",
+  "name": "pricetrack-frontend",
   "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
+  "description": "PriceTrack UI build by Gatsby",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "develop": "gatsby develop",
     "start": "npm run develop",
-    "build": "gatsby build",
+    "build": "rm -rf public && gatsby build",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.6.3",
+    "autoprefixer": "^9.4.7",
     "axios": "^0.18.0",
     "axios-progress-bar": "^1.2.0",
     "bootstrap": "^4.2.1",
@@ -21,6 +22,9 @@
     "gatsby-plugin-create-client-paths": "^2.0.3",
     "gatsby-plugin-google-analytics": "^2.0.9",
     "gatsby-plugin-manifest": "^2.0.13",
+    "gatsby-plugin-postcss-sass": "^1.0.22",
+    "gatsby-plugin-purgecss": "^3.1.0",
+    "gatsby-plugin-purify-css": "^2.2.1",
     "gatsby-plugin-react-helmet": "^3.0.5",
     "highcharts": "^7.0.1",
     "highcharts-react-official": "^2.0.0",
@@ -29,19 +33,13 @@
     "plotly": "^1.0.6",
     "plotly.js": "^1.43.2",
     "plotly.js-dist": "^1.43.2",
+    "postcss-import": "^12.0.1",
     "react": "^16.5.1",
     "react-bootstrap": "^0.32.4",
     "react-chartkick": "^0.3.0",
     "react-dom": "^16.5.1",
     "react-helmet": "^5.2.0",
     "react-plotly.js": "^2.2.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
-  },
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
   },
   "devDependencies": {
     "babel-loader": "^8.0.5",

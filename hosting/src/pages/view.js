@@ -31,6 +31,9 @@ class ViewPage extends Component {
     componentDidMount() {
         let url = this.props.location.pathname.replace('/view/', '')
         this.setState({ loading: true })
+
+        console.log('URL ===>', url)
+
         axios.get(`/api/getUrl?url=${url}`)
             .then(response => {
                 let data = response.data

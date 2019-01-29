@@ -20,7 +20,12 @@ const ADMIN_TOKEN = getConfig('admin_token')
  *   - removeUnsubscriberUrl10: daily
  */
 
-module.exports = functions.region(asiaRegion).https.onRequest((req, res) => {
+module.exports = functions
+    .region(asiaRegion).runWith({
+        timeoutSeconds: 120
+    })
+    .https
+    .onRequest((req, res) => {
     let validTask = ['pullData', 'updateInfo']
     let task = req.query.task || 'pullData'
 

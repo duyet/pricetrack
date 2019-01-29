@@ -28,7 +28,7 @@ export default class IndexComponent extends Component {
                 <div className="my-3 p-3 bg-white rounded shadow-sm row">
                     <div className="col mb-3">
                         Pricetrack là ứng dụng theo dõi giá trên các trang TMDT lớn như tiki.vn, shopee.vn,... hoàn toàn miễn phí <br />
-                        Pricetrack sẽ được một phần hoa hồng nhỏ khi bạn mua sản phẩm. <br />
+                        Pricetrack có thể sẽ được một phần hoa hồng nhỏ khi bạn mua sản phẩm. <br />
                         Pricetrack là phần mềm <a href="https://github.com/duyetdev/pricetracker" target="_blank" rel="noopener noreferrer">nguồn mở</a>. <br />
 
                         <br /><br />

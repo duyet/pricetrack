@@ -29,6 +29,11 @@ class AddUrlForm extends Component {
             })
             .catch(err => {
                 console.error(err)
+                if (err.response) {
+                    let data = err.response.data || {}
+                    return alert(data.msg || ERROR_MESSAGE)
+                }
+
                 alert(err.msg || ERROR_MESSAGE)
             })
 
