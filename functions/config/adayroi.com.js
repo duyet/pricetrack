@@ -1,4 +1,4 @@
-const { regexProcess, fetchContent } = require('../utils/parser/utils')
+const { regexProcess } = require('../utils/parser/utils')
 const chromium = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer')
 
@@ -8,7 +8,7 @@ const adayroiSnippetData = async (params) => {
     headless: chromium.headless,
     args: chromium.args
   })
-  
+
   const url = `https://www.adayroi.com/abc-p-${params.product_id}`
   const page = await browser.newPage()
   await page.goto(url)
@@ -37,7 +37,7 @@ module.exports = {
 
   // Get {productId} and {shopId}
   // https://www.adayroi.com/vsmart-active-1-6gb-64gb-den-p-2087332
-  productId: u => regexProcess(u, /-p-([0-9]+)/, 1),
+  productId: u => regexProcess(u, /-p-([A-Z]+?([0-9]+))/, 1),
   shopId: u => null,
   required: ['productId'],
 
