@@ -37,7 +37,7 @@ module.exports = {
 
   // Get {productId} and {shopId}
   // https://www.adayroi.com/vsmart-active-1-6gb-64gb-den-p-2087332
-  productId: u => regexProcess(u, /-p-([A-Z]+?([0-9]+))/, 1),
+  productId: u => regexProcess(u, /-p-([A-Z]*([0-9]+))/, 1),
   shopId: u => null,
   required: ['productId'],
 
