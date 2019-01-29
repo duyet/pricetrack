@@ -32,7 +32,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
     query.limit(limit).get()
         .then(snapshot => {
             var lastVisible = (snapshot.docs && snapshot.docs.length) ?
-                snapshot.docs[snapshot.docs.length - 1].get('created_at').toDate() :
+                snapshot.docs[snapshot.docs.length - 1].get(orderBy).toDate() :
                 null
 
             let urls = []
