@@ -9,10 +9,6 @@ const getRawHtml = async (params) => {
   const dom = new JSDOM(html, {features: {QuerySelector: true}})
   const { document } = dom.window
 
-  console.log('=================')
-  console.log(document.querySelector('[itemprop="name"]'))
-  console.log(document.querySelector('[itemprop="priceCurrency"]'))
-
   let json = {
     product_id:   params.product_id,
     name:         document.querySelector('[itemprop="name"]').textContent        || '',
