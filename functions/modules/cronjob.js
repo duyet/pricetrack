@@ -34,6 +34,7 @@ module.exports = functions.region(asiaRegion).https.onRequest((req, res) => {
     console.log(`Start cronjob task ${task} ...`)
 
     let triggered = []
+    let tasks = []
     if (CRONJOB_KEY) {
         if (!req.query.key || req.query.key !== CRONJOB_KEY) {
             return res.status(400).json({
@@ -65,17 +66,19 @@ module.exports = functions.region(asiaRegion).https.onRequest((req, res) => {
                     })
                 }
 
-                let trigger_url = url_for(task, {
+                let triggerUrl = url_for(task, {
                     url,
                     token: ADMIN_TOKEN
                 })
-                console.log(`Fetch data for ${url} => triggered ${trigger_url}`)
+                console.log(`Fetch data for ${url} => triggered ${triggerUrl}`)
 
                 // Start fetch()
-                fetchRetry(trigger_url, {})
-                    .then(res => res.json())
-                    .then(json => console.log(`Trigger pullData ${trigger_url}: ${JSON.stringify(json)}`))
-                    .catch(err => console.error(`Fail trigger ${trigger_url}: ${JSON.stringify(err)}`))
+                tasks.push(
+                    fetchRetry(triggerUrl, {})
+                        .then(res => res.json())
+                        .then(json => console.log(`Trigger pullData ${triggerUrl}: ${JSON.stringify(json)}`))
+                        .catch(err => console.error(`Fail trigger ${triggerUrl}: ${JSON.stringify(err)}`))
+                )
                 triggered.push(url)
             })
 
@@ -83,6 +86,8 @@ module.exports = functions.region(asiaRegion).https.onRequest((req, res) => {
             let cronjobLogs = db.collection(collection.METADATA)
                 .doc('statistics')
                 .collection(collection.CRONJOB_LOGS)
+            
+            // Add cronjob logs
             cronjobLogs.add({
                 num_triggered: triggered.length,
                 triggered,
@@ -100,6 +105,10 @@ module.exports = functions.region(asiaRegion).https.onRequest((req, res) => {
                 })
             })
 
+            // Make sure all trigger pullData has done
+            Promise.all(tasks)
+
+            // Return result
             return res.json({
                 task,
                 triggered,

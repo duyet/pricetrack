@@ -8,7 +8,8 @@ const {
   documentIdFromHashOrUrl,
   collection,
   validateToken,
-  getConfig
+  getConfig,
+  url_for
 } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
