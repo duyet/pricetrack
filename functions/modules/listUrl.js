@@ -90,10 +90,11 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                 data['domain_logo'] = domainLogos[doc.get('domain')]
 
                 // Paging
-                res.set('next_page', url_for('listUrls', {
+                res.set('next_url', url_for('listUrls', {
                     startAt: lastVisible,
                     limit
                 }))
+                res.set('nextStartAt', lastVisible)
 
                 urls.push(data)
             })

@@ -19,26 +19,37 @@ const {
 
 const ADMIN_TOKEN = getConfig('admin_token')
 
+const ERR_URL_NOT_SUPPORTED = 'Xin lỗi, hiện tại chưa hỗ trợ URL này'
+const ERR_EMAIL_REQUIRED = 'Vui lòng đăng nhập'
+
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
-    url = normalizeUrl(url)
+
+    try {
+        url = normalizeUrl(url)
+    } catch (err) {
+        console.error(err)
+        return res.statusMessage(400).json({
+            err: 1,
+            msg: ERR_URL_NOT_SUPPORTED
+        })
+    }
 
     // TODO: validate email
     let email = cleanEmail(req.query.email)
 
-    if (!email || !url) {
+    if (!email) {
         return res.status(400).json({
             err: 1,
-            msg: 'url, email are required'
+            msg: ERR_EMAIL_REQUIRED
         })
     }
 
     if (!isSupportedUrl(url)) {
         return res.status(400).json({
-            status: 400,
-            error: 1,
-            msg: 'Sorry, this url does not supported yet!'
+            err: 1,
+            msg: ERR_URL_NOT_SUPPORTED
         })
     }
 
