@@ -8,5 +8,12 @@ module.exports = {
   },
   eventType: {
     WRITE: 'google.firestore.document.write'
+  },
+  text: {
+    URL_NOT_FOUND: 'URL không tồn tại',
+    ERR_URL_NOT_SUPPORTED: 'Xin lỗi, hiện tại chưa hỗ trợ URL này',
+    ERR_EMAIL_REQUIRED: 'Vui lòng đăng nhập',
+    ERR_TOKEN_INVALID: 'Token không đúng',
+    ERR_MISSING_URL: 'URL là bắt buộc'
   }
 }

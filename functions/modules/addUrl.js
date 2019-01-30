@@ -19,8 +19,7 @@ const {
 
 const ADMIN_TOKEN = getConfig('admin_token')
 
-const ERR_URL_NOT_SUPPORTED = 'Xin lỗi, hiện tại chưa hỗ trợ URL này'
-const ERR_EMAIL_REQUIRED = 'Vui lòng đăng nhập'
+const { text: { ERR_URL_NOT_SUPPORTED, ERR_EMAIL_REQUIRED } } = require('../utils/constants')
 
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
@@ -59,7 +58,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         return res.status(400).json({
             status: 400,
             error: 1,
-            msg: 'Sorry, this url does invalid, please using product url!'
+            msg: ERR_URL_NOT_SUPPORTED
         })
     }
 

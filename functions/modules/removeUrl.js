@@ -6,6 +6,8 @@ const {
   validateToken
 } = require('../utils')
 
+const { text: { URL_NOT_FOUND, ERR_TOKEN_INVALID } } = require('../utils/constants')
+
 module.exports = httpsFunctions.onRequest((req, res) => {
   const url = String(req.query.url || '')
   const token = String(req.query.token || '')
@@ -14,7 +16,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
     return res.status(403).json({
       status: 403,
       error: 1,
-      msg: 'token is invalid!'
+      msg: ERR_TOKEN_INVALID
     })
   }
 
@@ -22,7 +24,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
     return res.status(400).json({
       status: 400,
       error: 1,
-      msg: 'url is required!'
+      msg: URL_NOT_FOUND
     })
   }
 

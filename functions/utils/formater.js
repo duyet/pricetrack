@@ -20,6 +20,13 @@ const normalizeUrl = u => {
   }
 
   try {
+    u = decodeURIComponent(u)
+    console.log('Decoded', u)
+  } catch (e) {
+    console.log(`decodeURIComponent ${u} ${e}`)
+  }
+
+  try {
     return normalUrl(u, normalizeUrlConfig)
   } catch(e) {
     console.error(`Error parse url=${u}, ${e}`)

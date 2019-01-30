@@ -9,13 +9,15 @@ const {
     getDeepLink
 } = require('../utils')
 
+const { text: { URL_NOT_FOUND } } = require('../utils/constants')
+
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
     if (!url) {
         return res.status(404).json({
             err: 1,
-            msg: 'not found.'
+            msg: URL_NOT_FOUND
         })
     }
 
@@ -27,7 +29,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         if (!snapshot.exists) {
             return res.status(404).json({
                 err: 1,
-                msg: 'not found'
+                msg: URL_NOT_FOUND
             })
         }
 

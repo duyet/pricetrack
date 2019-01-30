@@ -14,6 +14,7 @@
   "dependencies": {
     "@zeit/fetch-retry": "^3.0.0",
     "axios": "^0.18.0",
+    "axios-retry": "^3.1.2",
     "chrome-aws-lambda": "^1.11.2",
     "express": "^4.16.4",
     "firebase-admin": "^6.5.0",

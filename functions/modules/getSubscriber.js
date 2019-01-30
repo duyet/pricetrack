@@ -6,6 +6,8 @@ const {
     collection
 } = require('../utils')
 
+const { text: { URL_NOT_FOUND, ERR_TOKEN_INVALID } } = require('../utils/constants')
+
 module.exports = httpsFunctions.onRequest((req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
@@ -15,7 +17,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
         return res.status(403).json({
             status: 403,
             error: 1,
-            msg: 'token is invalid!'
+            msg: ERR_TOKEN_INVALID
         })
     }
 
@@ -24,7 +26,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
         if (!docSnapshot.exists) {
             return res.status(400).json({
                 err: 1,
-                msg: 'URL is not exist'
+                msg: URL_NOT_FOUND
             })
         }
 

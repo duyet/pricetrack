@@ -13,6 +13,8 @@ const {
 } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
+const { text: { ERR_MISSING_URL, ERR_TOKEN_INVALID } } = require('../utils/constants')
+
 const ADMIN_TOKEN = getConfig('admin_token')
 
 module.exports = functions
@@ -32,14 +34,14 @@ module.exports = functions
       return res.status(403).json({
         status: 403,
         error: 1,
-        msg: 'token is invalid!'
+        msg: ERR_TOKEN_INVALID
       })
     }
 
     if (!url) {
       return res.status(400).json({
         error: 1,
-        msg: 'url is required!'
+        msg: ERR_MISSING_URL
       })
     }
 

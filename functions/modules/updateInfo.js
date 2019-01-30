@@ -10,6 +10,8 @@ const {
     getProductInfoFromUrl
 } = require('../utils/parser/utils')
 
+const { text: { URL_NOT_FOUND } } = require('../utils/constants')
+
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
@@ -18,7 +20,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     if (!url) {
         return res.status(400).json({
             err: 1,
-            msg: 'URL is required'
+            msg: URL_NOT_FOUND
         })
     }
 
@@ -29,7 +31,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         if (!snapshot.exists) {
             return res.status(400).json({
                 err: 1,
-                msg: 'URL is not exists'
+                msg: URL_NOT_FOUND
             })
         }
 
