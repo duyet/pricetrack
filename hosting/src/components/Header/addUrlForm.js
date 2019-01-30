@@ -17,7 +17,8 @@ class AddUrlForm extends Component {
 
     onSubmit = (event) => {
         if (!this.props.authUser || !this.props.authUser.email) {
-            return alert(ERROR_MESSAGE_NOT_LOGIN)
+            // return alert(ERROR_MESSAGE_NOT_LOGIN)
+            navigate(`/view/${encodeURIComponent(this.state.inputUrl)}`)
         }
 
         axios.get('/api/addUrl', { params: { url: this.state.inputUrl, email: this.props.authUser.email } })

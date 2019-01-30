@@ -12,6 +12,7 @@ import { withAuthentication } from '../components/Session'
 import { formatPrice, openDeepLink } from '../utils'
 import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
 import Loading from '../components/Block/Loading'
+import NotFound from '../components/Block/NotFound'
 
 const PRICE_TEXT = 'giá'
 
@@ -34,27 +35,37 @@ class ViewPage extends Component {
 
         console.log('URL ===>', url)
 
-        axios.get(`/api/getUrl?url=${url}`)
+        axios.get(`/api/getUrl`, { params: { url } })
             .then(response => {
                 let data = response.data
                 this.setState({ data, loading: false, inputUrl: data.url })
                 console.log(this.state.inputUrl, 'xxx')
             })
             .catch(err => {
+                console.log(err, 'not found')
                 this.setState({ loading: false, error: true })
             })
 
-        axios.get(`/api/query?url=${url}&fields=price,datetime&limit=100000`)
-            .then(response => {
-                let data = response.data
-                this.setState({ history_data: data })
-            })
-            .catch(err => {
-                this.setState({ loading: false, error: true })
-            })
+        axios.get(`/api/query`, {
+            params: {
+                url,
+                fields: `price,datetime`,
+                limit: 100000
+            }
+        })
+        .then(response => {
+            let data = response.data
+            this.setState({ history_data: data })
+        })
+        .catch(err => {
+            console.log(err, 'not found')
+            this.setState({ loading: false, error: true })
+        })
     }
 
     getData = () => {
+        if (this.state.error === true) return {}
+
         return {
             title: {
                 text: this.state.data.info && this.state.data.info.name
@@ -86,9 +97,13 @@ class ViewPage extends Component {
     }
 
     render() {
+        if (this.state.error === true) {
+            return <Layout><NotFound /></Layout>
+        }
         if (!this.state.data.url) {
             return <Layout><Loading /></Layout>
         }
+        
 
         let url = this.state.data
 
