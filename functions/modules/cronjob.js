@@ -5,9 +5,9 @@ const {
     collection,
     domainOf,
     getConfig,
-    fetchRetry,
     url_for
 } = require('../utils')
+const axios = require('axios')
 
 const CRONJOB_KEY = getConfig('cronjob_key')
 const ADMIN_TOKEN = getConfig('admin_token')
@@ -19,6 +19,8 @@ const ADMIN_TOKEN = getConfig('admin_token')
  *   - updateInfo: daily
  *   - removeUnsubscriberUrl10: daily
  */
+
+ // TODO: split cronjob, continues cronjob
 
 module.exports = functions
     .region(asiaRegion).runWith({
@@ -77,12 +79,17 @@ module.exports = functions
                 })
                 console.log(`Fetch data for ${url} => triggered ${triggerUrl}`)
 
-                // Start fetch()
                 tasks.push(
-                    fetchRetry(triggerUrl, {})
-                        .then(res => res.json())
-                        .then(json => console.log(`Trigger pullData ${triggerUrl}: ${JSON.stringify(json)}`))
-                        .catch(err => console.error(`Fail trigger ${triggerUrl}: ${JSON.stringify(err)}`))
+                    axios
+                        .get(triggerUrl)
+                        .then(function (response) {
+                            console.log(`Trigger ${triggerUrl} success`, response.data)
+                            return { success: true, url, data: response.data }
+                        })
+                        .catch(function (error) {
+                            console.error(`Trigger ${triggerUrl} fail`, error)
+                            return { success: false, url, error }
+                        })
                 )
                 triggered.push(url)
             })
@@ -111,13 +118,17 @@ module.exports = functions
             })
 
             // Make sure all trigger pullData has done
-            Promise.all(tasks)
-
-            // Return result
-            return res.json({
-                task,
-                triggered,
-                triggered_at: new Date()
+            Promise.all(tasks).then(values => {
+                res.json({
+                    task,
+                    triggered,
+                    values,
+                    triggered_at: new Date()
+                })
+            }).catch(err => {
+                res.status(500).json({
+                    err
+                })
             })
         })
         .catch(err => {
