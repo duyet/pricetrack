@@ -118,7 +118,7 @@ module.exports = functions
             db.collection(collection.URLS).doc(urlHash).collection('raw').add(json)
 
             // Trigger alert
-            if ('is_change' in json) {
+            if (json.is_change) {
               const alertTriggerUrl = url_for('alert', {
                 url: snapshot.get('url'),
                 token: ADMIN_TOKEN

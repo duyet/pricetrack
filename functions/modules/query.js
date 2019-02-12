@@ -12,18 +12,24 @@ module.exports = httpsFunctions.onRequest((req, res) => {
   const orderBy = req.query.order && req.query.order == 'desc' ? 'desc' : 'asc'
   const limit = req.query.limit ? parseInt(req.query.limit) : 100
   const redash = req.query.redash || req.query.redash_format
+  const onlyChange = req.query.onlyChange || req.query.only_change ? true : false
 
   fields = fields.split(',')
   var urlHash = documentIdFromHashOrUrl(url)
 
   console.log(fields, limit)
 
-  db
+  let query = db
     .collection(collection.URLS)
     .doc(urlHash)
     .collection('raw')
     .orderBy('datetime', orderBy)
-    .limit(limit)
+
+  if (onlyChange) {
+    query = query.where('is_change', '==', true)
+  }
+
+  query.limit(limit)
     .get()
     .then(snapshot => {
       if (snapshot.empty) return res.json([])

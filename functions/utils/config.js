@@ -38,7 +38,7 @@ console.log(`IS_PROD: ${IS_PROD} `
  */
 const functionsUrl = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
-  : `https://${process.env.FUNCTION_REGION}-${process.env.GCP_PROJECT}.cloudfunctions.net`
+  : `https://us-central1-${process.env.GCP_PROJECT}.cloudfunctions.net`
 const functionsUrlAsia = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
   : `https://asia-northeast1-${process.env.GCP_PROJECT}.cloudfunctions.net`

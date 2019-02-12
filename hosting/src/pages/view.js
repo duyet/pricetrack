@@ -65,11 +65,34 @@ class ViewPage extends Component {
 
     getData = () => {
         if (this.state.error === true) return {}
+        console.log(this.state.history_data)
 
         return {
             title: {
                 text: this.state.data.info && this.state.data.info.name
             },
+            rangeSelector: {
+                buttons: [{
+                    type: 'hour',
+                    count: 1,
+                    text: '1h'
+                }, {
+                    type: 'hour',
+                    count: 6,
+                    text: '6h'
+                }, {
+                    type: 'day',
+                    count: 1,
+                    text: '1D'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: 'Day',
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+            },  
             series: [{
                 name: PRICE_TEXT,
                 type: 'area',
