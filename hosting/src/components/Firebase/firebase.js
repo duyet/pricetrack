@@ -65,7 +65,7 @@ class Firebase {
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
-        console.log(authUser)
+        console.debug(authUser)
         next(authUser)
       } else {
         fallback();
@@ -93,8 +93,6 @@ function getFirebase(app, auth, database) {
   } catch (e) {
     if (e.code !== "app/duplicate-app") throw new Error(e)
   }
-
-  console.log('firebase', firebase)
 
   return firebase;
 }
