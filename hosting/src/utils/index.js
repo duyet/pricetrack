@@ -1,6 +1,7 @@
 export function formatPrice(price, plus_sign = false, currency = 'VND') {
     if (!price) return ''
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + currency
+    let sign = plus_sign && price > 0 ? '+' : '' 
+    return sign + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + currency
 }
 
 export function openDeepLink(url) {

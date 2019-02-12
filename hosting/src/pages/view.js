@@ -4,7 +4,7 @@ import axios from 'axios'
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
 import { Link } from "gatsby"
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
+import { faExternalLinkAlt, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Layout from '../components/layout'
@@ -15,6 +15,7 @@ import Loading from '../components/Block/Loading'
 import NotFound from '../components/Block/NotFound'
 
 const PRICE_TEXT = 'giá'
+const SHOP_NOW = 'Mua ngay'
 
 class ViewPage extends Component {
     constructor(props) {
@@ -116,7 +117,7 @@ class ViewPage extends Component {
                 },
             }],
             plotOptions: {
-                area: {
+                series: {
                     softThreshold: true
                 }
             },
@@ -165,6 +166,27 @@ class ViewPage extends Component {
                     <div className="lh-100 my-3">
                         
                     </div>
+                </div>
+
+                <div className="row d-flex align-items-center bg-white ml-1 pt-3 pb-3 mb-3">
+                    <span className="mr-3 ml-3">
+                        {formatPrice(this.state.data.latest_price, false, this.state.data.info.currency)} 
+                                <span style={{ fontWeight: 700, color: this.state.data.price_change < 0 ? '#0eff45' : '#fd4d16' }} className='ml-1'>
+                                    {
+                                        this.state.data.price_change
+                                        ? '(' + formatPrice(this.state.data.price_change, true) + ')'
+                                        : ''
+                                    }
+                                </span>
+                    </span>
+                    
+                    <Link to={url.url} className='btn btn-primary btn-sm mr-1' 
+                            onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                            <FontAwesomeIcon icon={faShoppingCart} /> {SHOP_NOW}
+                    </Link>
+                    <Link to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                        <img className="ml-3 img-fluid" style={{height: 20}} src={url.domain_logo} alt="" />
+                    </Link>
                 </div>
 
                 <div className="row">

@@ -6,7 +6,8 @@ const {
     cleanEmail,
     domainColors,
     getHostname,
-    getDeepLink
+    getDeepLink,
+    domainLogos
 } = require('../utils')
 
 const { text: { URL_NOT_FOUND } } = require('../utils/constants')
@@ -39,6 +40,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         data['domain'] = getHostname(snapshot.get('url'))
         data['deep_link'] = getDeepLink(snapshot.get('url'))
         data['id'] = snapshot.id
+        data['domain_logo'] = domainLogos[snapshot.get('domain')]
 
         if (!email) return res.json(data)
         else {
