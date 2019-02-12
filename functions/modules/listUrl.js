@@ -17,6 +17,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
     let orderBy = getSortKey(req.query.orderBy)
     let desc = req.query.desc && req.query.desc != 'true' ? 'asc' : 'desc'
     let domain = req.query.domain ? req.query.domain : ''
+    let addBy = req.query.add_by ? req.query.add_by : ''
 
     let query = db.collection(collection.URLS).orderBy(orderBy, desc)
     if (startAt) {
@@ -27,6 +28,9 @@ module.exports = httpsFunctions.onRequest((req, res) => {
     }
     if (domain) {
         query = query.where("domain", "==", domain)
+    }
+    if (addBy) {
+        query = query.where("add_by", "==", addBy)
     }
 
     query.limit(limit).get()
