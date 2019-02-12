@@ -115,6 +115,11 @@ class ViewPage extends Component {
                     ]
                 },
             }],
+            plotOptions: {
+                area: {
+                    softThreshold: true
+                }
+            },
             responsive: true
         }
     }
