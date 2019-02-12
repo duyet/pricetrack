@@ -123,7 +123,7 @@ class ViewPage extends Component {
                         </Link>
                         <br />
                         <small style={{ color: '#fff' }}>
-                            {formatPrice(this.state.data.latest_price)} 
+                            {formatPrice(this.state.data.latest_price, false, this.state.data.info.currency)} 
                             <span style={{ fontWeight: 700, color: this.state.data.price_change < 0 ? '#0eff45' : '#fd4d16' }} className='ml-1'>
                                 {
                                     this.state.data.price_change

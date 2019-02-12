@@ -2,11 +2,13 @@ import React, { PureComponent } from "react"
 import axios from "axios"
 import { loadProgressBar } from 'axios-progress-bar'
 import 'axios-progress-bar/dist/nprogress.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 
 import Layout from "../components/layout"
 import ListProduct from '../components/Block/ListProduct'
 import Loading from '../components/Block/Loading'
-import { withAuthentication } from '../components/Session'
+import { withAuthentication, AuthUserContext } from '../components/Session'
 
 loadProgressBar()
 
@@ -23,7 +25,6 @@ class IndexComponent extends PureComponent {
             
             orderBy: 'created_at', // [created_at, last_pull_at, price_change]
             desc: 'true',
-            add_by: '',
             currentMode: 'last_added',
             limit: DEFAULT_NUMBER_ITEMS,
             next: false,
@@ -39,16 +40,16 @@ class IndexComponent extends PureComponent {
 
     setOtherBy(mode) {
         let currentMode = mode 
-        let { orderBy, desc, add_by } = this.state.orderBy
+        let { orderBy, desc } = this.state
+
+        if (mode === this.state.currentMode) {
+            desc = desc === 'true' ? 'false' : 'true'
+        }
 
         if (mode === 'price_change') {
             orderBy = 'price_change_at'
-            desc = 'true'
         } else if (mode === 'last_added') {
             orderBy = 'created_at'
-            desc = 'true'
-        } else if (mode === 'my_product') {
-            add_by = ''
         }
 
         this.setState({ currentMode, orderBy, desc }, () => this._loadData())
@@ -59,6 +60,8 @@ class IndexComponent extends PureComponent {
     }
 
     async _fetchData(params) {
+        console.log('context authUser',this.props.authUser)
+
         let response = await axios.get('/api/listUrls', { params })
         let { data, headers } = response
         let nextStartAt = headers.nextstartat || null
@@ -73,7 +76,7 @@ class IndexComponent extends PureComponent {
         let params = {
             orderBy: this.state.orderBy,
             desc: this.state.desc,
-            limit: this.state.limit,
+            limit: this.state.limit
         }
 
         try {
@@ -110,12 +113,20 @@ class IndexComponent extends PureComponent {
     sortControl() {
         let controls = []
         for (let mode of this.orderByModes()) {
+            let selected = this.state.currentMode === mode
+            let sortIcon = null
+            if (selected) {
+                sortIcon = <span className="ml-2">
+                    <FontAwesomeIcon icon={this.state.desc === 'true' ? faSortDown : faSortUp} />
+                </span>
+            }
             controls.push(
-                <span className="text-white mr-2 btn" 
+                <span className="text-white ml-2 btn" 
                     key={mode}
                     onClick={() => this.setOtherBy(mode)}
-                    style={{ fontWeight: this.state.currentMode === mode ? 700 : 300 }}>
+                    style={{ fontWeight: selected ? 700 : 300 }}>
                     {this.SORT_TEXT[mode]}
+                    {sortIcon}
                 </span>
             )
         }
@@ -148,4 +159,10 @@ class IndexComponent extends PureComponent {
     }
 }
 
-export default withAuthentication(IndexComponent)
+const IndexWithContext = () => {
+    return <AuthUserContext.Consumer>
+        {authUser => <IndexComponent authUser={authUser} />}
+    </AuthUserContext.Consumer>
+}
+
+export default withAuthentication(IndexWithContext)

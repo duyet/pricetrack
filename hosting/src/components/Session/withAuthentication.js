@@ -33,7 +33,6 @@ const withAuthentication = Component => {
             }).catch(function(error) {
               console.error(error)
             });
-            console.log('authUser', authUser)
             
             this.setState({ authUser });
           },

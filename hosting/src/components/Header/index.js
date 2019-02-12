@@ -14,11 +14,10 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import './header.css'
 import noti from './notification.svg'
 
-const LOGOUT_CONFIRM_TEXT = 'Bạn có chắc?'
 const SIGN_IN = 'Đăng nhập'
 const LOGOUT = 'Thoát'
 
-const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout, inputUrl }) => (
+const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl }) => (
   <Fragment>
     <Helmet bodyAttributes={{
         class: 'bg-light'
@@ -41,9 +40,9 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickLogout, inputUrl }) =>
 
           {
             !authUser ? <button className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>
-                          {SIGN_IN} <FontAwesomeIcon icon={faGoogle} size="xs" /> 
+                          {SIGN_IN} <FontAwesomeIcon icon={faGoogle} /> 
                         </button>
-                     : <button className="btn btn-sm btn-outline-secondary" onClick={onClickLogout} title={LOGOUT}>
+                     : <button className="btn btn-sm btn-outline-secondary" onClick={onClickProfile} title={LOGOUT}>
                           {authUser.displayName}
                        </button>
           }
@@ -74,19 +73,14 @@ class NavBarBase extends Component {
     event.preventDefault()
   }
 
-  onClickLogout = event => {
-    if (window.confirm(LOGOUT_CONFIRM_TEXT) === true) {
-      this.props.firebase.doSignOut()
-      window.location = ROUTES.HOME
-    }
-  }
+  onClickProfile = () => navigate(ROUTES.PROFILE)
 
   render() {
     return (
       <AuthUserContext.Consumer>
         {authUser => <NavigationAuth authUser={authUser} 
                                      onClickSignIn={this.onClickSignIn}
-                                     onClickLogout={this.onClickLogout}
+                                     onClickProfile={this.onClickProfile}
                                      onChangeInput={this.onChangeInput}
                                      onSubmit={this.onSubmit}
                                      inputUrl={this.state.inputUrl} />}

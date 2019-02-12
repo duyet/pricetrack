@@ -1,4 +1,5 @@
-export const HOME = '/';
-export const ACCOUNT = '/account';
-export const ADMIN = '/admin';
-export const SIGN_IN = '/signin'
+export const HOME = '/'
+export const PROFILE = '/profile/'
+export const MY_PRODUCT = '/my_product/'
+export const ABOUT = '/about/'
+export const SIGN_IN = '/login/'

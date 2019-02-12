@@ -5,6 +5,7 @@ import withAuthentication from './Session/withAuthentication';
 
 import "./layout.css"
 import 'bootstrap/dist/css/bootstrap.css'
+import "./theme.css"
 
 const AppWithAuthentication = withAuthentication(({ children, inputUrl }) => (
   <Fragment>
@@ -19,8 +20,7 @@ const AppWithAuthentication = withAuthentication(({ children, inputUrl }) => (
 
 class Layout extends Component {
   state = {
-    firebase: null,
-
+    firebase: null
   }
 
   componentDidMount() {
@@ -33,8 +33,6 @@ class Layout extends Component {
 
       this.setState({ firebase });
     })
-
-    console.log('Layout props', this.props)
   }
 
   render() {
