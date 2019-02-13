@@ -3,9 +3,10 @@ import getFirebase, { FirebaseContext } from './Firebase';
 import Header from './Header'
 import withAuthentication from './Session/withAuthentication';
 
-import "./layout.css"
+import './layout.css'
 import 'bootstrap/dist/css/bootstrap.css'
-import "./theme.css"
+import './theme.css'
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 const AppWithAuthentication = withAuthentication(({ children, inputUrl }) => (
   <Fragment>
