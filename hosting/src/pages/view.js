@@ -7,12 +7,13 @@ import { Link } from "gatsby"
 import { faExternalLinkAlt, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import { withAuthentication, AuthUserContext } from '../components/Session'
 import Layout from '../components/layout'
-import { withAuthentication } from '../components/Session'
 import { formatPrice, openDeepLink } from '../utils'
 import LogoPlaceHolder from '../components/Block/LogoPlaceHolder'
 import Loading from '../components/Block/Loading'
 import NotFound from '../components/Block/NotFound'
+import SubscribeBox from '../components/Block/SubscribeBox'
 
 const PRICE_TEXT = 'giá'
 const SHOP_NOW = 'Mua ngay'
@@ -32,9 +33,7 @@ class ViewPage extends Component {
 
     componentDidMount() {
         let url = this.props.location.pathname.replace('/view/', '')
-        this.setState({ loading: true })
-
-        console.log('URL ===>', url)
+        this.setState({ loading: true, inputUrl: url })
 
         axios.get(`/api/getUrl`, { params: { url } })
             .then(response => {
@@ -66,7 +65,6 @@ class ViewPage extends Component {
 
     getData = () => {
         if (this.state.error === true) return {}
-        console.log(this.state.history_data)
 
         return {
             title: {
@@ -198,9 +196,17 @@ class ViewPage extends Component {
                               />
                     </div> 
                 </div>
+
+                <SubscribeBox authUser={this.props.authUser} url={this.state.inputUrl}  />
             </Layout>
         )
     }
 }
 
-export default withAuthentication(ViewPage)
+const ViewPageComponent = props => {
+    return <AuthUserContext.Consumer>
+        {authUser => <ViewPage {...props} authUser={authUser} />}
+    </AuthUserContext.Consumer>
+}
+
+export default withAuthentication(ViewPageComponent)

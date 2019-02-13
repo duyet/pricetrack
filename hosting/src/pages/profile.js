@@ -34,8 +34,6 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.authUser, 'zzzzzzz')
-        console.log(this.props, 'propssss')
         this.setState({ authUser: this.props.authUser })
     }
 

@@ -22,8 +22,8 @@ module.exports = {
             options: {
                 printRejected: true, // Print removed selectors and processed file names
                 develop: false, // Enable while using `gatsby develop`
-                whitelistPatterns: [/^text-/, /nprogress/],
-                whitelistPatternsChildren: [/nprogress/],
+                whitelistPatterns: [/^text-/, /nprogress/, /fa/],
+                whitelistPatternsChildren: [/nprogress/, /fa/],
             }
         }
     ],

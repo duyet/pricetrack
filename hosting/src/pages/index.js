@@ -159,9 +159,9 @@ class IndexComponent extends PureComponent {
     }
 }
 
-const IndexWithContext = () => {
+const IndexWithContext = (props) => {
     return <AuthUserContext.Consumer>
-        {authUser => <IndexComponent authUser={authUser} />}
+        {authUser => <IndexComponent authUser={authUser} {...props} />}
     </AuthUserContext.Consumer>
 }
 
