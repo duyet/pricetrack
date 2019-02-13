@@ -37,6 +37,7 @@ const triggerNoti = async (req, res) => {
 
         const urlData = urlSnapshot.data()
         urlData['id'] = urlSnapshot.id
+        console.log(urlData)
 
         if (!urlData.price_change) {
             console.error(`Trigger when price is not changed, url=${url} urlData=${urlData} token=${token}`)

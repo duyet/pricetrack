@@ -3,7 +3,8 @@ const {
     db,
     hash,
     collection,
-    cleanEmail
+    cleanEmail,
+    resError
 } = require('../utils')
 
 module.exports = httpsFunctions.onRequest((req, res) => {
@@ -26,10 +27,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
         default_method
 
     if (!email || !url) {
-        return res.status(400).json({
-            err: 1,
-            msg: 'URL and email is required'
-        })
+        return resError(res, 'URL and email is required')
     }
 
     const hashUrl = hash(url)
@@ -61,10 +59,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                     })
             })
         } else {
-            return res.status(400).json({
-                err: 1,
-                msg: 'URL is not exist'
-            })
+            return resError(res, 'URL is not exist')
         }
     })
 })

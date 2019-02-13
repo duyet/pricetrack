@@ -11,6 +11,7 @@ module.exports = {
   },
   text: {
     URL_NOT_FOUND: 'URL không tồn tại',
+    ERR_EMAIL_NOT_FOUND: 'Email không tồn tại',
     ERR_URL_NOT_SUPPORTED: 'Xin lỗi, hiện tại chưa hỗ trợ URL này',
     ERR_EMAIL_REQUIRED: 'Vui lòng đăng nhập',
     ERR_TOKEN_INVALID: 'Token không đúng',

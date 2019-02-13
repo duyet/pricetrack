@@ -25,6 +25,7 @@
       { "source": "/api/addUrl", "function": "addUrl" },
       { "source": "/api/query", "function": "query" },
       { "source": "/api/statistics", "function": "statistics" },
+      { "source": "/api/subscribe", "function": "subscribe" },
       { "source": "/api/about", "function": "about" },
       {
         "source": "view/**", 

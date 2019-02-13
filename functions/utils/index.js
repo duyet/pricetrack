@@ -1,27 +1,51 @@
 const url = require('url')
 const crypto = require('crypto')
 const querystring = require('querystring')
-const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {retries: 3})
+const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {
+  retries: 3
+})
 
 // The Firebase Admin SDK to access the FireStore DB.
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 
-const { getSupportedDomain, loadRules } = require('./parser/utils')
-const { collection } = require('./constants')
+const {
+  getSupportedDomain,
+  loadRules
+} = require('./parser/utils')
+const {
+  collection
+} = require('./constants')
 
-const { getConfig, getSortKey, functionsUrl, functionsUrlAsia,
-        hostingUrl, IS_PROD } = require('./config')
+const {
+  getConfig,
+  getSortKey,
+  functionsUrl,
+  functionsUrlAsia,
+  hostingUrl,
+  IS_PROD
+} = require('./config')
 
-const { getDeepLink } = require('./accesstrade')
+const {
+  getDeepLink
+} = require('./accesstrade')
 
-const { normalizeUrl, hash, formatPrice, cleanEmail, 
-        urlParser, url_for, redashFormat } = require('./formater')
+const {
+  normalizeUrl,
+  hash,
+  formatPrice,
+  cleanEmail,
+  pullProductDataFromUrl,
+  url_for,
+  redashFormat
+} = require('./formater')
 
 // Setting DB
 admin.initializeApp(functions.config().firebase)
 var db = admin.firestore()
-db.settings({timestampsInSnapshots: true})
+db.settings({
+  timestampsInSnapshots: true
+})
 
 // Setting functions region
 const httpsFunctions = functions.https
@@ -31,15 +55,15 @@ const ruleDir = __dirname + '/../config'
 const supportedDomain = getSupportedDomain(ruleDir)
 const parseRules = loadRules(ruleDir)
 const domainColors = Object.keys(parseRules)
-                            .reduce((result, key) => {
-                              result[key] = parseRules[key].color
-                              return result
-                            }, {})
+  .reduce((result, key) => {
+    result[key] = parseRules[key].color
+    return result
+  }, {})
 const domainLogos = Object.keys(parseRules)
-                            .reduce((result, key) => {
-                              result[key] = parseRules[key].logo
-                              return result
-                            }, {})
+  .reduce((result, key) => {
+    result[key] = parseRules[key].logo
+    return result
+  }, {})
 
 /**
  * Verify User Token (Google Token)
@@ -49,10 +73,10 @@ const domainLogos = Object.keys(parseRules)
  */
 const verifyUserTokenId = (token, success, error) => {
   admin.auth().verifyIdToken(idToken)
-    .then(function(decodedToken) {
+    .then(function (decodedToken) {
       var uid = decodedToken.uid;
       success(uid)
-    }).catch(function(err) {
+    }).catch(function (err) {
       error(err)
     })
 }
@@ -64,6 +88,20 @@ const verifyUserTokenId = (token, success, error) => {
  * @return {[type]} fetch object
  */
 const fetchRetry = (url, options) => fetch(url, options)
+
+/**
+ * 
+ * @param {any} res 
+ * @param {number} code 
+ * @param {string} msg 
+ */
+const resError = (res, msg = 'Something went wrong', code = 400) => {
+  return res.status(code).json({
+    err: 1,
+    code,
+    msg
+  })
+}
 
 module.exports = {
   db,
@@ -93,9 +131,11 @@ module.exports = {
   hash,
   formatPrice,
   cleanEmail,
-  urlParser,
+  pullProductDataFromUrl,
   url_for,
   redashFormat,
+  
+  resError,
 
   // Check is in supported domain
   isSupportedUrl: u => supportedDomain.indexOf(url.parse(normalizeUrl(u)).hostname) > -1,
@@ -117,9 +157,9 @@ module.exports = {
    */
   documentIdFromHashOrUrl: s => {
     let str = String(s)
-    return (/^[a-fA-F0-9]+$/).test(s) 
-              ? s 
-              : crypto.createHash('sha1').update(normalizeUrl(str)).digest('hex')
+    return (/^[a-fA-F0-9]+$/).test(s) ?
+      s :
+      crypto.createHash('sha1').update(normalizeUrl(str)).digest('hex')
   },
 
   /**

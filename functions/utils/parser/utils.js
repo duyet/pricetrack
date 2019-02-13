@@ -120,33 +120,29 @@ const regexProcess = (u, regex, pos=null) => {
  * @param cb {Function}
  * @param cb_error {Function}
  */
-const parseUrlWithConfig = async (u, config, cb, cb_error) => {
-    const product_id = config.productId(u)
-    const shop_id = config.shopId(u)
+const parseUrlWithConfig = async (u, config) => {
+    const productId = config.productId(u)
+    const shopId = config.shopId(u)
 
     if (config.required) {
         if (
-            (!product_id && config.required.indexOf('productId') > -1) ||
-            (!shop_id && config.required.indexOf('shopId') > -1)
-        ) return cb_error('Cannot get productId or shopId, which required!')
+            (!productId && config.required.indexOf('productId') > -1) ||
+            (!shopId && config.required.indexOf('shopId') > -1)
+        )
+            throw Error('Cannot get productId or shopId, which required!')
     }
 
-    // product_api: https:// .....{product_id}/{shop_id}
+    // product_api: https:// .....{productId}/{shopId}
     if (typeof config.product_api == 'string') {
         const product_api = config.product_api
-            .replace('{product_id}', product_id)
-            .replace('{shop_id}', shop_id)
+            .replace('{product_id}', productId)
+            .replace('{shop_id}', shopId)
 
-        console.log('Product ID:', product_id)
+        console.log('Product ID:', productId)
         console.log('Product API:', product_api)
 
-        if (!product_id) {
-            return cb_error('Cannot parse product id')
-        }
-
-        const cb_wrapper = (json) => {
-            console.log('Product JSON:', json)
-            return cb(config.format_func(json))
+        if (!productId) {
+            throw Error('Cannot parse product id')
         }
 
         const options = getCrawlerHttpHeaderOptions()
@@ -158,12 +154,12 @@ const parseUrlWithConfig = async (u, config, cb, cb_error) => {
     // Using functions
     else if (typeof config.product_api == 'function') {
         const getFunc = config.product_api
-        const params = { product_id, shop_id }
+        const params = { productId, shopId }
         let json = await getFunc(params)
         return config.format_func(json)
     }
 
-    cb_error('config.product_info_api is not supported')
+    throw Error('config.product_info_api is not supported')
 }
 
 /**

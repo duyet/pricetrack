@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const normalUrl = require('normalize-url')
 
-const urlParser = require('./parser/index')
+const pullProductDataFromUrl = require('./parser/index')
 const { functionsUrl, functionsUrlAsia } = require('./config')
 
 /**
@@ -75,7 +75,7 @@ const url_for = (path, qs) => {
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&')
 
-  if (qs.hasOwnProperty('region') && qs.region == 'asia') {
+  if (qs.hasOwnProperty('region') && qs.region.indexOf('asia') > -1) {
     return functionsUrlAsia + '/' + path + '?' + query
   }
 
@@ -111,7 +111,7 @@ module.exports = {
   normalizeUrl,
   formatPrice,
   cleanEmail,
-  urlParser,
+  pullProductDataFromUrl,
   url_for,
   hash
 }

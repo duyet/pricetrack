@@ -83,7 +83,8 @@ module.exports = functions
 
                     let triggerUrl = url_for(task, {
                         url,
-                        token: ADMIN_TOKEN
+                        token: ADMIN_TOKEN,
+                        region: 'asia'
                     });
                     console.log(`Fetch data for ${url} => triggered ${triggerUrl}`);
 

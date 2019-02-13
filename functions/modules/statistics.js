@@ -1,7 +1,5 @@
 const {
-  httpsFunctions,
-  db,
-  collection
+  httpsFunctions
 } = require('../utils')
 
 module.exports = httpsFunctions.onRequest(async (req, res) => {

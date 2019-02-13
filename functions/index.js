@@ -16,7 +16,7 @@ exports.getUrl = require('./modules/getUrl')
 
 // Subscribe to URL
 exports.subscribeUrl = require('./modules/subscribeUrl')
-exports.getSubscriber = require('./modules/getSubscriber')
+exports.subscribe = require('./modules/subscribe')
 exports.alert = require('./modules/alert')
 
 // Delete an URL
