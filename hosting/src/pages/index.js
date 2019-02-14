@@ -146,7 +146,7 @@ class IndexComponent extends PureComponent {
                         </div>
                     </div>
 
-                    <div className="lh-100 mr-0 p-2 bd-highlight text-white">
+                    <div className="lh-100 mr-0 p-2 bd-highlight text-white justify-content-end">
                         {this.sortControl()}
                    </div>
                 </div>

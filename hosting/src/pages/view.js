@@ -77,20 +77,24 @@ class ViewPage extends Component {
                     text: '1h'
                 }, {
                     type: 'hour',
-                    count: 6,
-                    text: '6h'
+                    count: 12,
+                    text: '12h'
                 }, {
                     type: 'day',
                     count: 1,
                     text: '1D'
                 }, {
+                    type: 'day',
+                    count: 7,
+                    text: '7D'
+                }, {
                     type: 'month',
-                    count: 3,
-                    text: 'Day',
+                    count: 1,
+                    text: '1M',
                 }, {
                     type: 'all',
                     text: 'All'
-                }],
+                }]
             },  
             series: [{
                 name: PRICE_TEXT,
@@ -137,38 +141,21 @@ class ViewPage extends Component {
         return (
             <Layout inputUrl={this.state.inputUrl}>
                 
-                <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm" 
-                     style={{background: url.color}}>
-                    <LogoPlaceHolder url={url} />
-                    
-                    <div className="lh-100 ml-3">
-                        <Link to={this.state.data.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
-                            <h6 className="mb-0 text-white lh-100">
-                                {this.state.data.info.name} 
-                                <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" style={{fontWeight: 300, fontSize: 12}} />
-                            </h6>
-                        </Link>
-                        <br />
-                        <small style={{ color: '#fff' }}>
-                            {formatPrice(this.state.data.latest_price, false, this.state.data.info.currency)} 
-                            <span style={{ fontWeight: 700, color: this.state.data.price_change < 0 ? '#0eff45' : '#fd4d16' }} className='ml-1'>
-                                {
-                                    this.state.data.price_change
-                                    ? '(' + formatPrice(this.state.data.price_change, true) + ')'
-                                    : ''
-                                }
-                            </span>
-                        </small>
-                    </div>
-
-                    <div className="lh-100 my-3">
-                        
-                    </div>
-                </div>
-
-                <div className="row d-flex align-items-center bg-white ml-1 pt-3 pb-3 mb-3">
-                    <span className="mr-3 ml-3">
-                        {formatPrice(this.state.data.latest_price, false, this.state.data.info.currency)} 
+                <div className="d-flex justify-content-between align-items-center bg-white p-3 my-3 rounded shadow-sm">
+                    <div className="d-flex flex-row justify-content-between">
+                        <LogoPlaceHolder url={url} width={80} height={80} />
+                        <div className="lh-100 ml-3">
+                            <Link to={this.state.data.url} 
+                                onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}
+                                style={{color: url.color}}>
+                                <h6 className="mb-0 lh-100">
+                                    {this.state.data.info.name} 
+                                    <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" style={{fontWeight: 300, fontSize: 12}} />
+                                </h6>
+                            </Link>
+                            <br />
+                            <small className="mb-3" style={{ color: '#000', fontWeight: 700 }}>
+                                {formatPrice(this.state.data.latest_price, false, this.state.data.info.currency)} 
                                 <span style={{ fontWeight: 700, color: this.state.data.price_change < 0 ? '#0eff45' : '#fd4d16' }} className='ml-1'>
                                     {
                                         this.state.data.price_change
@@ -176,15 +163,23 @@ class ViewPage extends Component {
                                         : ''
                                     }
                                 </span>
-                    </span>
+                            </small>
+                            <br />
+                            <br />
+                            <Link to={url.url} className='btn btn-primary btn-sm mr-1' 
+                                    onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                                    <FontAwesomeIcon icon={faShoppingCart} /> {SHOP_NOW}
+                            </Link>
+                        </div>
+                    </div>
+
                     
-                    <Link to={url.url} className='btn btn-primary btn-sm mr-1' 
-                            onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
-                            <FontAwesomeIcon icon={faShoppingCart} /> {SHOP_NOW}
-                    </Link>
-                    <Link to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
-                        <img className="ml-3 img-fluid" style={{height: 20}} src={url.domain_logo} alt="" />
-                    </Link>
+
+                    <div className="lh-100 my-3">
+                        <Link to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                            <img className="ml-3 img-fluid" style={{height: 40}} src={url.domain_logo} alt="" />
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="row">

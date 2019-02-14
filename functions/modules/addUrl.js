@@ -7,7 +7,7 @@ const {
     collection,
     normalizeUrl,
     cleanEmail,
-    url_for,
+    urlFor,
     domainOf,
     getConfig
 } = require('../utils')
@@ -66,7 +66,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     let urlDoc = db.collection(collection.URLS).doc(documentIdFromHashOrUrl(url))
 
     // Fetch the first data
-    const pullDataUrl = url_for('pullData', {
+    const pullDataUrl = urlFor('pullData', {
         region: 'asia',
         url: url,
         token: ADMIN_TOKEN

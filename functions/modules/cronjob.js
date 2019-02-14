@@ -1,3 +1,4 @@
+const assert = require('assert')
 const functions = require('firebase-functions');
 const {
     asiaRegion,
@@ -5,7 +6,8 @@ const {
     collection,
     domainOf,
     getConfig,
-    url_for
+    urlFor,
+    resError
 } = require('../utils');
 const axios = require('axios');
 const axiosRetry = require('axios-retry');
@@ -32,16 +34,12 @@ module.exports = functions
     .runWith({
         timeoutSeconds: 120
     })
-    .https.onRequest((req, res) => {
-        let validTask = ['pullData', 'updateInfo'];
+    .https.onRequest(async (req, res) => {
+        let validTask = ['pullData', 'updateInfo', 'patchData'];
         let task = req.query.task || 'pullData';
 
-        if (!task || validTask.indexOf(task) == -1) {
-            return res.status(400).json({
-                err: 1,
-                msg: 'Invalid cronjob task'
-            });
-        }
+        if (!task || validTask.indexOf(task) == -1)
+            return resError(res, 'Invalid cronjob task')
 
         console.log(`Start cronjob task ${task} ...`);
 
@@ -49,121 +47,113 @@ module.exports = functions
         let tasks = [];
         if (CRONJOB_KEY) {
             if (!req.query.key || req.query.key !== CRONJOB_KEY) {
-                return res.status(400).json({
-                    error: 1,
-                    msg: 'Cronjob key is not valid: /cronjob?key=<CRONJOB_KEY>'
-                });
+                return resError(res, 'Cronjob key is not valid: /cronjob?key=<CRONJOB_KEY>')
             }
         }
 
-        db.collection(collection.URLS)
-            .get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    let url = doc.get('url');
+        let snapshot = null
+        try {
+            snapshot = await db.collection(collection.URLS).get()
+            assert(snapshot != null, "No Data in DB")
+        } catch (err) {
+            return resError(res, err.message)
+        }
 
-                    // Fix: remove wrong collection snapshot
-                    if (!url) {
-                        console.log(
-                            `Document ${doc.id} may be wrong ${doc.data()}, delete it`
-                        );
-                        doc.ref.delete();
-                        return;
-                    }
-                    // Fix: add missing domain
-                    if (!doc.get('domain')) {
-                        let domain = domainOf(url);
-                        console.info(`Fix: Set domain=${domain} for ${url}`);
-                        doc.ref.set({
-                            domain
-                        }, {
-                            merge: true
-                        });
-                    }
+        snapshot.forEach(doc => {
+            let url = doc.get('url')
 
-                    let triggerUrl = url_for(task, {
+            // Fix: remove wrong collection snapshot
+            if (!url) {
+                console.log(
+                    `Document ${doc.id} may be wrong ${doc.data()}, delete it`
+                )
+                doc.ref.delete()
+                return
+            }
+            // Fix: add missing domain
+            if (!doc.get('domain')) {
+                let domain = domainOf(url);
+                console.info(`Fix: Set domain=${domain} for ${url}`);
+                doc.ref.set({
+                    domain
+                }, {
+                    merge: true
+                })
+            }
+
+            let triggerUrl = urlFor(task, {
+                url,
+                token: ADMIN_TOKEN,
+                region: 'asia'
+            })
+            console.log(`Fetch data for ${url} => triggered ${triggerUrl}`);
+
+            tasks.push(
+                axios
+                .get(triggerUrl)
+                .then(function (response) {
+                    console.log(`Trigger ${triggerUrl} success`, response.data);
+                    return {
+                        success: true,
                         url,
-                        token: ADMIN_TOKEN,
-                        region: 'asia'
-                    });
-                    console.log(`Fetch data for ${url} => triggered ${triggerUrl}`);
+                        data: response.data
+                    }
+                })
+                .catch(function (error) {
+                    console.error(`Trigger ${triggerUrl} fail`, error.message);
+                    return {
+                        success: false,
+                        message: error.message,
+                        url
+                    }
+                })
+            )
+            triggered.push(url)
+        })
 
-                    tasks.push(
-                        axios
-                        .get(triggerUrl)
-                        .then(function (response) {
-                            console.log(`Trigger ${triggerUrl} success`, response.data);
-                            return {
-                                success: true,
-                                url,
-                                data: response.data
-                            };
-                        })
-                        .catch(function (error) {
-                            console.error(`Trigger ${triggerUrl} fail`, error);
-                            return {
-                                success: false,
-                                url
-                            };
-                        })
-                    );
-                    triggered.push(url);
+        // Update counter in Metadata
+        let cronjobLogs = db
+            .collection(collection.METADATA)
+            .doc('statistics')
+            .collection(collection.CRONJOB_LOGS);
+
+        // Add cronjob logs
+        cronjobLogs
+            .add({
+                num_triggered: triggered.length,
+                triggered,
+                task
+            })
+            .then(async () => {
+                // Update cronjob counter
+                let statisticDoc = db.collection(collection.METADATA).doc('statistics')
+                try {
+                    let snapshot = await statisticDoc.get()
+                    const num = parseInt(
+                        snapshot.get('num_url_cronjob_triggered') || 0) +
+                        triggered.length
+                    statisticDoc.set({ num_url_cronjob_triggered: num }, { merge: true })
+                } catch (err) {
+                    console.error(err)
+                }
+            })
+
+        // Make sure all trigger pullData has done
+        Promise.all(tasks)
+            .then(values => {
+                res.json({
+                    task,
+                    triggered,
+                    values,
+                    triggered_at: new Date()
                 });
-
-                // Update counter in Metadata
-                let cronjobLogs = db
-                    .collection(collection.METADATA)
-                    .doc('statistics')
-                    .collection(collection.CRONJOB_LOGS);
-
-                // Add cronjob logs
-                cronjobLogs
-                    .add({
-                        num_triggered: triggered.length,
-                        triggered,
-                        task
-                    })
-                    .then(doc => {
-                        // Update cronjob counter
-                        let statisticDoc = db
-                            .collection(collection.METADATA)
-                            .doc('statistics');
-                        statisticDoc.get().then(doc => {
-                            const num_url_cronjob_triggered =
-                                parseInt(doc.get('num_url_cronjob_triggered') || 0) +
-                                triggered.length;
-                            statisticDoc.set({
-                                num_url_cronjob_triggered
-                            }, {
-                                merge: true
-                            })
-                        })
-                    })
-
-                // Make sure all trigger pullData has done
-                Promise.all(tasks)
-                    .then(values => {
-                        res.json({
-                            task,
-                            triggered,
-                            values,
-                            triggered_at: new Date()
-                        });
-                    })
-                    .catch(err => {
-                        console.error('Promise.all fail', err);
-                        res.json({
-                            task,
-                            triggered,
-                            triggered_at: new Date(),
-                            err
-                        })
-                    })
             })
             .catch(err => {
-                console.log('The read failed: ', err);
-                return res.status(500).json({
-                    error: 1,
+                console.error('Promise.all fail', err);
+                res.json({
+                    task,
+                    triggered,
+                    triggered_at: new Date(),
                     err
                 })
             })

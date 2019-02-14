@@ -1,3 +1,4 @@
+const assert = require('assert')
 const fetch = require('node-fetch')
 const functions = require('firebase-functions')
 const {
@@ -9,14 +10,16 @@ const {
   collection,
   validateToken,
   getConfig,
-  url_for
+  urlFor,
+  resError
 } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 
 const {
   text: {
     ERR_MISSING_URL,
-    ERR_TOKEN_INVALID
+    ERR_TOKEN_INVALID,
+    ERR_CANNOT_FETCH_DATA
   }
 } = require('../utils/constants')
 
@@ -36,19 +39,10 @@ module.exports = functions
     const token = String(req.query.token || '')
     if (!validateToken(token)) {
       console.error(`[pullData] invalid token: ${token}`)
-      return res.status(403).jsonData({
-        status: 403,
-        error: 1,
-        msg: ERR_TOKEN_INVALID
-      })
+      return resError(res, ERR_TOKEN_INVALID, 403)
     }
 
-    if (!url) {
-      return res.status(400).jsonData({
-        error: 1,
-        msg: ERR_MISSING_URL
-      })
-    }
+    if (!url) return resError(res, ERR_MISSING_URL)
 
     const urlHash = documentIdFromHashOrUrl(url)
     console.log(`[pullData] START: url=${url} (hash=${urlHash})`)
@@ -58,20 +52,15 @@ module.exports = functions
 
     try {
       snapshot = await db.collection(collection.URLS).doc(urlHash).get()
+      assert(snapshot != null)
     } catch (err) {
       console.error(err)
-      return res.status(400).jsonData({
-        error: 1,
-        url,
-        msg: '' + err
-      })
+      return resError(res, err.message, 500)
     }
 
     if (!snapshot.exists) {
       console.error(`Trigger not found URL ${url}, urlHash=${urlHash}`)
-      return res.status(500).jsonData({
-        err: 1
-      })
+      return resError(res, `Trigger not found URL ${url}`, 500)
     }
 
     let raw_count = snapshot.get('raw_count') || 0
@@ -82,25 +71,16 @@ module.exports = functions
 
     try {
       jsonData = await pullProductDataFromUrl(url)
+      assert(jsonData != null)
     } catch (err) {
-      return res.status(400).jsonData({
-        error: 1,
-        url,
-        msg: '' + err
-      })
+      console.error(err)
+      return resError(res, err.message, 500)
     }
 
     // Skip if error
-    if (!jsonData || !jsonData['price']) {
-      return res.status(400).jsonData({
-        error: 1,
-        url,
-        msg: 'Cannot fetch jsonData info'
-      })
-    }
+    if (!jsonData || !jsonData['price']) return resError(res, ERR_CANNOT_FETCH_DATA)
 
     console.info(`[pullData] RESULT: ${JSON.stringify(jsonData)}`)
-
     jsonData['datetime'] = FieldValue.serverTimestamp()
     let new_price = jsonData['price']
     let inventory_status = 'inventory_status' in jsonData ? jsonData['inventory_status'] : ''
@@ -152,7 +132,7 @@ module.exports = functions
 
     // Trigger alert
     if (jsonData.is_change) {
-      const alertTriggerUrl = url_for('alert', {
+      const alertTriggerUrl = urlFor('alert', {
         url: snapshot.get('url'),
         token: ADMIN_TOKEN
       })

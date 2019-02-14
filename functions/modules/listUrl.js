@@ -3,11 +3,10 @@ const {
     db,
     getSortKey,
     collection,
-    getHostname,
     getDeepLink,
     domainColors,
     domainLogos,
-    url_for
+    urlFor
 } = require('../utils')
 
 module.exports = httpsFunctions.onRequest((req, res) => {
@@ -49,34 +48,34 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                 // List helper urls
                 if (helpers === true) {
                     data['helpers'] = {
-                        getUrl: url_for('getUrl', {
+                        getUrl: urlFor('getUrl', {
                             url: doc.get('url')
                         }),
-                        pull: url_for('pullData', {
+                        pull: urlFor('pullData', {
                             url: doc.get('url'),
                             token: 'YOUR_TOKEN'
                         }),
-                        raw: url_for('rawData', {
+                        raw: urlFor('rawData', {
                             url: doc.get('url')
                         }),
-                        query: url_for('query', {
+                        query: urlFor('query', {
                             url: doc.get('url'),
                             limit: 100,
                             fields: 'price'
                         }),
-                        remove: url_for('removeUrl', {
+                        remove: urlFor('removeUrl', {
                             url: doc.get('url'),
                             token: 'YOUR_TOKEN'
                         }),
-                        subscribe: url_for('subscribeUrl', {
+                        subscribe: urlFor('subscribeUrl', {
                             url: doc.get('url'),
                             email: 'YOUR_EMAIL'
                         }),
-                        getSubscriber: url_for('getSubscriber', {
+                        getSubscriber: urlFor('getSubscriber', {
                             url: doc.get('url'),
                             token: 'YOUR_TOKEN'
                         }),
-                        updateInfo: url_for('updateInfo', {
+                        updateInfo: urlFor('updateInfo', {
                             url: doc.get('url'),
                             token: 'YOUR_TOKEN'
                         })
@@ -94,7 +93,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                 data['domain_logo'] = domainLogos[doc.get('domain')]
 
                 // Paging
-                res.set('next_url', url_for('listUrls', {
+                res.set('next_url', urlFor('listUrls', {
                     startAt: lastVisible,
                     limit
                 }))

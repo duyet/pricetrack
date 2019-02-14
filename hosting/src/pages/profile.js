@@ -27,16 +27,7 @@ const CardLink = ({to = '#', text, bgClass = 'bg-success'}) => {
 class Profile extends React.Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            authUser: null
-        }
     }
-
-    componentDidMount() {
-        this.setState({ authUser: this.props.authUser })
-    }
-
     actionLogout = () => {
         if (window.confirm(LOGOUT_CONFIRM_TEXT) === true) {
           this.props.firebase.doSignOut()
@@ -44,25 +35,25 @@ class Profile extends React.Component {
     }
 
     render() {
-        if (!this.state.authUser) {
+        if (!this.props.authUser) {
             return <Layout>{PLEASE_LOGIN}</Layout>
         }
 
-        const authUser = this.state.authUser
+        const authUser = this.props.authUser
 
         return <Layout>
             <div className="container">
                 <div className="row my-3 p-3 bg-white rounded shadow-sm">
-                    <div className="col-2">
-                        <div className="text-center">
-                            <img src={authUser.photoURL} className="img-fluid rounded mb-3" alt="..." />
+                    <div className="col-auto">
+                        <div className="d-flex flex-column justify-content-center mx-auto border-bottom mb-3 p-3">
+                            <img src={authUser.photoURL} style={{maxWidth: 150}} className="img-fluid rounded mb-3" alt="..." />
                             <h6>{authUser.displayName}</h6>
                             <small>{authUser.email}</small>
                             {/* <a href="#" onClick={this.actionLogout}>{LOGOUT_TEXT}</a> */}
                         </div>
                     </div>
                     
-                    <div className="col">
+                    <div className="col-auto">
                         <CardLink to={ROUTES.MY_PRODUCT} text={MY_PRODUCT} />
 
                         <ul>
@@ -80,10 +71,10 @@ class Profile extends React.Component {
     }
 }
 
-const ProfileComponent = (props) => {
-    return <AuthUserContext.Consumer>
-                {authUser => authUser ? <Profile authUser={authUser} {...props} /> : <Loading />}
-        </AuthUserContext.Consumer>
-}
+const ProfileComponent = props => (
+    <AuthUserContext.Consumer>
+        {authUser => <Profile authUser={authUser} {...props} />}
+    </AuthUserContext.Consumer>
+)
 
 export default withAuthentication(ProfileComponent)

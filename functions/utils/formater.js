@@ -66,10 +66,10 @@ const cleanEmail = e => e
  * Make url link:
  *
  * e.g. 
- *   - url_for('/abc', {key: value})
+ *   - urlFor('/abc', {key: value})
  *   - https://domain.com/abc?key=value 
  */
-const url_for = (path, qs) => {
+const urlFor = (path, qs) => {
   let query = Object
     .entries(qs)
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
@@ -112,6 +112,6 @@ module.exports = {
   formatPrice,
   cleanEmail,
   pullProductDataFromUrl,
-  url_for,
+  urlFor,
   hash
 }

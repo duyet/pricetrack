@@ -7,15 +7,36 @@ import { AuthUserContext } from '../Session'
 import * as ROUTES from '../../constants/routes'
 import Menu from './menu'
 import AddUrlForm from './addUrlForm'
+import Logo from '../Block/Logo'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 import './header.css'
-import noti from './notification.svg'
+import notiIcon from './notification.svg'
+import profileIcon from './profile.svg'
 
 const SIGN_IN = 'Đăng nhập'
-const LOGOUT = 'Thoát'
+
+const UserButton = ({authUser, onClickSignIn, onClickProfile}) => {
+  const className = 'btn btn-sm btn-outline-secondary'
+  if (!authUser) return (
+    <button className={className} onClick={onClickSignIn}>
+      {SIGN_IN} <FontAwesomeIcon icon={faGoogle} /> 
+    </button>
+  )
+
+  return (
+    <Fragment>
+      <button className={className + ' d-none d-sm-block ml-2'} onClick={onClickProfile}>
+          {authUser.displayName}
+      </button>
+      <button className='btn btn-link text-muted d-block d-sm-none' onClick={onClickProfile}>
+        <img src={profileIcon} style={{width: 20}} alt="" />
+      </button>
+    </Fragment>
+  )
+}
 
 const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl }) => (
   <Fragment>
@@ -27,26 +48,20 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl }) =
     </Helmet>
     <header className="blog-header py-3">
       <div className="row flex-nowrap justify-content-between align-items-center">
-        <div className="col">
-          <a className="text-muted" href="/">Price Track</a>
+        <div className="col-auto">
+          <Logo />
         </div>
-        <div className="col text-center">
+        <div className="col">
           <AddUrlForm authUser={authUser} inputUrl={inputUrl} />
         </div>
-        <div className="col d-flex justify-content-end align-items-center">
-          <a className="text-muted" href="/">
-            <img src={noti} style={{marginRight: 10}} alt="" />
-          </a>
+        <div className="col-auto">
+          <div className="d-flex justify-content-end align-items-center">
+            <a className="text-muted" href="/" >
+              <img src={notiIcon} alt="" />
+            </a>
 
-          {
-            !authUser ? <button className="btn btn-sm btn-outline-secondary" onClick={onClickSignIn}>
-                          {SIGN_IN} <FontAwesomeIcon icon={faGoogle} /> 
-                        </button>
-                     : <button className="btn btn-sm btn-outline-secondary" onClick={onClickProfile} title={LOGOUT}>
-                          {authUser.displayName}
-                       </button>
-          }
-          
+            <UserButton authUser={authUser} onClickProfile={onClickProfile} onClickSignIn={onClickSignIn} />
+          </div>
         </div>
       </div>
     </header>

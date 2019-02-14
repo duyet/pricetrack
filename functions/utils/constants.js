@@ -15,6 +15,7 @@ module.exports = {
     ERR_URL_NOT_SUPPORTED: 'Xin lỗi, hiện tại chưa hỗ trợ URL này',
     ERR_EMAIL_REQUIRED: 'Vui lòng đăng nhập',
     ERR_TOKEN_INVALID: 'Token không đúng',
-    ERR_MISSING_URL: 'URL là bắt buộc'
+    ERR_MISSING_URL: 'URL là bắt buộc',
+    ERR_CANNOT_FETCH_DATA: 'Không thể fetch data'
   }
 }

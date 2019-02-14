@@ -2,9 +2,6 @@ import React, { Component } from "react"
 import PropTypes from 'prop-types'
 import axios from "axios"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-
 const STATUS = 'Trạng thái'
 const STATUS_ACTICE = 'Kích hoạt'
 const NOTI_METHOD = 'Thông báo qua'
@@ -53,20 +50,26 @@ class SubscribeBox extends Component {
         if (!Object.keys(this.state.info).length) return 'You are not owner'
 
         return (
-            <div className="row align-items-start bg-white mt-5 mb-5 p-3 rounded shadow-sm" style={{fontSize: '0.8em'}}>
-                <div className="col">
+            <div className="row align-items-start bg-white mt-5 mb-5 ml-1 mr-1 p-3 rounded shadow-sm" 
+                style={{fontSize: '0.8em'}}>
+                <div className="col-auto mb-3">
                     <h6>{STATUS}</h6>
                         <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="checkbox" id="checkActive" value="true" checked={this.state.info.active} />
+                            <input className="form-check-input" 
+                                    type="checkbox" id="checkActive" 
+                                    value="true" checked={this.state.info.active} />
                             <label className="form-check-label" for="checkActive">{STATUS_ACTICE}</label>
                         </div>
                 </div>
-                <div className="col">
+                <div className="col-auto mb-3">
                     <h6>{NOTI_WHEN}</h6>
                     {NOTI_WHEN_MAP.map(when => {
                         return (
                             <div className="form-check" key={when.type}>
-                                <input className="form-check-input" type="radio" name='notiWhen' id={when.type} value={when.type} checked={when.type == this.state.info.expect_when} />
+                                <input className="form-check-input" type="radio" 
+                                        name='notiWhen' id={when.type}
+                                        value={when.type} 
+                                        checked={when.type === this.state.info.expect_when} />
                                 <label className="form-check-label" for={when.type}>
                                     {when.text}
                                 </label>
@@ -74,12 +77,15 @@ class SubscribeBox extends Component {
                         )
                     })}
                 </div>
-                <div className="col">
+                <div className="col-auto mb-3">
                     <h6>{NOTI_METHOD}</h6>
                     {NOTI_METHOD_MAP.map(when => {
                         return (
                             <div className="form-check" key={when.type}>
-                                <input className="form-check-input" type="checkbox" name='notiMethod' id={when.type} value={when.type} checked={when.type == this.state.info.methods} />
+                                <input className="form-check-input" 
+                                        type="checkbox" name='notiMethod' 
+                                        id={when.type} value={when.type} 
+                                        checked={when.type === this.state.info.methods} />
                                 <label className="form-check-label" for={when.type}>
                                     {when.text} {this.state.info.email}
                                 </label>
@@ -87,7 +93,7 @@ class SubscribeBox extends Component {
                         )
                     })}
                 </div>
-                <div className="col"></div>
+                <div className="col-auto"></div>
             </div>
         )
     }

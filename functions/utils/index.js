@@ -36,7 +36,7 @@ const {
   formatPrice,
   cleanEmail,
   pullProductDataFromUrl,
-  url_for,
+  urlFor,
   redashFormat
 } = require('./formater')
 
@@ -132,7 +132,7 @@ module.exports = {
   formatPrice,
   cleanEmail,
   pullProductDataFromUrl,
-  url_for,
+  urlFor,
   redashFormat,
   
   resError,
