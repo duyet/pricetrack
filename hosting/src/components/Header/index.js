@@ -19,7 +19,7 @@ import profileIcon from './profile.svg'
 const SIGN_IN = 'Đăng nhập'
 
 const UserButton = ({authUser, onClickSignIn, onClickProfile}) => {
-  const className = 'btn btn-sm btn-outline-secondary'
+  const className = 'btn btn-sm btn-outline-secondary ml-2'
   if (!authUser) return (
     <button className={className} onClick={onClickSignIn}>
       {SIGN_IN} <FontAwesomeIcon icon={faGoogle} /> 
@@ -28,7 +28,7 @@ const UserButton = ({authUser, onClickSignIn, onClickProfile}) => {
 
   return (
     <Fragment>
-      <button className={className + ' d-none d-sm-block ml-2'} onClick={onClickProfile}>
+      <button className={className + ' d-none d-sm-block'} onClick={onClickProfile}>
           {authUser.displayName}
       </button>
       <button className='btn btn-link text-muted d-block d-sm-none' onClick={onClickProfile}>

@@ -6,6 +6,7 @@ Auto collect, visualize and alert for product items.
 
 ![Home page](.screenshot/screenshot-home.png)
 ![Home page](.screenshot/screenshot-detail.png)
+![Home page](.screenshot/screenshot-about.png)
 ![Raw API](.screenshot/intro-raw-api.png)
 ![Raw API](.screenshot/intro-redash.png)
 
