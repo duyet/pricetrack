@@ -133,7 +133,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
                 urlDoc.collection(collection.SUBSCRIBE).doc(email).set({
                     email,
                     active: true,
-                    expect_when: 'any',
+                    expect_when: 'down',
                     expect_price: 0,
                     methods: 'email',
                     create_at: new Date()
