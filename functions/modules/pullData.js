@@ -94,7 +94,7 @@ module.exports = functions
 
     // Update statistic
     if (latest_price && new_price - latest_price != 0) {
-      // Price change in VND and percentage          
+      // Price change in VND and percentage
       let price_change = new_price - latest_price
       let price_change_percent = (latest_price > 0) ? (100 * price_change / latest_price) : 100
 
@@ -116,10 +116,21 @@ module.exports = functions
         num_price_change,
         num_price_change_up,
         num_price_change_down,
+        is_change: true,
         is_deal: jsonData['is_deal']
       })
 
-      jsonData['is_change'] = true
+      jsonData = Object.assign(jsonData, { is_change: true })
+    }
+
+
+    // inventory_status change
+    if (jsonData['inventory_status'] != snapshot.get('inventory_status')) {
+      update_jsonData = Object.assign(update_jsonData, {
+        is_inventory_status_change: true,
+        is_change: true
+      })
+      jsonData = Object.assign(jsonData, { is_change: true })
     }
 
     // Update URL info
@@ -130,8 +141,8 @@ module.exports = functions
     // Add raw price
     db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
 
-    // Trigger alert
-    if (jsonData.is_change) {
+    // Trigger alert if is_change
+    if (update_jsonData.is_change) {
       const alertTriggerUrl = urlFor('alert', {
         url: snapshot.get('url'),
         token: ADMIN_TOKEN

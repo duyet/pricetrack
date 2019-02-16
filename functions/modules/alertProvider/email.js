@@ -19,7 +19,14 @@ const mailTransport = nodemailer.createTransport({
 })
 
 const APP_NAME = `Pricetrack`
-const EMAIL_SUBJECT = `[${APP_NAME}] Sản phẩm vừa thay đổi giá ({PRODUCT_NAME})`
+const EMAIL_SUBJECT = {
+    available: `[${APP_NAME}] Sản phẩm vừa có hàng: {PRODUCT_NAME}`,
+    price_change: `[${APP_NAME}] Sản phẩm vừa thay đổi giá: {PRODUCT_NAME}`
+}
+const EMAIL_HTML_HEADLINE = {
+    available: `Sản phẩm bạn đang theo dõi vừa có hàng`,
+    price_change: `Sản phẩm bạn đang theo dõi vừa thay đổi giá`,
+}
 
 const sendEmail = (email, params) => {
     const mailOptions = {
@@ -27,19 +34,24 @@ const sendEmail = (email, params) => {
         to: email,
     }
 
+    const templateType = params.expect_when == 'available' ? 'available' : 'price_change'
+
     // The user subscribed to the newsletter.
-    mailOptions.subject = EMAIL_SUBJECT.replace('{PRODUCT_NAME}', params.info.name)
+    mailOptions.subject = EMAIL_SUBJECT[templateType].replace('{PRODUCT_NAME}', params.info.name)
     mailOptions.html = `Xin chào ${email || ''}
     <br /><br />
-    Sản phẩm bạn đang theo dõi vừa thay đổi giá: <br />
-    
+    ${EMAIL_HTML_HEADLINE[templateType]}: <br />
+
     <ul>
         <li>Sản phẩm: <a href="${hostingUrl}/view/${params.id}">${params.info.name}</a></li>
         <li>
-            Giá cập nhật: ${formatPrice(params.latest_price, false, params.info.currency)} 
+            Giá: ${formatPrice(params.latest_price, false, params.info.currency)} 
             <strong style="color: ${params.price_change < 0 ? '#2e7d32' : '#c62828'}">
                 (${formatPrice(params.price_change, true, params.info.currency)})
             </strong>
+        </li>
+        <li>
+            Trạng thái: ${params.inventory_status ? 'Có hàng' : 'Hết hàng'}
         </li>
 
     </ul>

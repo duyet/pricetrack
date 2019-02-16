@@ -50,9 +50,9 @@ const triggerNoti = async (req, res) => {
         urlDoc.collection(collection.SUBSCRIBE)
             .get()
             .then(snapshot => {
-                triggerInfo = []
+                let triggerInfo = []
 
-                snapshot.forEach(doc => {
+                snapshot.forEach(async (doc) => {
                     let alertUser = doc.data()
 
                     // This user not active
@@ -85,10 +85,20 @@ const triggerNoti = async (req, res) => {
                         return false
                     }
 
-                    // OK, fine!
-                    let send_to = alertUser.email
-                    let params = { ...urlData
+                    // TODO: is_inventory_status_change
+                    if (doc.get('expect_when') == 'available' 
+                            && (urlData.is_inventory_status_change == false || urlData.inventory_status == false)) {
+                        triggerInfo.push({
+                            alertUser,
+                            triggered: false,
+                            reason: `Expect when product is available, but the status is not change`
+                                    + ` or inventory_status expect = true (fact: ${urlData.inventory_status})`
+                        })
+                        return false
                     }
+
+                    // OK, fine!
+                    let params = { ...urlData, ...doc.data() }
 
                     if (!alertUser.methods) {
                         console.error(`No alert provider method ${JSON.stringify(alertUser)}`)
@@ -103,9 +113,11 @@ const triggerNoti = async (req, res) => {
                     const triggerProvider = require(`./alertProvider/${alertUser.methods}`)
                     triggerInfo.push({
                         alertUser,
-                        triggered: triggerProvider(alertUser.email, params)
+                        triggered: await triggerProvider(alertUser.email, params)
                     })
                 })
+
+                console.log(triggerInfo)
 
                 return res.json(triggerInfo)
             })
