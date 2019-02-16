@@ -4,7 +4,6 @@ import moment from 'moment'
 
 import Layout from '../components/layout'
 import { withAuthentication, AuthUserContext } from '../components/Session'
-import Loading from '../components/Block/Loading'
 import * as ROUTES from '../constants/routes'
 
 const PLEASE_LOGIN = 'Vui lòng đăng nhập'
@@ -27,6 +26,7 @@ const CardLink = ({to = '#', text, bgClass = 'bg-success'}) => {
 class Profile extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {}
     }
     actionLogout = () => {
         if (window.confirm(LOGOUT_CONFIRM_TEXT) === true) {

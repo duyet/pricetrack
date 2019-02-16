@@ -28,6 +28,7 @@ class MyProductComponent extends PureComponent {
             orderBy: 'created_at',
             desc: 'true',
             add_by: '',
+            following: false,
             currentMode: 'my_product',
             limit: DEFAULT_NUMBER_ITEMS,
             next: false,
@@ -36,18 +37,22 @@ class MyProductComponent extends PureComponent {
     }
 
     SORT_TEXT = {
-        'my_product': 'Sản phẩm của tôi',
+        'my_product': 'Tất cả',
+        'my_product_following': 'Đang theo dõi',
     }
     orderByModes = () => Object.keys(this.SORT_TEXT)
 
     setOtherBy(mode) {
         let currentMode = mode 
         let { orderBy, desc, add_by } = this.state
+        let following = currentMode === 'my_product_following' ? true : false
 
-        desc = desc === 'true' ? 'false' : 'true'
+        if (mode === this.state.currentMode) {
+            desc = desc === 'true' ? 'false' : 'true'
+        }
         add_by = this.props.authUser.email
 
-        this.setState({ currentMode, orderBy, desc, add_by }, () => this._loadData())
+        this.setState({ currentMode, orderBy, desc, add_by, following }, () => this._loadData())
     }
 
     async componentDidMount() {
@@ -74,7 +79,8 @@ class MyProductComponent extends PureComponent {
             orderBy: this.state.orderBy,
             desc: this.state.desc,
             limit: this.state.limit,
-            add_by: this.state.add_by
+            add_by: this.state.add_by,
+            following: this.state.following
         }
 
         try {

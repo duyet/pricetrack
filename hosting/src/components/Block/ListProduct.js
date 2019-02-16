@@ -29,7 +29,7 @@ class ListProduct extends React.Component {
                   <div className="d-flex justify-content-center">
                     <div className="d-flex flex-column align-items-center">
                         <LogoPlaceHolder className="d-block" url={url} />
-                        <Link class="d-block d-sm-none mt-1" to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                        <Link className="d-block d-sm-none mt-1" to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
                             <img className="img-fluid" style={{width: 40}} src={url.domain_logo} alt="" />
                         </Link>
                     </div>
