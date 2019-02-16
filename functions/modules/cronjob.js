@@ -1,5 +1,5 @@
 const assert = require('assert')
-const functions = require('firebase-functions');
+const functions = require('firebase-functions')
 const {
     asiaRegion,
     db,
@@ -9,15 +9,10 @@ const {
     urlFor,
     resError
 } = require('../utils');
-const axios = require('axios');
-const axiosRetry = require('axios-retry');
+const axios = require('axios')
 
-const CRONJOB_KEY = getConfig('cronjob_key');
-const ADMIN_TOKEN = getConfig('admin_token');
-
-axiosRetry(axios, {
-    retries: 3
-});
+const CRONJOB_KEY = getConfig('cronjob_key')
+const ADMIN_TOKEN = getConfig('admin_token')
 
 /**
  * List of Cronjobs:
@@ -112,31 +107,16 @@ module.exports = functions
         })
 
         // Update counter in Metadata
-        let cronjobLogs = db
-            .collection(collection.METADATA)
-            .doc('statistics')
-            .collection(collection.CRONJOB_LOGS);
-
-        // Add cronjob logs
-        cronjobLogs
-            .add({
-                num_triggered: triggered.length,
-                triggered,
-                task
-            })
-            .then(async () => {
-                // Update cronjob counter
-                let statisticDoc = db.collection(collection.METADATA).doc('statistics')
-                try {
-                    let snapshot = await statisticDoc.get()
-                    const num = parseInt(
-                        snapshot.get('num_url_cronjob_triggered') || 0) +
-                        triggered.length
-                    statisticDoc.set({ num_url_cronjob_triggered: num }, { merge: true })
-                } catch (err) {
-                    console.error(err)
-                }
-            })
+        let statisticDoc = db.collection(collection.METADATA).doc('statistics')
+        try {
+            let snapshot = await statisticDoc.get()
+            const num = parseInt(
+                snapshot.get('num_url_cronjob_triggered') || 0) +
+                triggered.length
+            statisticDoc.set({ num_url_cronjob_triggered: num }, { merge: true })
+        } catch (err) {
+            console.error(err)
+        }
 
         // Make sure all trigger pullData has done
         Promise.all(tasks)
