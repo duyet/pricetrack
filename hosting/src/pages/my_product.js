@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 
 import Layout from "../components/layout"
-import ListProduct from '../components/Block/ListProduct'
+import ProductList from '../components/Block/ProductList'
 import Loading from '../components/Block/Loading'
 import { withAuthentication, AuthUserContext } from '../components/Session'
 
@@ -107,7 +107,7 @@ class MyProductComponent extends PureComponent {
         if (this.state.loading) return <Loading />
         if (this.state.error) return 'Some thing went wrong'
 
-        return <ListProduct urls={this.state.urls}
+        return <ProductList urls={this.state.urls}
                             loadMore={this.state.next} 
                             onClickLoadMore={
                                 () => this.onClickLoadMore(this.state.latest_params)

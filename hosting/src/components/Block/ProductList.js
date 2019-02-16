@@ -18,7 +18,7 @@ const LAST_PULL_AT = 'Cập nhật giá'
 const OUT_OF_STOCK = 'Hết hàng'
 const LOAD_MORE = 'Tải thêm'
 
-class ListProduct extends React.Component {
+class ProductList extends React.Component {
     render() {
         if (!this.props.urls.length) return EMPTY_STRING
 
@@ -104,11 +104,11 @@ class ListProduct extends React.Component {
     }
 }
 
-ListProduct.propTypes = {
+ProductList.propTypes = {
     urls: PropTypes.array.isRequired
 }
-ListProduct.defaultProps = {
+ProductList.defaultProps = {
     loadMore: true
 }
 
-export default ListProduct
+export default ProductList

@@ -12,7 +12,7 @@ export default class IndexComponent extends Component {
     about_image = '//images.unsplash.com/photo-1533727352519-7553fbcbf061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=80'
     about_image_credit = 'Photo by Alvaro Reyes on Unsplash'
 
-    render() {        
+    render() {
         return (
           <Layout>
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{background: '#03A9F4'}}>
@@ -51,6 +51,5 @@ export default class IndexComponent extends Component {
 
           </Layout>
         )
-
     }
 }

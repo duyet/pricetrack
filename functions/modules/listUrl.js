@@ -59,7 +59,6 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                         const subscribe = await doc.ref.collection(`subscribe`).doc(followingEmail).get()
                         if (String(subscribe.get('active')) === 'false') throw Error('Not active')
                     } catch (e) {
-                        console.error(e)
                         continue
                     }
                 }
