@@ -27,7 +27,6 @@ const getSubByEmail = async (url, email) => {
         snapshot = await urlDoc.get()
         if (!snapshot.exists) throw Error(ERR_EMAIL_NOT_FOUND)
         let data = snapshot.data()
-        data['create_at'] = snapshot.get('create_at').toDate()
         return data
     } catch (err) {
         throw err
@@ -40,6 +39,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     let email = cleanEmail(req.query.email || '')
     const token = String(req.query.token || '')
     let errorMessage = null
+    let hashUrl = hash(url)
 
     // if (!validateToken(token)) errorMessage = ERR_TOKEN_INVALID
     if (!email) errorMessage = ERR_EMAIL_REQUIRED
@@ -55,20 +55,21 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     } else if (req.method == 'POST') {
         // TODO: validate google token
         if (req.body && typeof req.body == typeof {}) {
-            const keys = ['expect_price', 'active', 'methods', 'expect_when']
+            const keys = ['expect_price', 'active', 'methods', 'expect_when', 'email', 'created_at']
             let updated = {}
             for (let key of keys) {
-                if (req.body[key]) {
+                if (req.body[key] !== undefined) {
                     updated[key] = req.body[key]
                 }
             }
             if (Object.keys(updated).length) {
+                console.info(`Update subscibe ${hashUrl}/${url} BODY: ${JSON.stringify(updated)}`)
                 try {
                     const updateSnapshot = await db.collection(collection.URLS)
-                        .doc(hash(url))
+                        .doc(hashUrl)
                         .collection(collection.SUBSCRIBE)
                         .doc(email)
-                        .set(updated)
+                        .set(updated, { merge: true })
                     console.log(updateSnapshot)
                     return res.json(updateSnapshot)
                 } catch (err) {
