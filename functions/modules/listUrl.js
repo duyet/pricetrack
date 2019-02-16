@@ -17,6 +17,10 @@ module.exports = httpsFunctions.onRequest((req, res) => {
     let desc = req.query.desc && req.query.desc != 'true' ? 'asc' : 'desc'
     let domain = req.query.domain ? req.query.domain : ''
     let addBy = req.query.add_by ? req.query.add_by : ''
+    let following = req.query.following ? true : false
+    let followingEmail = req.query.following_email ? req.query.following_email : null
+
+    if (!followingEmail) followingEmail = addBy
 
     let query = db.collection(collection.URLS).orderBy(orderBy, desc)
     if (startAt) {
@@ -25,25 +29,42 @@ module.exports = httpsFunctions.onRequest((req, res) => {
         console.log('startAt', startAt)
         query = query.startAfter(startAt)
     }
-    if (domain) {
-        query = query.where("domain", "==", domain)
-    }
-    if (addBy) {
-        query = query.where("add_by", "==", addBy)
-    }
+    if (domain) query = query.where("domain", "==", domain)
+    if (addBy) query = query.where("add_by", "==", addBy)  
 
     query.limit(limit).get()
-        .then(snapshot => {
+        .then(async (snapshot) => {
+            // Last item for next paging
             var lastVisible = (snapshot.docs && snapshot.docs.length) ?
                 snapshot.docs[snapshot.docs.length - 1].get(orderBy).toDate() :
                 null
 
+            // Paging
+            res.set('next_url', urlFor('listUrls', {
+                startAt: lastVisible,
+                limit
+            }))
+            res.set('nextStartAt', lastVisible)
+
             let urls = []
-            snapshot.forEach((doc) => {
-                let data = doc.data()
+            for (var i in snapshot.docs) {
+                const doc = snapshot.docs[i]
 
                 // TODO: fix invalid url in DB
-                if (!doc.get('url')) return
+                if (!doc.get('url')) continue
+
+                // Filter following
+                if (following) {
+                    try {
+                        const subscribe = await doc.ref.collection(`subscribe`).doc(followingEmail).get()
+                        if (String(subscribe.get('active')) === 'false') throw Error('Not active')
+                    } catch (e) {
+                        console.error(e)
+                        continue
+                    }
+                }
+
+                let data = doc.data()
 
                 // List helper urls
                 if (helpers === true) {
@@ -92,15 +113,9 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                 data['price_change_at'] = data['price_change_at'] ? data['price_change_at'].toDate() : null
                 data['domain_logo'] = domainLogos[doc.get('domain')]
 
-                // Paging
-                res.set('next_url', urlFor('listUrls', {
-                    startAt: lastVisible,
-                    limit
-                }))
-                res.set('nextStartAt', lastVisible)
-
                 urls.push(data)
-            })
+            }
+
             return res.json(urls)
         })
         .catch(err => {
