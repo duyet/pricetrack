@@ -173,8 +173,6 @@ class ViewPage extends Component {
                         </div>
                     </div>
 
-                    
-
                     <div className="lh-100 my-3">
                         <Link to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
                             <img className="ml-3 img-fluid" style={{height: 40}} src={url.domain_logo} alt="" />

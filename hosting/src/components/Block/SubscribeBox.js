@@ -6,11 +6,13 @@ import Loading from './Loading'
 const SUBSCRIBE_THIS_URL = 'Theo dõi sản phẩm này'
 const STATUS_ACTICE = 'Kích hoạt'
 const NOTI_METHOD = 'Thông báo qua'
+const EXPECT_PRICE_PLACEHOLDER = 'Nhập giá mong đợi'
 const NOTI_METHOD_MAP = [
     { type: 'email', text: 'Email' },
 ]
 const NOTI_WHEN = 'Thông báo khi'
 const NOTI_WHEN_MAP = [
+    { type: 'down_below', text: 'Giá nhỏ hơn' },
     { type: 'down', text: 'Giá giảm' },
     { type: 'any', text: 'Giá tăng và giảm' },
     { type: 'available', text: 'Khi có hàng' },
@@ -124,6 +126,14 @@ class SubscribeBox extends Component {
                     <div className='col-auto mb-3 '>
                         <h6>{NOTI_WHEN}</h6>
                         {NOTI_WHEN_MAP.map(when => {
+
+                            const expectForm = <input type="number"
+                                class="mb-2 form-control form-control-sm"
+                                value={this.state.info.expect_price}
+                                onChange={this.handleChange('expect_price', 'number')}
+                                disabled={this.state.info.expect_when != 'down_below'}
+                                placeholder={EXPECT_PRICE_PLACEHOLDER} />
+
                             return (
                                 <div className="form-check" key={when.type}>
                                     <input className="form-check-input" type="radio" 
@@ -133,6 +143,7 @@ class SubscribeBox extends Component {
                                             onChange={this.handleChange('expect_when')} />
                                     <label className="form-check-label" htmlFor={when.type}>
                                         {when.text}
+                                        {when.type === 'down_below' ? expectForm : null}
                                     </label>
                                 </div>
                             )
