@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { navigate } from 'gatsby'
 
-import * as ROUTES from '../../constants/routes';
+import * as ROUTES from '../../constants/routes'
 
 const ERROR_CODE_ACCOUNT_EXISTS =
   'auth/account-exists-with-different-credential';

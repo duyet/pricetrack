@@ -82,6 +82,7 @@ class NavBarBase extends Component {
         navigate(ROUTES.HOME)
       })
       .catch(error => {
+        console.error(error)
         this.setState({ error })
       });
 

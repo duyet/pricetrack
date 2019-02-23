@@ -71,6 +71,7 @@ class SubscribeBox extends Component {
         if (!this.state.info.expect_when) stateInfo['expect_when'] = NOTI_WHEN_MAP[0].type
         if (!this.state.info.methods) stateInfo['methods'] = NOTI_METHOD_MAP[0].type
         if (!this.state.info.email) stateInfo['email'] = this.props.authUser.email || ''
+        if ((!this.state.info.expect_price || parseInt(this.state.info.expect_price) === 0) && this.props.data) stateInfo['expect_price'] = this.props.data.latest_price
 
         this.setState({ info: stateInfo }, this.syncSubscribe)
     }
@@ -131,7 +132,7 @@ class SubscribeBox extends Component {
                                 class="mb-2 form-control form-control-sm"
                                 value={this.state.info.expect_price}
                                 onChange={this.handleChange('expect_price', 'number')}
-                                disabled={this.state.info.expect_when != 'down_below'}
+                                disabled={this.state.info.expect_when !== 'down_below'}
                                 placeholder={EXPECT_PRICE_PLACEHOLDER} />
 
                             return (

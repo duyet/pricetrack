@@ -190,7 +190,7 @@ class ViewPage extends Component {
                     </div> 
                 </div>
 
-                <SubscribeBox authUser={this.props.authUser} url={this.state.inputUrl}  />
+                <SubscribeBox authUser={this.props.authUser} url={this.state.inputUrl} data={this.state.data}  />
             </Layout>
         )
     }
