@@ -110,11 +110,14 @@ const triggerNoti = async (req, res) => {
                 continue
             }
 
-            const triggerProvider = require(`./alertProvider/${alertUser.methods}`)
-            triggerInfo.push({
-                alertUser,
-                triggered: await triggerProvider(alertUser.email, params)
-            })
+            let methods = !Array.isArray(alertUser.methods) ? alertUser.methods.split(',') : alertUser.methods
+            for (let method of methods) {
+                const triggerProvider = require(`./alertProvider/${method}`)
+                triggerInfo.push({
+                    alertUser,
+                    triggered: await triggerProvider(alertUser.email, params)
+                })
+            }
         }
 
         console.log(triggerInfo)

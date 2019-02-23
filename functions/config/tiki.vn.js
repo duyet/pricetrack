@@ -1,6 +1,8 @@
 const { regexProcess, fetchContent } = require('../utils/parser/utils')
 const { JSDOM } = require('jsdom')
 
+const DEBUG = false
+
 module.exports = {
   website: 'Tiki',
   domain: 'tiki.vn',
@@ -18,6 +20,7 @@ module.exports = {
   format_func: json => {
     let { price, is_deal, qty, product_id, inventory_status } = json
     inventory_status = inventory_status == 'available' ? true : false
+    if (DEBUG) price = price - Math.random() * 1000
     return { price, is_deal, qty, product_id, inventory_status }
   },
 

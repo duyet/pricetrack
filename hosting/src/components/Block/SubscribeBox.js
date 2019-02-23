@@ -9,6 +9,7 @@ const NOTI_METHOD = 'Thông báo qua'
 const EXPECT_PRICE_PLACEHOLDER = 'Nhập giá mong đợi'
 const NOTI_METHOD_MAP = [
     { type: 'email', text: 'Email' },
+    { type: 'messaging', text: 'Push notification' },
 ]
 const NOTI_WHEN = 'Thông báo khi'
 const NOTI_WHEN_MAP = [
@@ -23,7 +24,7 @@ class SubscribeBox extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            info: { active: false },
+            info: { active: false, methods: new Set() },
             loading: false,
             error: false
         }
@@ -40,6 +41,11 @@ class SubscribeBox extends Component {
             })
             .then(response => {
                 let info = response.data
+                if (info && info['methods']) {
+                    if (!Array.isArray(info['methods'])) {
+                        info['methods'] = String(info['methods']).split(',')
+                    }
+                }
                 this.setState({ info, loading: false })
             })
             .catch(err => {
@@ -51,7 +57,19 @@ class SubscribeBox extends Component {
     handleChange(inputId, inputType = 'text') {
         return (e) => {
             let newInfoState = this.state.info || {}
-            newInfoState[inputId] = inputType === 'checkbox' ? e.target.checked : e.target.value
+            console.log(e.target.checked, e.target.value, 'target')
+            if (inputType === 'checkbox') {
+                if (inputId == 'methods') {
+                    newInfoState['methods'] = newInfoState['methods'] ? new Set(newInfoState['methods']) : new Set()
+                    console.log("newInfoState['methods']", newInfoState['methods'])
+                    let value = e.target.value
+                    if (!e.target.checked) newInfoState['methods'].delete(value)
+                    else newInfoState['methods'].add(value)
+                    newInfoState['methods'] = Array.from(newInfoState['methods'])
+                } else {
+                    newInfoState[inputId] = e.target.checked
+                }
+            }
             this.setState({ info: newInfoState }, () => {
                 if (inputId === 'active') this.handleChangeActive()
                 else this.syncSubscribe()
@@ -69,7 +87,7 @@ class SubscribeBox extends Component {
 
         let stateInfo = this.state.info || {}
         if (!this.state.info.expect_when) stateInfo['expect_when'] = NOTI_WHEN_MAP[0].type
-        if (!this.state.info.methods) stateInfo['methods'] = NOTI_METHOD_MAP[0].type
+        if (!this.state.info.methods) stateInfo['methods'] = [NOTI_METHOD_MAP[0].type]
         if (!this.state.info.email) stateInfo['email'] = this.props.authUser.email || ''
         if ((!this.state.info.expect_price || parseInt(this.state.info.expect_price) === 0) && this.props.data) stateInfo['expect_price'] = this.props.data.latest_price
 
@@ -107,7 +125,6 @@ class SubscribeBox extends Component {
 
     render() {
         if (this.state.loading) return <Loading />
-        // if (!Object.keys(this.state.info).length) return <SubscribeButton />
 
         return (
             <form className="row align-items-start bg-white mt-3 mb-3 ml-1 mr-1 p-3 rounded shadow-sm" 
@@ -129,7 +146,7 @@ class SubscribeBox extends Component {
                         {NOTI_WHEN_MAP.map(when => {
 
                             const expectForm = <input type="number"
-                                class="mb-2 form-control form-control-sm"
+                                className="mb-2 form-control form-control-sm"
                                 value={this.state.info.expect_price}
                                 onChange={this.handleChange('expect_price', 'number')}
                                 disabled={this.state.info.expect_when !== 'down_below'}
@@ -159,12 +176,12 @@ class SubscribeBox extends Component {
                             return (
                                 <div className="form-check" key={when.type}>
                                     <input className="form-check-input" 
-                                            type="radio" name='notiMethod' 
+                                            type="checkbox" name='notiMethod' 
                                             id={when.type} value={when.type} 
-                                            checked={when.type === this.state.info.methods}
-                                            onChange={this.handleChange('methods', 'radio')} />
+                                            checked={Array.from(this.state.info.methods).includes(when.type)}
+                                            onChange={this.handleChange('methods', 'checkbox')} />
                                     <label className="form-check-label" htmlFor={when.type}>
-                                        {when.text} ({this.state.info.email})
+                                        {when.text} {when.type === 'email' ? this.state.info.email : ''}
                                     </label>
                                 </div>
                             )

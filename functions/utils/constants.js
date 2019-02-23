@@ -4,7 +4,8 @@ module.exports = {
     RAW_DATA: 'raw',
     SUBSCRIBE: 'subscribe',
     METADATA: 'metadata',
-    CRONJOB_LOGS: 'cronjob_logs'
+    CRONJOB_LOGS: 'cronjob_logs',
+    MESSAGING_TOKEN: 'messaging_token'
   },
   eventType: {
     WRITE: 'google.firestore.document.write'

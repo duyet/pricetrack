@@ -1,7 +1,6 @@
 const {
     httpsFunctions,
     db,
-    validateToken,
     hash,
     collection,
     cleanEmail,

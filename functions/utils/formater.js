@@ -59,7 +59,7 @@ const formatPrice = (price, plus_sign = false, currency = 'VND') => {
  * @param  {[type]} e [description]
  * @return {[type]}   [description]
  */
-const cleanEmail = e => e
+const cleanEmail = e => String(e).trim()
 
 
 /**

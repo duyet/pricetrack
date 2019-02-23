@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const config = {
   apiKey: process.env.GATSBY_API_KEY,
   authDomain: process.env.GATSBY_AUTH_DOMAIN,
@@ -21,6 +23,9 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
+    this.messaging = app.messaging();
+
+    this.messaging.usePublicVapidKey(process.env.GATSBY_VAPID_KEY)
 
     /* Social Sign In Method Provider */
 
@@ -55,10 +60,55 @@ class Firebase {
   doSendEmailVerification = () =>
     this.auth.currentUser.sendEmailVerification({
       url: process.env.GATSBY_CONFIRMATION_EMAIL_REDIRECT,
-    });
+    })
 
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
+
+  // *** Messaging *** //
+  doMessagingRequestPermission = () => 
+    this.messaging.requestPermission().then(() => {
+      console.log('Notification permission granted.')
+      // TODO(developer): Retrieve an Instance ID token for use with FCM.
+      // ...
+
+    }).catch(function(err) {
+      console.log('Unable to get permission to notify.', err)
+    })
+
+  sendTokenToServer = token => {
+    this.messagingToken = token
+    if (token && this.auth.currentUser.email) {
+      axios.get('/api/updateMessagingToken', {
+        params: { email: this.auth.currentUser.email, token }
+      })
+    }
+  }
+
+  onMessagingRequestPermission = (next, fallback) =>
+    this.messaging.getToken().then(currentToken => {
+      if (currentToken) {
+        console.log(`Messaging token`, currentToken)
+        this.sendTokenToServer(currentToken)
+        next(currentToken)
+      } else {
+        // Show permission request.
+        console.log('No Instance ID token available. Request permission to generate one.');
+        // Show permission UI.
+        // updateUIForPushPermissionRequired();
+        // setTokenSentToServer(false);
+        this.sendTokenToServer(false)
+        fallback()
+        this.doMessagingRequestPermission()
+      }
+    }).catch(err => {
+      console.log('An error occurred while retrieving token. ', err)
+      this.sendTokenToServer(false)
+      fallback()
+    })
+
+  onMessagingTokenRefresh = (next, fallback) =>
+    this.messaging.onTokenRefresh(() => this.onMessagingRequestPermission(next, fallback))
 
   // *** Merge Auth and DB User API *** //
 
@@ -68,7 +118,7 @@ class Firebase {
         console.debug(authUser)
         next(authUser)
       } else {
-        fallback();
+        fallback()
       }
     });
 
@@ -87,9 +137,9 @@ class Firebase {
 
 let firebase;
 
-function getFirebase(app, auth, database) {
+function getFirebase(app, auth, database, messaging) {
   try {
-    firebase = new Firebase(app, auth, database);
+    firebase = new Firebase(app, auth, database, messaging);
   } catch (e) {
     if (e.code !== "app/duplicate-app") throw new Error(e)
   }

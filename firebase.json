@@ -27,6 +27,7 @@
       { "source": "/api/statistics", "function": "statistics" },
       { "source": "/api/subscribe", "function": "subscribe" },
       { "source": "/api/about", "function": "about" },
+      { "source": "/api/updateMessagingToken", "function": "updateMessagingToken" },
       {
         "source": "view/**", 
         "destination": "/view/index.html"

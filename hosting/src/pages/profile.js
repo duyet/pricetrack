@@ -5,6 +5,7 @@ import moment from 'moment'
 import Layout from '../components/layout'
 import { withAuthentication, AuthUserContext } from '../components/Session'
 import SignOutLink from '../components/Block/SignOutLink'
+import MessagingRequestPermission from '../components/Block/MessagingRequestPermission'
 
 const PLEASE_LOGIN = 'Vui lòng đăng nhập'
 const HEAD_BASIC_INFO = 'Thông tin cơ bản'
@@ -21,6 +22,9 @@ const style = {
     }
 }
 
+const RequestPermissionLink = ({ onClick, style }) => (
+    <button className="btn btn-link mt-1 p-0" onClick={onClick} style={style}>Bật thông báo trình duyệt</button>
+)
 
 class Profile extends React.Component {
     render() {
@@ -71,6 +75,12 @@ class Profile extends React.Component {
                             <div className="form-check">
                                 <input className="form-check-input" type="checkbox" id="setting" disabled="disabled" value="hide_email" />
                                 <label className="form-check-label" forhtml="setting">Ẩn email của tôi</label>
+                            </div>
+                            
+                            <div className="form-check">
+                                <MessagingRequestPermission>
+                                    <RequestPermissionLink style={style.textSm} />
+                                </MessagingRequestPermission>
                             </div>
                         </div>
                     </div>

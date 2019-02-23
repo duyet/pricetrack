@@ -45,3 +45,9 @@ exports.statistics = require('./modules/statistics')
 
 // About page API
 exports.about = require('./modules/about')
+
+// Test notification
+exports.notification = require('./modules/notification')
+
+// Update user messaging token
+exports.updateMessagingToken = require('./modules/updateMessagingToken')

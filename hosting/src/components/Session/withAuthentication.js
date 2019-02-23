@@ -12,6 +12,7 @@ const withAuthentication = Component => {
 
       this.state = {
         authUser: null,
+        messagingToken: null
       };
     }
 
@@ -24,7 +25,7 @@ const withAuthentication = Component => {
             localStorage.setItem(
               'authUser',
               JSON.stringify(authUser),
-            );
+            )
             authUser.getIdToken(true).then(function(idToken) {
               localStorage.setItem(
                 'authUserIdToken',
@@ -32,15 +33,35 @@ const withAuthentication = Component => {
               )
             }).catch(function(error) {
               console.error(error)
-            });
+            })
             
-            this.setState({ authUser });
+            this.setState({ authUser })
           },
           () => {
-            localStorage.removeItem('authUser');
-            this.setState({ authUser: null });
+            localStorage.removeItem('authUser')
+            this.setState({ authUser: null })
           },
-        );
+        )
+
+        const onMessagingSuccess = token => {
+          localStorage.setItem(
+            'messagingToken',
+            JSON.stringify(token)
+          )
+          this.setState({ messagingToken: token })
+        }
+        const onMessagingError = () => {
+          localStorage.removeItem('messagingToken')
+          this.setState({ messagingToken: null })
+        }
+        this.props.firebase.onMessagingRequestPermission(
+          onMessagingSuccess,
+          onMessagingError
+        )
+        this.props.firebase.onMessagingTokenRefresh(
+          onMessagingSuccess,
+          onMessagingError
+        )
       }
     };
 
@@ -57,7 +78,7 @@ const withAuthentication = Component => {
     }
 
     componentWillUnmount() {
-      this.listener && this.listener();
+      this.listener && this.listener()
     }
 
     render() {

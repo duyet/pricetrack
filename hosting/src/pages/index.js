@@ -16,6 +16,7 @@ const DEFAULT_NUMBER_ITEMS = 15
 const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
 
 class IndexComponent extends PureComponent {
+    _mounted = true
     constructor(props) {
         super(props)
         this.state = {
@@ -55,6 +56,7 @@ class IndexComponent extends PureComponent {
     }
 
     async componentDidMount() {
+        this._mounted = true
         this._loadData()
     }
 
@@ -69,6 +71,10 @@ class IndexComponent extends PureComponent {
         return { urls: data, next: nextStartAt, params }
     }
 
+    _setState(state) {
+        if (this._mounted) this.setState(state)
+    }
+
     async _loadData() {
         this.setState({ loading: true })
 
@@ -80,10 +86,10 @@ class IndexComponent extends PureComponent {
 
         try {
             let { urls, next } = await this._fetchData(params)
-            this.setState({ urls, next, loading: false, latest_params: params })
+            this._setState({ urls, next, loading: false, latest_params: params })
         } catch(err) {
             console.error(err)
-            this.setState({ loading: false, error: true })
+            this._setState({ loading: false, error: true })
         }
     }
 
@@ -131,6 +137,10 @@ class IndexComponent extends PureComponent {
         }
 
         return controls
+    }
+
+    componentWillUnmount() {
+        this._mounted = false
     }
 
     render() {
