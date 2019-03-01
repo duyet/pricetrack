@@ -54,7 +54,10 @@ class SubscribeBox extends Component {
                 this.setState({ info, loading: false })
             })
             .catch(err => {
-                this.setState({ loading: false, error: true })
+                this.setState({ loading: false })
+                if (err.response.data.code !== 404) {
+                    this.setState({ error: true })
+                }
             })
         }
     }
@@ -125,8 +128,10 @@ class SubscribeBox extends Component {
                     this.setState({ loading: false })
                 })
                 .catch(err => {
-                    console.error(err)
-                    this.setState({ loading: false, error: true })
+                    this.setState({ loading: false })
+                    if (err.response.data.code !== 404) {
+                        this.setState({ error: true })
+                    }
                 })
             }
         }, CLICK_SYNC_DELAY)
@@ -137,7 +142,7 @@ class SubscribeBox extends Component {
 
         return (
             <React.Fragment>
-                { this.state.error ? <FlashMessage duration={5000} /> : null }
+                { this.state.error ? <FlashMessage /> : null }
             
                 <form className="row align-items-start bg-white mt-3 mb-3 ml-1 mr-1 p-3 rounded shadow-sm" 
                     style={{fontSize: '0.8em'}}>
