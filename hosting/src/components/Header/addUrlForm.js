@@ -4,7 +4,7 @@ import axios from "axios"
 import { withAuthentication } from '../Session'
 
 const ERROR_MESSAGE = 'Lỗi, vui lòng thử lại sau'
-const ERROR_MESSAGE_NOT_LOGIN = 'Vui lòng đăng nhập để thêm URL mới'
+const ERROR_MESSAGE_NOT_LOGIN = 'Vui lòng đăng nhập để thêm URL này'
 
 // TODO: bug in navigate's gastby
 const navigate = (url) => window.location = url
@@ -17,12 +17,19 @@ class AddUrlForm extends Component {
     }
 
     onSubmit = (event) => {
-        if (!this.props.authUser || !this.props.authUser.email) {
+        const idToken = localStorage.getItem('authUserIdToken')
+
+        if (!this.props.authUser || !this.props.authUser.email || !idToken) {
             alert(ERROR_MESSAGE_NOT_LOGIN)
             navigate(`/view/${encodeURIComponent(this.state.inputUrl)}`)
         }
 
-        axios.get('/api/addUrl', { params: { url: this.state.inputUrl, email: this.props.authUser.email } })
+        const params = {
+            idToken,
+            url: this.state.inputUrl, 
+            email: this.props.authUser.email 
+        }
+        axios.get('/api/addUrl', { params })
             .then(response => {
                 console.log(response)
                 if (response.data) {

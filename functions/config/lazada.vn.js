@@ -36,7 +36,7 @@ module.exports = {
       description = dom.window.document.querySelector('.html-content.pdp-product-highlights').textContent.trim()
       description = description.replace(/\s{2,}/g, ' ')
     } catch (e) {
-      console.error(e)
+      console.log(e)
     }
 
     let image = dom.window.document.querySelector('.item-gallery .gallery-preview-panel__content img').src 

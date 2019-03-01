@@ -103,6 +103,38 @@ const resError = (res, msg = 'Something went wrong', code = 400) => {
   })
 }
 
+/**
+ * Get user info from Token
+ * @param {*} idToken 
+ * 
+ * @returns
+ *  { iss: 'https://securetoken.google.com/duyet-price-tracker',
+    name: 'Van-Duyet Le',
+    picture: 'https://lh4.googleusercontent.com/abc/photo.jpg',
+    aud: 'duyet-price-tracker',
+    auth_time: 1550891050,
+    user_id: 'c2d8H4ZcUEhEiJR0jFhupWHjfoy1',
+    sub: 'c2d8H4ZcUEhEiJR0jFhupWHjfoy1',
+    iat: 1551441028,
+    exp: 1551444628,
+    email: 'lvduit08@gmail.com',
+    email_verified: true,
+    firebase:
+    { identities: { 'google.com': [Array], email: [Array] },
+      sign_in_provider: 'google.com' },
+    uid: 'c2d8H4ZcUEhEiJR0jFhupWHjfoy1' }
+ * 
+ */
+const getIdFromToken = async idToken => {
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken)
+    return decodedToken
+  } catch (err) {
+    console.error(err)
+    return null
+  }
+}
+
 module.exports = {
   db,
   httpsFunctions,
@@ -136,6 +168,7 @@ module.exports = {
   redashFormat,
   
   resError,
+  getIdFromToken,
 
   // Check is in supported domain
   isSupportedUrl: u => supportedDomain.indexOf(url.parse(normalizeUrl(u)).hostname) > -1,

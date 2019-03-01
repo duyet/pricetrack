@@ -38,6 +38,7 @@
     "react-bootstrap": "^0.32.4",
     "react-chartkick": "^0.3.0",
     "react-dom": "^16.5.1",
+    "react-flash-message": "^1.0.2",
     "react-helmet": "^5.2.0"
   },
   "devDependencies": {

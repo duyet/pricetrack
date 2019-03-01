@@ -3,11 +3,11 @@ const {
     db,
     documentIdFromHashOrUrl,
     collection,
-    cleanEmail,
     domainColors,
     getHostname,
     getDeepLink,
-    domainLogos
+    domainLogos,
+    resError,
 } = require('../utils')
 
 const { text: { URL_NOT_FOUND } } = require('../utils/constants')
@@ -15,15 +15,7 @@ const { text: { URL_NOT_FOUND } } = require('../utils/constants')
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
-    if (!url) {
-        return res.status(404).json({
-            err: 1,
-            msg: URL_NOT_FOUND
-        })
-    }
-
-    // TODO: validate email
-    let email = cleanEmail(req.query.email)
+    if (!url) return resError(res, URL_NOT_FOUND)
 
     let urlDoc = db.collection(collection.URLS).doc(documentIdFromHashOrUrl(url))
     urlDoc.get().then(snapshot => {
@@ -42,17 +34,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         data['id'] = snapshot.id
         data['domain_logo'] = domainLogos[snapshot.get('domain')]
 
-        if (!email) return res.json(data)
-        else {
-            data['subscribe'] = {}
-            snapshot.ref.collection(collection.SUBSCRIBE).doc(email).get().then(snapshotSub => {
-                if (snapshotSub.exists) {
-                    data['subscribe'] = snapshotSub.data()
-                }
-
-                return res.json(data)
-            })
-        }
+        return res.json(data)
     })
 
 })

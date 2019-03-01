@@ -9,7 +9,9 @@ const {
     cleanEmail,
     urlFor,
     domainOf,
-    getConfig
+    getConfig,
+    getIdFromToken,
+    resError
 } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const {
@@ -19,47 +21,33 @@ const {
 
 const ADMIN_TOKEN = getConfig('admin_token')
 
-const { text: { ERR_URL_NOT_SUPPORTED, ERR_EMAIL_REQUIRED } } = require('../utils/constants')
+const { text: { ERR_URL_NOT_SUPPORTED } } = require('../utils/constants')
 
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
+    const idToken = req.query.idToken
+    const authUser = await getIdFromToken(idToken)
+
+    if (!idToken || authUser === null) return resError(res, `Invalid Token ${uid}`)
 
     try {
         url = normalizeUrl(url)
     } catch (err) {
         console.error(err)
-        return res.statusMessage(400).json({
-            err: 1,
-            msg: ERR_URL_NOT_SUPPORTED
-        })
+        return resError(res, ERR_URL_NOT_SUPPORTED)
     }
 
-    // TODO: validate email
-    let email = cleanEmail(req.query.email)
+    // User email
+    const email = authUser.email
 
-    if (!email) {
-        return res.status(400).json({
-            err: 1,
-            msg: ERR_EMAIL_REQUIRED
-        })
-    }
-
-    if (!isSupportedUrl(url)) {
-        return res.status(400).json({
-            err: 1,
-            msg: ERR_URL_NOT_SUPPORTED
-        })
-    }
+    // Url is not supported
+    if (!isSupportedUrl(url)) return resError(res, ERR_URL_NOT_SUPPORTED)
 
     // Validate valid url
     if (!validateUrlPath(url)) {
         console.log('validateUrlPath(url)', validateUrlPath(url), url)
-        return res.status(400).json({
-            status: 400,
-            error: 1,
-            msg: ERR_URL_NOT_SUPPORTED
-        })
+        return resError(res, ERR_URL_NOT_SUPPORTED)
     }
 
     let info = await getProductInfoFromUrl(url) || {}

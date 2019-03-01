@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import PropTypes from 'prop-types'
 import axios from 'axios'
+
+import FlashMessage from './FlashMessage'
 import Loading from './Loading'
 
 const SUBSCRIBE_THIS_URL = 'Theo dõi sản phẩm này'
@@ -31,12 +33,15 @@ class SubscribeBox extends Component {
     }
 
     componentDidMount() {
+        const idToken = localStorage.getItem('authUserIdToken')
+
         if (this.props.authUser) {
             this.setState({ loading: true })
             axios.get('/api/subscribe', {
                 params: {
                     email: this.props.authUser.email,
-                    url: this.props.url
+                    url: this.props.url,
+                    idToken
                 }
             })
             .then(response => {
@@ -69,6 +74,8 @@ class SubscribeBox extends Component {
                 } else {
                     newInfoState[inputId] = e.target.checked
                 }
+            } else {
+                newInfoState[inputId] = e.target.value
             }
             this.setState({ info: newInfoState }, () => {
                 if (inputId === 'active') this.handleChangeActive()
@@ -101,6 +108,7 @@ class SubscribeBox extends Component {
     }
 
     syncSubscribe() {
+        const idToken = localStorage.getItem('authUserIdToken')
         setTimeout(() => {
             if (this.props.authUser) {
                 axios.post('/api/subscribe', 
@@ -108,7 +116,8 @@ class SubscribeBox extends Component {
                     {
                         params: {
                             email: this.props.authUser.email,
-                            url: this.props.url
+                            url: this.props.url,
+                            idToken
                         }
                     }
                 )
@@ -127,72 +136,76 @@ class SubscribeBox extends Component {
         if (this.state.loading) return <Loading />
 
         return (
-            <form className="row align-items-start bg-white mt-3 mb-3 ml-1 mr-1 p-3 rounded shadow-sm" 
-                style={{fontSize: '0.8em'}}>
-                <div className="col-auto mb-3">
-                    <h6>{SUBSCRIBE_THIS_URL}</h6>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input" 
-                                    type="checkbox" id="checkActive" 
-                                    value="true" checked={this.state.info.active}
-                                    onChange={this.handleChange('active', 'checkbox')} />
-                            <label className="form-check-label" htmlFor="checkActive">{STATUS_ACTICE}</label>
-                        </div>
-                </div>
-
-                {this.toggleActive(
-                    <div className='col-auto mb-3 '>
-                        <h6>{NOTI_WHEN}</h6>
-                        {NOTI_WHEN_MAP.map(when => {
-
-                            const expectForm = <input type="number"
-                                className="mb-2 form-control form-control-sm"
-                                value={this.state.info.expect_price}
-                                onChange={this.handleChange('expect_price', 'number')}
-                                disabled={this.state.info.expect_when !== 'down_below'}
-                                placeholder={EXPECT_PRICE_PLACEHOLDER} />
-
-                            return (
-                                <div className="form-check" key={when.type}>
-                                    <input className="form-check-input" type="radio" 
-                                            name='notiWhen' id={when.type}
-                                            value={when.type} 
-                                            checked={when.type === this.state.info.expect_when}
-                                            onChange={this.handleChange('expect_when')} />
-                                    <label className="form-check-label" htmlFor={when.type}>
-                                        {when.text}
-                                        {when.type === 'down_below' ? expectForm : null}
-                                    </label>
-                                </div>
-                            )
-                        })}
-                    </div>
-                )}
-                
-                {this.toggleActive(
+            <React.Fragment>
+                { this.state.error ? <FlashMessage duration={5000} /> : null }
+            
+                <form className="row align-items-start bg-white mt-3 mb-3 ml-1 mr-1 p-3 rounded shadow-sm" 
+                    style={{fontSize: '0.8em'}}>
                     <div className="col-auto mb-3">
-                        <h6>{NOTI_METHOD}</h6>
-                        {NOTI_METHOD_MAP.map(when => {
-                            return (
-                                <div className="form-check" key={when.type}>
-                                    <input className="form-check-input" 
-                                            type="checkbox" name='notiMethod' 
-                                            id={when.type} value={when.type} 
-                                            checked={Array.from(this.state.info.methods).includes(when.type)}
-                                            onChange={this.handleChange('methods', 'checkbox')} />
-                                    <label className="form-check-label" htmlFor={when.type}>
-                                        {when.text} {when.type === 'email' ? this.state.info.email : ''}
-                                    </label>
-                                </div>
-                            )
-                        })}
+                        <h6>{SUBSCRIBE_THIS_URL}</h6>
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input" 
+                                        type="checkbox" id="checkActive" 
+                                        value="true" checked={this.state.info.active}
+                                        onChange={this.handleChange('active', 'checkbox')} />
+                                <label className="form-check-label" htmlFor="checkActive">{STATUS_ACTICE}</label>
+                            </div>
                     </div>
-                )}
 
-                {this.toggleActive(
-                    <div className="col-auto"></div>
-                )}
-            </form>
+                    {this.toggleActive(
+                        <div className='col-auto mb-3 '>
+                            <h6>{NOTI_WHEN}</h6>
+                            {NOTI_WHEN_MAP.map(when => {
+
+                                const expectForm = <input type="number"
+                                    className="mb-2 form-control form-control-sm"
+                                    value={this.state.info.expect_price}
+                                    onChange={this.handleChange('expect_price', 'number')}
+                                    disabled={this.state.info.expect_when !== 'down_below'}
+                                    placeholder={EXPECT_PRICE_PLACEHOLDER} />
+
+                                return (
+                                    <div className="form-check" key={when.type}>
+                                        <input className="form-check-input" type="radio" 
+                                                name='notiWhen' id={when.type}
+                                                value={when.type} 
+                                                checked={when.type === this.state.info.expect_when}
+                                                onChange={this.handleChange('expect_when')} />
+                                        <label className="form-check-label" htmlFor={when.type}>
+                                            {when.text}
+                                            {when.type === 'down_below' ? expectForm : null}
+                                        </label>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+                    
+                    {this.toggleActive(
+                        <div className="col-auto mb-3">
+                            <h6>{NOTI_METHOD}</h6>
+                            {NOTI_METHOD_MAP.map(when => {
+                                return (
+                                    <div className="form-check" key={when.type}>
+                                        <input className="form-check-input" 
+                                                type="checkbox" name='notiMethod' 
+                                                id={when.type} value={when.type} 
+                                                checked={Array.from(this.state.info.methods).includes(when.type)}
+                                                onChange={this.handleChange('methods', 'checkbox')} />
+                                        <label className="form-check-label" htmlFor={when.type}>
+                                            {when.text} {when.type === 'email' ? this.state.info.email : ''}
+                                        </label>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+
+                    {this.toggleActive(
+                        <div className="col-auto"></div>
+                    )}
+                </form>
+            </React.Fragment>
         )
     }
 }

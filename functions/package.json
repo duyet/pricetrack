@@ -24,8 +24,7 @@
     "node-fetch": "^2.3.0",
     "nodemailer": "^5.1.1",
     "normalize-url": "^4.1.0",
-    "puppeteer": "^1.11.0",
-    "puppeteer-core": "^1.11.0"
+    "puppeteer-core": "^1.12.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import moment from 'moment'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+import assert from 'assert'
 
 import Layout from '../components/layout'
 import { withAuthentication, AuthUserContext } from '../components/Session'
@@ -22,9 +25,19 @@ const style = {
     }
 }
 
-const RequestPermissionLink = ({ onClick, style }) => (
-    <button className="btn btn-link mt-1 p-0" onClick={onClick} style={style}>Bật thông báo trình duyệt</button>
-)
+const RequestPermissionLink = ({ onClick, style, messagingStatus }) => {
+    let token = null
+    try {
+        token = !!localStorage.getItem('messagingToken')
+    } catch (e) {}
+
+    return (
+        <button className="btn btn-link mt-1 p-0" onClick={onClick} style={style}>
+            Bật thông báo trình duyệt
+            <FontAwesomeIcon icon={token ? faCheckCircle : faExclamationCircle} className="ml-1 p-0" color={token ? 'green' : 'gray'} />
+        </button>
+    )
+}
 
 class Profile extends React.Component {
     render() {

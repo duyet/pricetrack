@@ -38,7 +38,7 @@ const UserButton = ({authUser, onClickSignIn, onClickProfile}) => {
   )
 }
 
-const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl }) => (
+const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl, firebase }) => (
   <Fragment>
     <Helmet bodyAttributes={{
         class: 'bg-light'
@@ -52,7 +52,7 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl }) =
           <Logo />
         </div>
         <div className="col">
-          <AddUrlForm authUser={authUser} inputUrl={inputUrl} />
+          <AddUrlForm authUser={authUser} inputUrl={inputUrl} firebase={firebase} />
         </div>
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
@@ -99,7 +99,8 @@ class NavBarBase extends Component {
                                      onClickProfile={this.onClickProfile}
                                      onChangeInput={this.onChangeInput}
                                      onSubmit={this.onSubmit}
-                                     inputUrl={this.state.inputUrl} />}
+                                     inputUrl={this.state.inputUrl}
+                                     firebase={this.props.firebase} />}
       </AuthUserContext.Consumer>
     )
   }

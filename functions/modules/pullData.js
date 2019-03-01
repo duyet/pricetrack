@@ -28,7 +28,7 @@ const ADMIN_TOKEN = getConfig('admin_token')
 module.exports = functions
   .region(asiaRegion)
   .runWith({
-    memory: '512MB',
+    memory: '256MB',
     timeoutSeconds: 60
   })
   .https

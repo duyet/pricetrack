@@ -33,9 +33,10 @@ class ViewPage extends Component {
 
     componentDidMount() {
         let url = this.props.location.pathname.replace('/view/', '')
+        const idToken = localStorage.getItem('authUserIdToken')
         this.setState({ loading: true, inputUrl: url })
 
-        axios.get(`/api/getUrl`, { params: { url } })
+        axios.get(`/api/getUrl`, { params: { url, idToken } })
             .then(response => {
                 let data = response.data
                 this.setState({ data, loading: false, inputUrl: data.url })

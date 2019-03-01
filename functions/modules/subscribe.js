@@ -3,7 +3,7 @@ const {
     db,
     hash,
     collection,
-    cleanEmail,
+    getIdFromToken,
     resError
 } = require('../utils')
 
@@ -35,14 +35,11 @@ const getSubByEmail = async (url, email) => {
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
-    let email = cleanEmail(req.query.email || '')
-    const token = String(req.query.token || '')
-    let errorMessage = null
-    let hashUrl = hash(url)
 
-    // if (!validateToken(token)) errorMessage = ERR_TOKEN_INVALID
-    if (!email) errorMessage = ERR_EMAIL_REQUIRED
-    if (errorMessage) return resError(res, errorMessage)
+    const authUser = await getIdFromToken(req.query.idToken)
+    if (authUser === null) return resError(res, ERR_EMAIL_REQUIRED)
+    const email = authUser.email
+    const hashUrl = hash(url)
 
     if (req.method == 'GET' && url && email) {
         try {
