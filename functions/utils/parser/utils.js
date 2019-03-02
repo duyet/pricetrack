@@ -51,6 +51,7 @@ const getCrawlerHttpHeaderOptions = () => {
     ]
 
     return {
+        redirect: 'follow',
         'headers': {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9,vi;q=0.8,ja;q=0.7,de;q=0.6',
@@ -100,7 +101,6 @@ const fetchContent = async (url, json = false) => {
 const regexProcess = (u, regex, pos=null) => {
     try {
         console.log(`Parse ${u} with regex ${regex}`)
-        const provider = getProvider(u)
         const pathname = url.parse(u).pathname
         const parsePathname = pathname.match(regex)
 

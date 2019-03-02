@@ -1,4 +1,9 @@
 const crypto = require('crypto')
+const {
+  URL,
+  resolve,
+  URLSearchParams
+} = require('url')
 const normalUrl = require('normalize-url')
 
 const pullProductDataFromUrl = require('./parser/index')
@@ -7,13 +12,23 @@ const {
   functionsUrlAsia
 } = require('./config')
 
+const {
+  URL_PARAMS_WHITELIST
+} = require('./constants')
+
+
 /**
  * Normalize url with default config 
  * 
  * @param u {string} URL to normalize
  * @return {string}
  */
-const normalizeUrl = u => {
+const normalizeUrl = (u, paramsWhitelist = []) => {
+  let whitelist = [
+    ...URL_PARAMS_WHITELIST,
+    ...paramsWhitelist
+  ]
+
   const normalizeUrlConfig = {
     forceHttps: true,
     stripHash: true,
@@ -24,23 +39,26 @@ const normalizeUrl = u => {
 
   try {
     u = decodeURIComponent(u)
-    console.log('Decoded', u)
   } catch (e) {
-    console.log(`decodeURIComponent ${u} ${e}`)
+    console.log(`Fail decodeURIComponent ${u} ${e}`)
   }
 
   try {
-    return normalUrl(u, normalizeUrlConfig)
+    // Keep whitelist params
+    let urlObj = new URL(u)
+    let params = new URLSearchParams()
+    whitelist.map(key => params.set(key, urlObj.searchParams.get(key)))
+    params.sort()
+
+    return resolve(normalUrl(u, normalizeUrlConfig), `?${params.toString()}`)
   } catch (e) {
     console.error(`Error parse url=${u}, ${e}`)
     throw new Error(e)
   }
 }
 
-
 // Normalize and Hash URL
 const hash = u => crypto.createHash('sha1').update(normalizeUrl(u)).digest('hex')
-
 
 /**
  * Format price

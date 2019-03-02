@@ -20,5 +20,7 @@ module.exports = {
     ERR_MISSING_URL: 'URL là bắt buộc',
     ERR_CANNOT_FETCH_DATA: 'Không thể fetch data',
     ERR_NOT_IS_ADMIN: 'User is not an admin user'
-  }
+  },
+
+  URL_PARAMS_WHITELIST: [ 'spid' ]
 }

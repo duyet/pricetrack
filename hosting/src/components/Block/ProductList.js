@@ -75,6 +75,7 @@ class ProductList extends React.Component {
 
                         <small>
                             <a href={'/view/' + url.id}>{ADD_BY} {url.add_by}</a> | &nbsp;
+                            {url.deeplinkClick ? `${url.deeplinkClick} click${url.deeplinkClick > 1 ? 's' : ''} | ` : ''}
                             {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
                             {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}
                         </small>
