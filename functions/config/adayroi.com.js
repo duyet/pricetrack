@@ -2,9 +2,10 @@ const { regexProcess } = require('../utils/parser/utils')
 const chrome = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
 
+let browser = null
+
 const adayroiSnippetData = async (params) => {
-  let browser = null
-  browser = await puppeteer.launch({
+  browser = browser || await puppeteer.launch({
     args: chrome.args,
     executablePath: await chrome.executablePath,
     headless: chrome.headless,

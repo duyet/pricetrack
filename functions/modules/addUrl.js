@@ -6,11 +6,10 @@ const {
     documentIdFromHashOrUrl,
     collection,
     normalizeUrl,
-    cleanEmail,
     urlFor,
     domainOf,
     getConfig,
-    getIdFromToken,
+    getUserFromToken,
     resError
 } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
@@ -27,7 +26,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
     const idToken = req.query.idToken
-    const authUser = await getIdFromToken(idToken)
+    const authUser = await getUserFromToken(idToken)
 
     if (!idToken || authUser === null) return resError(res, `Invalid Token ${uid}`)
 

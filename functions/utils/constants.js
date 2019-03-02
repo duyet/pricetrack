@@ -5,7 +5,8 @@ module.exports = {
     SUBSCRIBE: 'subscribe',
     METADATA: 'metadata',
     CRONJOB_LOGS: 'cronjob_logs',
-    MESSAGING_TOKEN: 'messaging_token'
+    MESSAGING_TOKEN: 'messaging_token',
+    ADMIN: 'admin'
   },
   eventType: {
     WRITE: 'google.firestore.document.write'
@@ -17,6 +18,7 @@ module.exports = {
     ERR_EMAIL_REQUIRED: 'Vui lòng đăng nhập',
     ERR_TOKEN_INVALID: 'Token không đúng',
     ERR_MISSING_URL: 'URL là bắt buộc',
-    ERR_CANNOT_FETCH_DATA: 'Không thể fetch data'
+    ERR_CANNOT_FETCH_DATA: 'Không thể fetch data',
+    ERR_NOT_IS_ADMIN: 'User is not an admin user'
   }
 }

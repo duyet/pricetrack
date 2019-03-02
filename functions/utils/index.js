@@ -125,7 +125,7 @@ const resError = (res, msg = 'Something went wrong', code = 400) => {
     uid: 'c2d8H4ZcUEhEiJR0jFhupWHjfoy1' }
  * 
  */
-const getIdFromToken = async idToken => {
+const getUserFromToken = async idToken => {
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken)
     return decodedToken
@@ -168,7 +168,7 @@ module.exports = {
   redashFormat,
   
   resError,
-  getIdFromToken,
+  getUserFromToken,
 
   // Check is in supported domain
   isSupportedUrl: u => supportedDomain.indexOf(url.parse(normalizeUrl(u)).hostname) > -1,

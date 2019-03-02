@@ -106,6 +106,7 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                 data['current_timestamp'] = new Date()
                 data['color'] = domainColors[doc.get('domain')]
                 data['deep_link'] = getDeepLink(doc.get('url'))
+                data['redirect'] = urlFor(`redirect/${doc.id}`)
                 data['last_pull_at'] = data['last_pull_at'] ? data['last_pull_at'].toDate() : null
                 data['created_at'] = data['created_at'] ? data['created_at'].toDate() : null
                 data['last_update_at'] = data['last_update_at'] ? data['last_update_at'].toDate() : null

@@ -2,7 +2,10 @@ const crypto = require('crypto')
 const normalUrl = require('normalize-url')
 
 const pullProductDataFromUrl = require('./parser/index')
-const { functionsUrl, functionsUrlAsia } = require('./config')
+const {
+  functionsUrl,
+  functionsUrlAsia
+} = require('./config')
 
 /**
  * Normalize url with default config 
@@ -28,7 +31,7 @@ const normalizeUrl = u => {
 
   try {
     return normalUrl(u, normalizeUrlConfig)
-  } catch(e) {
+  } catch (e) {
     console.error(`Error parse url=${u}, ${e}`)
     throw new Error(e)
   }
@@ -47,9 +50,9 @@ const hash = u => crypto.createHash('sha1').update(normalizeUrl(u)).digest('hex'
  * @return {[type]}            [description]
  */
 const formatPrice = (price, plus_sign = false, currency = 'VND') => {
-    if (!price) return ''
-    let sign = plus_sign && price > 0 ? '+' : ''
-    return sign + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + currency
+  if (!price) return ''
+  let sign = plus_sign && price > 0 ? '+' : ''
+  return sign + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + currency
 }
 
 
@@ -69,7 +72,7 @@ const cleanEmail = e => String(e).trim()
  *   - urlFor('/abc', {key: value})
  *   - https://domain.com/abc?key=value 
  */
-const urlFor = (path, qs) => {
+const urlFor = (path, qs = {}) => {
   let query = Object
     .entries(qs)
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
@@ -83,11 +86,13 @@ const urlFor = (path, qs) => {
 }
 
 
-
 // redash format JSON
 // e.g. {columns: [], rows: []}
 const redashFormat = json_list => {
-  if (!json_list.length) return { columns: [], rows: [] }
+  if (!json_list.length) return {
+    columns: [],
+    rows: []
+  }
   const type_of = val => {
     let t = typeof val
     const map = {
@@ -100,7 +105,12 @@ const redashFormat = json_list => {
 
   let keys = Object.keys(json_list[0])
   return {
-    columns: keys.map(key => { return { name: key, type: type_of(json_list[0][key]) } }),
+    columns: keys.map(key => {
+      return {
+        name: key,
+        type: type_of(json_list[0][key])
+      }
+    }),
     rows: json_list
   }
 }

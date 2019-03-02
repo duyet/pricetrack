@@ -85,7 +85,7 @@ module.exports = functions
     let new_price = jsonData['price']
     let inventory_status = 'inventory_status' in jsonData ? jsonData['inventory_status'] : ''
 
-    let update_jsonData = {
+    let updateJsonData = {
       last_pull_at: jsonData['datetime'],
       raw_count: raw_count + 1,
       latest_price: new_price,
@@ -106,7 +106,7 @@ module.exports = functions
       num_price_change_up = price_change_percent > 0 ? num_price_change_up + 1 : num_price_change_up
       num_price_change_down = price_change_percent < 0 ? num_price_change_down + 1 : num_price_change_down
 
-      update_jsonData = Object.assign(update_jsonData, {
+      updateJsonData = Object.assign(updateJsonData, {
         // Price change
         latest_price: new_price,
         price_change,
@@ -126,7 +126,7 @@ module.exports = functions
 
     // inventory_status change
     if (jsonData['inventory_status'] != snapshot.get('inventory_status')) {
-      update_jsonData = Object.assign(update_jsonData, {
+      updateJsonData = Object.assign(updateJsonData, {
         is_inventory_status_change: true,
         is_change: true
       })
@@ -134,7 +134,7 @@ module.exports = functions
     }
 
     // Update URL info
-    db.collection(collection.URLS).doc(urlHash).set(update_jsonData, {
+    db.collection(collection.URLS).doc(urlHash).set(updateJsonData, {
       merge: true
     })
 
@@ -142,7 +142,7 @@ module.exports = functions
     db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
 
     // Trigger alert if is_change
-    if (update_jsonData.is_change) {
+    if (updateJsonData.is_change) {
       const alertTriggerUrl = urlFor('alert', {
         url: snapshot.get('url'),
         token: ADMIN_TOKEN

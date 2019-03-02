@@ -3,13 +3,12 @@ const {
     db,
     hash,
     collection,
-    getIdFromToken,
+    getUserFromToken,
     resError
 } = require('../utils')
 
 const {
     text: {
-        ERR_TOKEN_INVALID,
         ERR_EMAIL_REQUIRED,
         ERR_EMAIL_NOT_FOUND
     }
@@ -36,7 +35,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
     let url = req.query.url
 
-    const authUser = await getIdFromToken(req.query.idToken)
+    const authUser = await getUserFromToken(req.query.idToken)
     if (authUser === null) return resError(res, ERR_EMAIL_REQUIRED)
     const email = authUser.email
     const hashUrl = hash(url)

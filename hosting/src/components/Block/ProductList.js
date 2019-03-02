@@ -29,9 +29,9 @@ class ProductList extends React.Component {
                   <div className="d-flex justify-content-center">
                     <div className="d-flex flex-column align-items-center">
                         <LogoPlaceHolder className="d-block" url={url} />
-                        <Link className="d-block d-sm-none mt-1" to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                        <a className="d-block d-sm-none mt-1" href={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
                             <img className="img-fluid" style={{width: 40}} src={url.domain_logo} alt="" />
-                        </Link>
+                        </a>
                     </div>
 
 
@@ -58,15 +58,15 @@ class ProductList extends React.Component {
 
                         <br />
 
-                        <a href={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }} style={{ color: '#797979 !important' }}>
+                        <a href={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }} style={{ color: '#797979 !important' }}>
                             {url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}
                         </a>
                         <br />
 
-                        <Link to={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
-                            onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                        <a href={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
+                            onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
                             <FontAwesomeIcon icon={faShoppingCart} /> {GO_TO} {url.domain}
-                        </Link>
+                        </a>
                         <Link className='btn btn-default btn-sm mt-2 mb-2 mr-1' to={'/view/' + url.id}>
                             <FontAwesomeIcon icon={faHistory} /> {VIEW_HISTORY}
                         </Link>
@@ -82,7 +82,7 @@ class ProductList extends React.Component {
                   </div>
                   
                   <div className="mb-3 mr-3 d-none d-sm-block" style={{width: 100}}>
-                    <Link to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                    <Link to={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
                         <img className="ml-3 img-fluid" style={{width: 100}} src={url.domain_logo} alt="" />
                     </Link>
                   </div>

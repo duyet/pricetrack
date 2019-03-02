@@ -51,3 +51,9 @@ exports.notification = require('./modules/notification')
 
 // Update user messaging token
 exports.updateMessagingToken = require('./modules/updateMessagingToken')
+
+// Redirect
+exports.redirect = require('./modules/redirect')
+
+// Admin api
+exports.onlyAdminData = require('./modules/onlyAdminData')
