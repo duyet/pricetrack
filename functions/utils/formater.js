@@ -47,10 +47,12 @@ const normalizeUrl = (u, paramsWhitelist = []) => {
     // Keep whitelist params
     let urlObj = new URL(u)
     let params = new URLSearchParams()
-    whitelist.map(key => params.set(key, urlObj.searchParams.get(key)))
+    whitelist.filter(key => !!urlObj.searchParams.get(key))
+             .map(key => params.set(key, urlObj.searchParams.get(key)))
     params.sort()
 
-    return resolve(normalUrl(u, normalizeUrlConfig), `?${params.toString()}`)
+    let paramString = params.toString() ? `?${params.toString()}` : ''
+    return resolve(normalUrl(u, normalizeUrlConfig), paramString)
   } catch (e) {
     console.error(`Error parse url=${u}, ${e}`)
     throw new Error(e)

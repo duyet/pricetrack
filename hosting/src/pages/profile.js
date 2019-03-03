@@ -11,7 +11,7 @@ import SignOutLink from '../components/Block/SignOutLink'
 import MessagingRequestPermission from '../components/Block/MessagingRequestPermission'
 
 const PLEASE_LOGIN = 'Vui lòng đăng nhập'
-const HEAD_BASIC_INFO = 'Thông tin cơ bản'
+const HEAD_BASIC_INFO = 'Thông tin cá nhân'
 const TEXT_EMAIL = 'Email'
 const LAST_LOGIN = 'Đăng nhập'
 const REGISTER_AT = 'Đăng ký'

@@ -116,7 +116,6 @@ module.exports = functions
         num_price_change,
         num_price_change_up,
         num_price_change_down,
-        is_change: true,
         is_deal: jsonData['is_deal']
       })
 
@@ -138,8 +137,10 @@ module.exports = functions
       merge: true
     })
 
-    // Add raw price
-    db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
+    // Only save when changed
+    if (jsonData['is_change']) {
+      db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
+    }
 
     // Trigger alert if is_change
     if (updateJsonData.is_change) {

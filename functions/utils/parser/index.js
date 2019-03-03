@@ -15,7 +15,7 @@ const pullProductDataFromUrl = async (u) => {
     const provider = getProvider(u)
 
     // Validate supported url
-    if (supportedDomain.indexOf(provider) === -1) return {}
+    if (supportedDomain.indexOf(provider) === -1) return null
 
     try {
         return await parseUrlWithConfig(u, parseRules[provider])

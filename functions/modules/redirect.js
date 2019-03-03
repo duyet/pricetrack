@@ -1,18 +1,19 @@
-const express = require('express')
+const Koa = require('koa')
+const koaFirebase = require('koa-firebase-functions')
+const Router = require('koa-router')
 const {
     httpsFunctions,
     db,
     documentIdFromHashOrUrl,
     collection,
     getDeepLink,
-    resError,
 } = require('../utils')
 
-const app = express()
-app.disable('x-powered-by')
+const app = new Koa()
+const router = new Router()
 
-app.get('/:id?', async (req, res) => {
-    let urlId = req.params.id || req.query.id
+router.get('/:id?', async (ctx) => {
+    let urlId = ctx.params.id || ctx.query.id
     try {
         let snapshot = await db.collection(collection.URLS)
                              .doc(documentIdFromHashOrUrl(urlId))
@@ -21,10 +22,13 @@ app.get('/:id?', async (req, res) => {
         
         const deeplinkClick = snapshot.get('deeplinkClick') || 0
         snapshot.ref.set({ deeplinkClick: deeplinkClick + 1 }, { merge: true })
-        return res.redirect(deepLink)
+        return ctx.redirect(deepLink)
     } catch (err) {
-        return resError(res)
+        ctx.status = 404
+        ctx.body = {err: 1}
     }
 })
 
-module.exports = httpsFunctions.onRequest(app)
+app.use(router.routes()).use(router.allowedMethods())
+
+module.exports = httpsFunctions.onRequest(koaFirebase(app))

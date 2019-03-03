@@ -52,13 +52,6 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     let info = await getProductInfoFromUrl(url) || {}
     let urlDoc = db.collection(collection.URLS).doc(documentIdFromHashOrUrl(url))
 
-    // Fetch the first data
-    const pullDataUrl = urlFor('pullData', {
-        region: 'asia',
-        url: url,
-        token: ADMIN_TOKEN
-    })
-
     urlDoc.get().then(snapshot => {
         if (snapshot.exists) {
             // Subscribe email
@@ -85,9 +78,6 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
                     ...data
                 })
             })
-
-            fetch(pullDataUrl)
-            console.log(`update data ${pullDataUrl}`)
 
             return true
         }
@@ -128,6 +118,12 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
                     merge: true
                 })
 
+                // Fetch the first data
+                const pullDataUrl = urlFor('pullData', {
+                    region: 'asia',
+                    url: url,
+                    token: ADMIN_TOKEN
+                })
                 fetch(pullDataUrl)
                 console.log(`Fetch the first data ${pullDataUrl}`)
 

@@ -134,19 +134,12 @@ const parseUrlWithConfig = async (u, config) => {
 
     // product_api: https:// .....{productId}/{shopId}
     if (typeof config.product_api == 'string') {
-        const product_api = config.product_api
+        const productApi = config.product_api
             .replace('{product_id}', productId)
             .replace('{shop_id}', shopId)
 
-        console.log('Product ID:', productId)
-        console.log('Product API:', product_api)
-
-        if (!productId) {
-            throw Error('Cannot parse product id')
-        }
-
         const options = getCrawlerHttpHeaderOptions()
-        const response = await fetch(product_api, options)
+        const response = await fetch(productApi, options)
         const json = await response.json()
         return config.format_func(json)
     }
@@ -154,7 +147,7 @@ const parseUrlWithConfig = async (u, config) => {
     // Using functions
     else if (typeof config.product_api == 'function') {
         const getFunc = config.product_api
-        const params = { productId, shopId }
+        const params = { url: u, productId, shopId }
         let json = await getFunc(params)
         return config.format_func(json)
     }
@@ -265,7 +258,7 @@ const getProductInfoFromUrl = async (u) => {
     // Using functions
     else if (typeof config.product_info_api == 'function') {
         const getFunc = config.product_info_api
-        const params = { product_id, shop_id }
+        const params = { url: u, product_id, shop_id }
         const data = await getFunc(params)
         return config.format_product_info(data)
     }

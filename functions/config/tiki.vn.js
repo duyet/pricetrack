@@ -32,13 +32,13 @@ module.exports = {
   format_func: json => {
     let { price, is_deal, qty, product_id, inventory_status } = json
     inventory_status = inventory_status == 'available' ? true : false
-    if (DEBUG) price = price - Math.random() * 1000
+    if (DEBUG) price = price - Math.round(Math.random() * 1000)
     return { price, is_deal, qty, product_id, inventory_status }
   },
 
   // TODO: rename this attr
   product_info_api: async (params) => {
-    const url = `https://tiki.vn/p${params.product_id}.html?spid=${params.product_id}`
+    const url = params.url
     let html = await fetchContent(url)
     if (!html) return false
 
