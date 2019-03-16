@@ -1,4 +1,6 @@
 const fetch = require('node-fetch')
+const FieldValue = require('firebase-admin').firestore.FieldValue
+
 const {
     httpsFunctions,
     db,
@@ -12,15 +14,19 @@ const {
     getUserFromToken,
     resError
 } = require('../utils')
-const FieldValue = require('firebase-admin').firestore.FieldValue
 const {
     getProductInfoFromUrl,
-    validateUrlPath
+    validateUrlPath,
+    initProductDataFromUrl
 } = require('../utils/parser/utils')
 
 const ADMIN_TOKEN = getConfig('admin_token')
 
-const { text: { ERR_URL_NOT_SUPPORTED } } = require('../utils/constants')
+const {
+    text: {
+        ERR_URL_NOT_SUPPORTED
+    }
+} = require('../utils/constants')
 
 module.exports = httpsFunctions.onRequest(async (req, res) => {
     // TODO: Add limit, paging
@@ -51,91 +57,112 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
 
     let info = await getProductInfoFromUrl(url) || {}
     let urlDoc = db.collection(collection.URLS).doc(documentIdFromHashOrUrl(url))
+    let snapshot = null
 
-    urlDoc.get().then(snapshot => {
-        if (snapshot.exists) {
+    try {
+        snapshot = await urlDoc.get()
+    } catch (e) {
+        console.error(e)
+        return resError(res, e)
+    }
+
+    let batch = db.batch()
+
+    if (snapshot.exists) {
+        console.log('Url exists, subscribe email, update info')
+        // Subscribe email
+        let subRef = urlDoc.collection(collection.SUBSCRIBE).doc(email)
+        batch.set(subRef, {
+            email,
+            active: false,
+            create_at: FieldValue.serverTimestamp()
+        }, {
+            merge: true
+        })
+
+        // Update info
+        let data = snapshot.data()
+        data['number_of_add'] = (snapshot.get('number_of_add') || 0) + 1
+        data['raw_count'] = snapshot.get('raw_count') || 0
+        data['last_update_at'] = FieldValue.serverTimestamp()
+        data['info'] = info
+
+        batch.set(urlDoc, data, { merge: true })
+        batch.commit().then(() => {
+            data['is_update'] = true
+            return res.json({
+                id: snapshot.id,
+                ...data
+            })
+        })
+
+        return true
+    }
+
+    console.log('Url is not exists, fetch new info and init data')
+
+    // New url 
+    batch.set(urlDoc, {
+            url,
+            domain: domainOf(url),
+            info,
+            number_of_add: 1, // How many time this url is added?
+            raw_count: 0,
+            created_at: FieldValue.serverTimestamp(),
+            last_pull_at: null,
+            add_by: email,
+        }, {
+            merge: true
+        })
+
+
+            // Update Metadata
+            let statisticDoc = db.collection(collection.METADATA).doc('statistics')
+            statisticDoc.get().then(doc => {
+                const urlCount = parseInt(doc.get('url_count') || 0) + 1;
+                batch.set(statisticDoc, { url_count: urlCount }, { merge: true })
+            })
+
             // Subscribe email
-            urlDoc.collection(collection.SUBSCRIBE).doc(email).set({
+            console.log(`Subscribe ${email}`)
+            batch.set(urlDoc.collection(collection.SUBSCRIBE).doc(email), {
                 email,
-                active: false,
-                create_at: new Date()
+                active: true,
+                expect_when: 'down',
+                expect_price: 0,
+                methods: 'email',
+                create_at: FieldValue.serverTimestamp()
             }, {
                 merge: true
             })
 
-            // Update info
-            let data = snapshot.data()
-            data['number_of_add'] = (snapshot.get('number_of_add') || 0) + 1
-            data['raw_count'] = snapshot.get('raw_count') || 0
-            data['last_update_at'] = FieldValue.serverTimestamp()
-            data['info'] = info
-            urlDoc.set(data, {
-                merge: true
-            }).then(() => {
-                data['is_update'] = true
-                return res.json({
-                    id: snapshot.id,
-                    ...data
+            let initData = await initProductDataFromUrl(url)
+            console.log('initData', initData)
+
+            // Fetch the first data
+            if (initData) {
+                initData.map(item => {
+                    let rawRef = urlDoc.collection(collection.RAW_DATA).doc()
+                    batch.set(rawRef, item)
                 })
+            }
+
+            batch.commit(() => {
+                console.log(`Init data with ${initData.length} items`)
             })
 
-            return true
-        }
-
-        urlDoc.set({
-                url,
-                domain: domainOf(url),
-                info,
-                number_of_add: 1, // How many time this url is added?
-                raw_count: 0,
-                created_at: FieldValue.serverTimestamp(),
-                last_pull_at: null,
-                add_by: email,
-            }, {
-                merge: true
+            const pullDataUrl = urlFor('pullData', {
+                region: 'asia',
+                url: url,
+                token: ADMIN_TOKEN
             })
-            .then(() => {
-                // Update Metadata
-                let statisticDoc = db.collection(collection.METADATA).doc('statistics')
-                statisticDoc.get().then(doc => {
-                    const url_count = parseInt(doc.get('url_count') || 0) + 1;
-                    statisticDoc.set({
-                        url_count
-                    }, {
-                        merge: true
-                    })
-                })
+            fetch(pullDataUrl)
+            console.log(`Fetch the first data ${pullDataUrl}`)
 
-                // Subscribe email
-                urlDoc.collection(collection.SUBSCRIBE).doc(email).set({
-                    email,
-                    active: true,
-                    expect_when: 'down',
-                    expect_price: 0,
-                    methods: 'email',
-                    create_at: new Date()
-                }, {
-                    merge: true
-                })
+            // Response
+            urlDoc.get().then(snapshot => res.json({
+                id: snapshot.id,
+                ...snapshot.data()
+            }))
 
-                // Fetch the first data
-                const pullDataUrl = urlFor('pullData', {
-                    region: 'asia',
-                    url: url,
-                    token: ADMIN_TOKEN
-                })
-                fetch(pullDataUrl)
-                console.log(`Fetch the first data ${pullDataUrl}`)
-
-                // Response
-                urlDoc.get().then(snapshot => res.json({
-                    id: snapshot.id,
-                    ...snapshot.data()
-                }))
-            })
-            .catch(err => {
-                return res.status(400).json(err)
-            })
-
-    })
 })

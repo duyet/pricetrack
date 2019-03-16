@@ -34,15 +34,13 @@ module.exports = functions
   })
   .https
   .onRequest(async (req, res) => {
-    let url = String(req.query.url || '')
-    url = normalizeUrl(url)
-
     const token = String(req.query.token || '')
     if (!validateToken(token)) {
       console.error(`[pullData] invalid token: ${token}`)
       return resError(res, ERR_TOKEN_INVALID, 403)
     }
 
+    let url = String(req.query.url || '')
     if (!url) return resError(res, ERR_MISSING_URL)
 
     const urlHash = documentIdFromHashOrUrl(url)
@@ -54,8 +52,8 @@ module.exports = functions
     // Fetch remote data
     try {
       jsonData = await pullProductDataFromUrl(url)
-      assert(jsonData != null)
-      assert(jsonData['price'] != null)
+      assert(jsonData != null, 'Cannot fetch remote data')
+      assert(jsonData['price'] != null, 'Price data is not found')
       console.info(`[pullData] RESULT: ${JSON.stringify(jsonData)}`)
     } catch (err) {
       console.error(err)
@@ -143,8 +141,8 @@ module.exports = functions
     })
 
     // Only save when changed or last_append_raw > 1h
-    if (jsonData['is_change'] || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR) {
-      console.log('Save new raw data (> 1hour)')
+    if (jsonData['is_change'] || !snapshot.get('lastest_append_raw') || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR) {
+      console.log('Save new raw data (> 1hour)', Timestamp.now().toMillis() - lastestAppendRaw.toMillis())
       db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
     }
 

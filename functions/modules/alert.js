@@ -40,7 +40,7 @@ const triggerNoti = async (req, res) => {
         console.log(urlData)
 
         if (!urlData.price_change) {
-            console.error(`Trigger when price is not changed, url=${url} urlData=${urlData} token=${token}`)
+            console.error(`Trigger when price is not changed, url=${url} urlData=${JSON.stringify(urlData)} token=${token}`)
             return res.status(500).json({
                 err: 1,
                 msg: 'Price not change'
