@@ -14,21 +14,22 @@ const {
   resError
 } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
+const Timestamp = require('firebase-admin').firestore.Timestamp
 
 const {
   text: {
     ERR_MISSING_URL,
-    ERR_TOKEN_INVALID,
-    ERR_CANNOT_FETCH_DATA
+    ERR_TOKEN_INVALID
   }
 } = require('../utils/constants')
 
 const ADMIN_TOKEN = getConfig('admin_token')
+const ONE_HOUR = 3600000
 
 module.exports = functions
   .region(asiaRegion)
   .runWith({
-    memory: '256MB',
+    memory: '512MB',
     timeoutSeconds: 60
   })
   .https
@@ -50,17 +51,25 @@ module.exports = functions
     let snapshot = null
     let jsonData = null
 
+    // Fetch remote data
     try {
-      snapshot = await db.collection(collection.URLS).doc(urlHash).get()
-      assert(snapshot != null)
+      jsonData = await pullProductDataFromUrl(url)
+      assert(jsonData != null)
+      assert(jsonData['price'] != null)
+      console.info(`[pullData] RESULT: ${JSON.stringify(jsonData)}`)
     } catch (err) {
       console.error(err)
       return resError(res, err.message, 500)
     }
 
-    if (!snapshot.exists) {
-      console.error(`Trigger not found URL ${url}, urlHash=${urlHash}`)
-      return resError(res, `Trigger not found URL ${url}`, 500)
+    // Fetch current url info
+    try {
+      snapshot = await db.collection(collection.URLS).doc(urlHash).get()
+      assert(snapshot != null)
+      assert(snapshot.exists)
+    } catch (err) {
+      console.error(err)
+      return resError(res, err.message, 500)
     }
 
     let raw_count = snapshot.get('raw_count') || 0
@@ -68,28 +77,20 @@ module.exports = functions
     let num_price_change = snapshot.get('num_price_change') || 0
     let num_price_change_up = snapshot.get('num_price_change_up') || 0
     let num_price_change_down = snapshot.get('num_price_change_down') || 0
+    let lastestAppendRaw = snapshot.get('lastest_append_raw') 
+                              ? snapshot.get('lastest_append_raw')
+                              : Timestamp.now()
 
-    try {
-      jsonData = await pullProductDataFromUrl(url)
-      assert(jsonData != null)
-    } catch (err) {
-      console.error(err)
-      return resError(res, err.message, 500)
-    }
 
-    // Skip if error
-    if (!jsonData || !jsonData['price']) return resError(res, ERR_CANNOT_FETCH_DATA)
-
-    console.info(`[pullData] RESULT: ${JSON.stringify(jsonData)}`)
     jsonData['datetime'] = FieldValue.serverTimestamp()
     let new_price = jsonData['price']
     let inventory_status = 'inventory_status' in jsonData ? jsonData['inventory_status'] : ''
 
-    let updateJsonData = {
+    let updateInfoData = {
       last_pull_at: jsonData['datetime'],
       raw_count: raw_count + 1,
       latest_price: new_price,
-      inventory_status,
+      inventory_status
     }
 
     // Update statistic
@@ -106,12 +107,12 @@ module.exports = functions
       num_price_change_up = price_change_percent > 0 ? num_price_change_up + 1 : num_price_change_up
       num_price_change_down = price_change_percent < 0 ? num_price_change_down + 1 : num_price_change_down
 
-      updateJsonData = Object.assign(updateJsonData, {
+      updateInfoData = Object.assign(updateInfoData, {
         // Price change
         latest_price: new_price,
         price_change,
         price_change_percent,
-        price_change_at: new Date(),
+        price_change_at: Timestamp.now(),
         is_price_up,
         num_price_change,
         num_price_change_up,
@@ -122,10 +123,14 @@ module.exports = functions
       jsonData = Object.assign(jsonData, { is_change: true })
     }
 
+    // Update lastest_append_raw_at
+    if (!snapshot.get('lastest_append_raw') || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR) {
+      updateInfoData = Object.assign(updateInfoData, { lastest_append_raw: Timestamp.now() })
+    }
 
     // inventory_status change
     if (jsonData['inventory_status'] != snapshot.get('inventory_status')) {
-      updateJsonData = Object.assign(updateJsonData, {
+      updateInfoData = Object.assign(updateInfoData, {
         is_inventory_status_change: true,
         is_change: true
       })
@@ -133,17 +138,18 @@ module.exports = functions
     }
 
     // Update URL info
-    db.collection(collection.URLS).doc(urlHash).set(updateJsonData, {
+    db.collection(collection.URLS).doc(urlHash).set(updateInfoData, {
       merge: true
     })
 
-    // Only save when changed
-    if (jsonData['is_change']) {
+    // Only save when changed or last_append_raw > 1h
+    if (jsonData['is_change'] || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR) {
+      console.log('Save new raw data (> 1hour)')
       db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
     }
 
     // Trigger alert if is_change
-    if (updateJsonData.is_change) {
+    if (updateInfoData.is_change) {
       const alertTriggerUrl = urlFor('alert', {
         url: snapshot.get('url'),
         token: ADMIN_TOKEN
