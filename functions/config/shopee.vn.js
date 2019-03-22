@@ -29,5 +29,7 @@ module.exports = {
     let image = `https://cf.shopee.vn/file/${info.images[0]}`
     const { name, description, currency } = info
     return { name, description, currency, image }
-  }
+  },
+
+  init_data: async () => null
 }

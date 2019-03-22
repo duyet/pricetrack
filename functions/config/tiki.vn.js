@@ -1,8 +1,8 @@
 const { URL } = require('url')
 const assert = require('assert')
-
-const { regexProcess, fetchContent } = require('../utils/parser/utils')
 const { JSDOM } = require('jsdom')
+const { regexProcess, fetchContent } = require('../utils/parser/utils')
+const { initDataJajum } = require('../utils/fetch')
 
 const DEBUG = false
 
@@ -79,5 +79,10 @@ module.exports = {
       image
     }
   },
-  format_product_info: json => json
+  format_product_info: json => json,
+
+  init_data: async (params) => {
+    console.log(initDataJajum)
+    return await initDataJajum('tiki.vn', params)
+  }
 }

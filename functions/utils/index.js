@@ -17,28 +17,14 @@ const {
   collection
 } = require('./constants')
 
-const {
-  getConfig,
-  getSortKey,
-  functionsUrl,
-  functionsUrlAsia,
-  hostingUrl,
-  IS_PROD
-} = require('./config')
+const configUtils = require('./config')
 
-const {
-  getDeepLink
-} = require('./accesstrade')
+const accessTradeUtils = require('./accesstrade')
+const formaterUtils = require('./formater')
+const { normalizeUrl } = require('./formater')
+const fetchUtils = require('./fetch')
 
-const {
-  normalizeUrl,
-  hash,
-  formatPrice,
-  cleanEmail,
-  pullProductDataFromUrl,
-  urlFor,
-  redashFormat
-} = require('./formater')
+console.log('xxxxxx fetchUtils', fetchUtils)
 
 // Setting DB
 admin.initializeApp(functions.config().firebase)
@@ -149,24 +135,14 @@ module.exports = {
   querystring,
 
   // Accesstrade deeplink
-  getDeepLink,
+  ...accessTradeUtils,
 
   // Get Firebase Functions env config
-  getConfig,
-  functionsUrl,
-  functionsUrlAsia,
-  hostingUrl,
-  IS_PROD,
+  ...configUtils,
 
   // Formater
-  normalizeUrl,
-  hash,
-  formatPrice,
-  cleanEmail,
-  pullProductDataFromUrl,
-  urlFor,
-  redashFormat,
-  
+  ...formaterUtils,
+
   resError,
   getUserFromToken,
 
@@ -203,11 +179,12 @@ module.exports = {
    * @return {bool}
    */
   validateToken: token => {
-    const adminToken = getConfig('admin_token')
+    const adminToken = configUtils.getConfig('admin_token')
     return token && adminToken === token
   },
 
-  getSortKey,
   verifyUserTokenId,
-  fetchRetry
+  fetchRetry,
+
+  ...fetchUtils
 }

@@ -1,6 +1,7 @@
 const { regexProcess } = require('../utils/parser/utils')
 const chrome = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
+const { initDataJajum } = require('../utils/fetch')
 
 let browser = null
 
@@ -61,5 +62,7 @@ module.exports = {
     let { name, description, image } = json
     let priceCurrency = offers.priceCurrency || ''
     return { name, description, currency: priceCurrency, image }
-  }
+  },
+
+  init_data: async params => initDataJajum('adayroi.com', params)
 }

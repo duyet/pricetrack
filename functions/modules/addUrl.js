@@ -72,10 +72,15 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         console.log('Url exists, subscribe email, update info')
         // Subscribe email
         let subRef = urlDoc.collection(collection.SUBSCRIBE).doc(email)
+        
+        // TODO: check exist subscribe
         batch.set(subRef, {
             email,
             active: false,
-            create_at: FieldValue.serverTimestamp()
+            create_at: FieldValue.serverTimestamp(),
+            expect_when: 'down',
+            expect_price: 0,
+            methods: 'email'
         }, {
             merge: true
         })
@@ -87,7 +92,9 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         data['last_update_at'] = FieldValue.serverTimestamp()
         data['info'] = info
 
-        batch.set(urlDoc, data, { merge: true })
+        batch.set(urlDoc, data, {
+            merge: true
+        })
         batch.commit().then(() => {
             data['is_update'] = true
             return res.json({
@@ -103,66 +110,68 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
 
     // New url 
     batch.set(urlDoc, {
-            url,
-            domain: domainOf(url),
-            info,
-            number_of_add: 1, // How many time this url is added?
-            raw_count: 0,
-            created_at: FieldValue.serverTimestamp(),
-            last_pull_at: null,
-            add_by: email,
+        url,
+        domain: domainOf(url),
+        info,
+        number_of_add: 1, // How many time this url is added?
+        raw_count: 0,
+        created_at: FieldValue.serverTimestamp(),
+        last_pull_at: null,
+        add_by: email,
+    }, {
+        merge: true
+    })
+
+
+    // Update Metadata
+    let statisticDoc = db.collection(collection.METADATA).doc('statistics')
+    statisticDoc.get().then(doc => {
+        const urlCount = parseInt(doc.get('url_count') || 0) + 1;
+        batch.set(statisticDoc, {
+            url_count: urlCount
         }, {
             merge: true
         })
+    })
 
+    // Subscribe email
+    console.log(`Subscribe ${email}`)
+    batch.set(urlDoc.collection(collection.SUBSCRIBE).doc(email), {
+        email,
+        active: true,
+        expect_when: 'down',
+        expect_price: 0,
+        methods: 'email',
+        create_at: FieldValue.serverTimestamp()
+    }, {
+        merge: true
+    })
 
-            // Update Metadata
-            let statisticDoc = db.collection(collection.METADATA).doc('statistics')
-            statisticDoc.get().then(doc => {
-                const urlCount = parseInt(doc.get('url_count') || 0) + 1;
-                batch.set(statisticDoc, { url_count: urlCount }, { merge: true })
-            })
+    let initData = await initProductDataFromUrl(url)
+    console.log('initData', initData)
 
-            // Subscribe email
-            console.log(`Subscribe ${email}`)
-            batch.set(urlDoc.collection(collection.SUBSCRIBE).doc(email), {
-                email,
-                active: true,
-                expect_when: 'down',
-                expect_price: 0,
-                methods: 'email',
-                create_at: FieldValue.serverTimestamp()
-            }, {
-                merge: true
-            })
+    // Fetch the first data
+    if (initData) {
+        initData.map(item => {
+            let rawRef = urlDoc.collection(collection.RAW_DATA).doc()
+            batch.set(rawRef, item)
+        })
+    }
 
-            let initData = await initProductDataFromUrl(url)
-            console.log('initData', initData)
+    // Commit and fresh pull
+    await batch.commit()
+    const pullDataUrl = urlFor('pullData', {
+        region: 'asia',
+        url: url,
+        token: ADMIN_TOKEN
+    })
+    fetch(pullDataUrl)
+    console.log(`Fetch the first data ${pullDataUrl}`)
 
-            // Fetch the first data
-            if (initData) {
-                initData.map(item => {
-                    let rawRef = urlDoc.collection(collection.RAW_DATA).doc()
-                    batch.set(rawRef, item)
-                })
-            }
-
-            batch.commit(() => {
-                console.log(`Init data with ${initData.length} items`)
-            })
-
-            const pullDataUrl = urlFor('pullData', {
-                region: 'asia',
-                url: url,
-                token: ADMIN_TOKEN
-            })
-            fetch(pullDataUrl)
-            console.log(`Fetch the first data ${pullDataUrl}`)
-
-            // Response
-            urlDoc.get().then(snapshot => res.json({
-                id: snapshot.id,
-                ...snapshot.data()
-            }))
+    // Response
+    urlDoc.get().then(snapshot => res.json({
+        id: snapshot.id,
+        ...snapshot.data()
+    }))
 
 })

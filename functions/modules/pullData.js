@@ -5,7 +5,6 @@ const {
   asiaRegion,
   db,
   pullProductDataFromUrl,
-  normalizeUrl,
   documentIdFromHashOrUrl,
   collection,
   validateToken,
