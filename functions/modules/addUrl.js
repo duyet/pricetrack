@@ -34,7 +34,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     const idToken = req.query.idToken
     const authUser = await getUserFromToken(idToken)
 
-    if (!idToken || authUser === null) return resError(res, `Invalid Token ${uid}`)
+    if (!idToken || authUser === null) return resError(res, `Invalid Token`)
 
     try {
         url = normalizeUrl(url)
@@ -72,11 +72,11 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         console.log('Url exists, subscribe email, update info')
         // Subscribe email
         let subRef = urlDoc.collection(collection.SUBSCRIBE).doc(email)
-        
+
         // TODO: check exist subscribe
         batch.set(subRef, {
             email,
-            active: false,
+            active: true,
             create_at: FieldValue.serverTimestamp(),
             expect_when: 'down',
             expect_price: 0,
@@ -124,15 +124,14 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
 
 
     // Update Metadata
-    let statisticDoc = db.collection(collection.METADATA).doc('statistics')
-    statisticDoc.get().then(doc => {
-        const urlCount = parseInt(doc.get('url_count') || 0) + 1;
-        batch.set(statisticDoc, {
-            url_count: urlCount
-        }, {
-            merge: true
-        })
-    })
+    try {
+        const statisticRef = db.collection(collection.METADATA).doc('statistics')
+        const statisticDoc = await statisticRef.get()
+        let urlCount = parseInt(statisticDoc.get('url_count') || 0) + 1
+        batch.set(statisticRef, { url_count: urlCount }, { merge: true })
+    } catch (e) {
+        console.error(e)
+    }
 
     // Subscribe email
     console.log(`Subscribe ${email}`)
