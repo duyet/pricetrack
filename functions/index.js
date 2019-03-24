@@ -43,6 +43,9 @@ exports.query = require('./modules/query')
 // Statistics
 exports.statistics = require('./modules/statistics')
 
+// Cashback url
+exports.cashback = require('./modules/cashback')
+
 // About page API
 exports.about = require('./modules/about')
 
@@ -56,4 +59,5 @@ exports.updateMessagingToken = require('./modules/updateMessagingToken')
 exports.redirect = require('./modules/redirect')
 
 // Admin api
-exports.onlyAdminData = require('./modules/onlyAdminData')
+exports.adminData = require('./modules/adminData')
+exports.adminAlertNewUser = require('./modules/adminAlertNewUser')

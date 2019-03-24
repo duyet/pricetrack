@@ -6,7 +6,8 @@ module.exports = {
     METADATA: 'metadata',
     CRONJOB_LOGS: 'cronjob_logs',
     MESSAGING_TOKEN: 'messaging_token',
-    ADMIN: 'admin'
+    ADMIN: 'admin',
+    CASHBACK: 'cashback'
   },
   eventType: {
     WRITE: 'google.firestore.document.write'
@@ -22,5 +23,10 @@ module.exports = {
     ERR_NOT_IS_ADMIN: 'User is not an admin user'
   },
 
-  URL_PARAMS_WHITELIST: [ 'spid' ]
+  URL_PARAMS_WHITELIST: [ 'spid' ],
+
+  email: {
+    APP_NAME: `Pricetrack`,
+    FROM_EMAIL: `pricetrack.apps@gmail.com`
+  }
 }

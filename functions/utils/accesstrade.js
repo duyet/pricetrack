@@ -1,8 +1,8 @@
 const { getConfig } = require('./config')
 
 const getDeepLink = (url, qs = {utm_source: 'pricetrack'}) => {
-    const accesstrade_deeplink_base = getConfig('accesstrade_deeplink_base')
-    if (!accesstrade_deeplink_base) {
+    const baseUrl = getConfig('accesstrade_deeplink_base')
+    if (!baseUrl) {
         console.error('Please set variable: pricetrack.accesstrade_deeplink_base'
                         + ' to use accessTrade Deep link')
         return url
@@ -18,7 +18,7 @@ const getDeepLink = (url, qs = {utm_source: 'pricetrack'}) => {
       .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
       .join('&')
 
-    return accesstrade_deeplink_base + '?' + query
+    return baseUrl + '?' + query
 }
 
 

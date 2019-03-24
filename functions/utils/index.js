@@ -21,10 +21,12 @@ const configUtils = require('./config')
 
 const accessTradeUtils = require('./accesstrade')
 const formaterUtils = require('./formater')
-const { normalizeUrl } = require('./formater')
+const {
+  normalizeUrl
+} = require('./formater')
 const fetchUtils = require('./fetch')
-
-console.log('xxxxxx fetchUtils', fetchUtils)
+const nodemailer = require('./nodemailer')
+const urlHash = require('./hash')
 
 // Setting DB
 admin.initializeApp(functions.config().firebase)
@@ -159,19 +161,6 @@ module.exports = {
   getHostname: u => url.parse(u).hostname,
 
   /**
-   * Return hash from url, if it already hashed, skip it
-   * 
-   * @param s {string} url hash or url
-   * @return {string}
-   */
-  documentIdFromHashOrUrl: s => {
-    let str = String(s)
-    return (/^[a-fA-F0-9]+$/).test(s) ?
-      s :
-      crypto.createHash('sha1').update(normalizeUrl(str)).digest('hex')
-  },
-
-  /**
    * Validate token, compare with pricetrack.admin_token
    * Set token by: $ firebase functions:config:set pricetrack.admin_token=<YOUR_TOKEN>
    * 
@@ -186,5 +175,7 @@ module.exports = {
   verifyUserTokenId,
   fetchRetry,
 
-  ...fetchUtils
+  ...urlHash,
+  ...fetchUtils,
+  ...nodemailer
 }
