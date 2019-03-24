@@ -1,4 +1,4 @@
-import { HOME, MY_PRODUCT, ABOUT } from './routes'
+import { HOME, MY_PRODUCT, ABOUT, CASHBACK } from './routes'
 
 const MENUS = [
     {
@@ -9,6 +9,11 @@ const MENUS = [
         path: MY_PRODUCT,
         text: 'Sản phẩm của tôi',
         auth: true
+    },
+    {
+        path: CASHBACK,
+        text: 'Cashback',
+        auth: false
     },
     {
         path: ABOUT,
