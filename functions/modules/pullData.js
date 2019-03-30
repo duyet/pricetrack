@@ -77,6 +77,7 @@ module.exports = functions
     let lastestAppendRaw = snapshot.get('lastest_append_raw') 
                               ? snapshot.get('lastest_append_raw')
                               : Timestamp.now()
+    let currentRawCount = snapshot.get('raw_count') || 0
 
 
     jsonData['datetime'] = FieldValue.serverTimestamp()
@@ -140,8 +141,11 @@ module.exports = functions
     })
 
     // Only save when changed or last_append_raw > 1h
-    if (jsonData['is_change'] || !snapshot.get('lastest_append_raw') || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR) {
-      console.log('Save new raw data (> 1hour)', Timestamp.now().toMillis() - lastestAppendRaw.toMillis())
+    if (jsonData['is_change'] 
+          || !snapshot.get('lastest_append_raw') 
+          || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR
+          || currentRawCount < 2) {
+      console.log('Save new raw data (> 1hour) or raw_count < 2', Timestamp.now().toMillis() - lastestAppendRaw.toMillis())
       db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
     }
 
