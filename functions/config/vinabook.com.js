@@ -1,4 +1,4 @@
-const { regexProcess, fetchContent } = require('../utils/parser/utils')
+const { regexProcess } = require('../utils/parser/utils')
 const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {retries: 3})
 const { JSDOM } = require('jsdom')
 

@@ -5,7 +5,6 @@ import withAuthentication from './Session/withAuthentication';
 
 import './layout.css'
 import 'bootstrap/dist/css/bootstrap.css'
-import './theme.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 const AppWithAuthentication = withAuthentication(({ children, inputUrl }) => (

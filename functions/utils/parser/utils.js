@@ -104,7 +104,7 @@ const regexProcess = (u, regex, pos = null) => {
         const pathname = url.parse(u).pathname
         const parsePathname = pathname.match(regex)
 
-        if (pos !== null) return parsePathname[pos]
+        if (parsePathname && pos !== null) return parsePathname[pos]
         return parsePathname
     } catch (e) {
         console.error(e)
