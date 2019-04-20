@@ -3,6 +3,7 @@ import axios from "axios"
 
 import Layout from "../components/layout"
 import { withAuthentication, AuthUserContext } from '../components/Session'
+import HeadSlogan from "../components/Block/HeadSlogan";
 
 const ERR_NOT_LOGIN = 'Vui lòng đăng nhập để sử dụng cashback'
 const BTN_CREATE = 'Tạo link'
@@ -21,7 +22,7 @@ class CashbackForm extends Component {
             url: this.state.inputUrl,
         }
 
-        axios.get('/api/cashback', { params })
+        axios.post('/api/cashback', { ...params })
             .then(response => {
                 console.log(response)
                 if (response.data) {
@@ -46,17 +47,28 @@ class CashbackForm extends Component {
     }
 
     render() {
+        let cashbackUrlBox = this.state.cashbackUrl
+            ?  <div className="input-group mb-3">
+                    <input type="text" className="form-control" value={this.state.cashbackUrl} />
+                    <div className="input-group-append">
+                        <a href={this.state.cashbackUrl} target="_blank" className="input-group-text">Go</a>
+                    </div>
+                </div>
+            : null
+
         return (
             <div>
-                <form className="form-inline" onSubmit={this.onSubmit}>
-                    <div className="form-group mb-2">
-                        <label for="staticEmail2" className="sr-only">Email</label>
+                <form  onSubmit={this.onSubmit}>
+                    <div className="input-group mb-3">
                         <input type="text" className="form-control" onChange={this.onChangeInput} />
+                        <div className="input-group-append">
+                            <button class="btn btn-outline-secondary">{BTN_CREATE}</button>
+                        </div>
                     </div>
-                    <button type="submit" className="btn btn-primary mb-2 ml-2">{BTN_CREATE}</button>
+
+                    {cashbackUrlBox}
                 </form>
 
-                { this.state.cashbackUrl ? <a href={this.state.cashbackUrl} target="_blank">{this.state.cashbackUrl}</a> : null }
             </div>
       )
     }
@@ -104,13 +116,7 @@ class IndexComponent extends Component {
         return (
           <Layout>
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{background: '#03A9F4'}}>
-                    <div className="d-flex flex-grow-1 align-items-center">
-                        <img className="mr-3" src="http://getbootstrap.com/docs/4.2/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48" />
-                        <div className="lh-100">
-                          <h6 className="mb-0 text-white lh-100">Cashback</h6>
-                          <small>beta</small>
-                        </div>
-                    </div>
+                    <HeadSlogan icon="checkmark" sub_headline="cashback" />
                 </div>
 
                 <div className="my-3 p-3 bg-white rounded shadow-sm row">

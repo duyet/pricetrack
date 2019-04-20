@@ -7,7 +7,7 @@ import { AuthUserContext } from '../Session'
 import * as ROUTES from '../../constants/routes'
 import Menu from './menu'
 import AddUrlForm from './addUrlForm'
-import Logo from '../Block/Logo'
+import Logo from './Logo'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'

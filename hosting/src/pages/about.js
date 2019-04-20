@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import Layout from "../components/layout"
 import CrawlerStatus from "../components/Block/CrawlerStatus"
 import Stats from "../components/Block/Stats"
+import HeadSlogan from "../components/Block/HeadSlogan";
 
 /**
  * This page is ad hoc, please modify it
@@ -16,13 +17,7 @@ export default class IndexComponent extends Component {
         return (
           <Layout>
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{background: '#03A9F4'}}>
-                    <div className="d-flex flex-grow-1 align-items-center">
-                        <img className="mr-3" src="http://getbootstrap.com/docs/4.2/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48" />
-                        <div className="lh-100">
-                          <h6 className="mb-0 text-white lh-100">Price track</h6>
-                          <small>beta</small>
-                        </div>
-                    </div>
+                    <HeadSlogan icon="image" sub_headline="Giới thiệu" />
                 </div>
 
                 <div className="my-3 p-3 bg-white rounded shadow-sm row">

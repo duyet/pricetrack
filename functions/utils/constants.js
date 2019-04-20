@@ -20,7 +20,8 @@ module.exports = {
     ERR_TOKEN_INVALID: 'Token không đúng',
     ERR_MISSING_URL: 'URL là bắt buộc',
     ERR_CANNOT_FETCH_DATA: 'Không thể fetch data',
-    ERR_NOT_IS_ADMIN: 'User is not an admin user'
+    ERR_NOT_IS_ADMIN: 'User is not an admin user',
+    ERR_ID_NOT_FOUND: 'ID không tồn tại'
   },
 
   URL_PARAMS_WHITELIST: [ 'spid' ],

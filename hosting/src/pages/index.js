@@ -10,10 +10,11 @@ import ProductList from '../components/Block/ProductList'
 import Loading from '../components/Block/Loading'
 import { withAuthentication, AuthUserContext } from '../components/Session'
 
+import HeadSlogan from "../components/Block/HeadSlogan";
+
 loadProgressBar()
 
 const DEFAULT_NUMBER_ITEMS = 15
-const HEAD_LINE_PRICE_TRACKER = 'Theo dõi giá'
 
 class IndexComponent extends PureComponent {
     _mounted = true
@@ -147,13 +148,7 @@ class IndexComponent extends PureComponent {
         return (
             <Layout>
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{background: '#03A9F4'}}>
-                    <div className="d-flex flex-grow-1 align-items-center">
-                        <img className="mr-3" src="http://getbootstrap.com/docs/4.2/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48" />
-                        <div className="lh-100">
-                          <h6 className="mb-0 text-white lh-100">{HEAD_LINE_PRICE_TRACKER}</h6>
-                          <small>beta</small>
-                        </div>
-                    </div>
+                    <HeadSlogan />
 
                     <div className="lh-100 mr-0 p-2 bd-highlight text-white justify-content-end">
                         {this.sortControl()}

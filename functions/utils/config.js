@@ -53,7 +53,6 @@ const hostingUrl = !IS_PROD
   : getConfig('hosting_url', 'https://tracker.duyet.net')
 
 
-
 module.exports = {
     getConfig,
     getSortKey,

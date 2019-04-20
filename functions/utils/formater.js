@@ -9,7 +9,8 @@ const normalUrl = require('normalize-url')
 const pullProductDataFromUrl = require('./parser/index')
 const {
   functionsUrl,
-  functionsUrlAsia
+  functionsUrlAsia,
+  hostingUrl
 } = require('./config')
 
 const {
@@ -100,6 +101,9 @@ const urlFor = (path, qs = {}) => {
 
   if (qs.hasOwnProperty('region') && qs.region.indexOf('asia') > -1) {
     return functionsUrlAsia + '/' + path + '?' + query
+  }
+  if (qs.hasOwnProperty('frontend') || qs.hasOwnProperty('hosting_url')) {
+    return hostingUrl + '/' + path + '?' + query
   }
 
   return functionsUrl + '/' + path + '?' + query

@@ -6,6 +6,8 @@ import HighchartsReact from 'highcharts-react-official'
 import { Link } from "gatsby"
 import { faExternalLinkAlt, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import moment from "moment"
+import 'moment/locale/vi'
 
 import { withAuthentication, AuthUserContext } from '../components/Session'
 import Layout from '../components/layout'
@@ -16,7 +18,9 @@ import NotFound from '../components/Block/NotFound'
 import SubscribeBox from '../components/Block/SubscribeBox'
 
 const PRICE_TEXT = 'giá'
-const SHOP_NOW = 'Mua ngay'
+const GO_TO = 'Tới'
+const CREATE_AT = 'Tạo'
+const LAST_PULL_AT = 'Cập nhật giá'
 
 class ViewPage extends Component {
     constructor(props) {
@@ -167,17 +171,23 @@ class ViewPage extends Component {
                             </small>
                             <br />
                             <br />
-                            <Link to={url.url} className='btn btn-primary btn-sm mr-1' 
-                                    onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
-                                    <FontAwesomeIcon icon={faShoppingCart} /> {SHOP_NOW}
-                            </Link>
+                            <a href={url.url} className='btn btn-primary btn-sm mr-1' 
+                                    onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
+                                    <FontAwesomeIcon icon={faShoppingCart} /> {GO_TO} {url.domain}
+                            </a>
+
+                            <small className="ml-3">
+                                {url.deeplinkClick ? `${url.deeplinkClick} click${url.deeplinkClick > 1 ? 's' : ''} | ` : ''}
+                                {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
+                                {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}
+                            </small>
                         </div>
                     </div>
 
                     <div className="lh-100 my-3">
-                        <Link to={url.url} onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}>
+                        <a href={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
                             <img className="ml-3 img-fluid" style={{height: 40}} src={url.domain_logo} alt="" />
-                        </Link>
+                        </a>
                     </div>
                 </div>
 
