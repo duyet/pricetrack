@@ -8,6 +8,9 @@ import HeadSlogan from "../components/Block/HeadSlogan";
 const ERR_NOT_LOGIN = 'Vui lòng đăng nhập để sử dụng cashback'
 const BTN_CREATE = 'Tạo link'
 const ERROR_MESSAGE = 'Something went wrong'
+const YOUR_CASHBACK_BALANCE = 'Số dư cashback'
+const YOUR_CASHBACK_BALANCE_CHECKED_OUT = 'Đã thanh toán'
+const UPDATING = 'Đang cập nhật'
 
 class CashbackForm extends Component {
     state = { cashbackUrl: null, inputUrl: null }
@@ -110,6 +113,35 @@ class SupportedProvider extends Component {
     }
 }
 
+class CashbackBalance extends Component {
+    state = { balance: 0, loading: false }
+
+    componentDidMount() {}
+
+    render() {
+        if (this.state.loading) return 'Loading ...'
+
+        return (
+            <div className="d-flex justify-content-center my-3 p-3 bg-white rounded shadow-sm text-center">
+                <div className="mr-5">
+                    <span>{YOUR_CASHBACK_BALANCE}: </span>
+                    <span style={{color: '#1791d3', fontWeight: 700}}>{this.state.balance} VND</span>
+                    <div>
+                        <small><em>({UPDATING})</em></small>
+                    </div>
+                </div>
+                
+                <div>
+                    <span>{YOUR_CASHBACK_BALANCE_CHECKED_OUT}: </span>
+                    <span style={{color: '#1791d3', fontWeight: 700}}>{this.state.balance} VND</span>
+                    <div>
+                        <small><em></em></small>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
 
 class IndexComponent extends Component {
     render() {
@@ -120,7 +152,6 @@ class IndexComponent extends Component {
                 </div>
 
                 <div className="my-3 p-3 bg-white rounded shadow-sm row">
-
                     <div className="col mb-3" style={{ fontSize: 13 }}>
                         Cashback là chức năng nhận lại tiền hoàn trả từ Pricetrack. 
                         Lưu ý:
@@ -132,9 +163,9 @@ class IndexComponent extends Component {
                     <div className="col mb-3">
                         { !this.props.authUser ? <div className="text-danger text-sm">{ERR_NOT_LOGIN}</div> : <CashbackForm {...this.props} /> }
                     </div>
-
                 </div>
 
+                <CashbackBalance />
                 <SupportedProvider />
 
           </Layout>
