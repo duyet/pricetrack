@@ -150,14 +150,14 @@ class ViewPage extends Component {
                     <div className="d-flex flex-row justify-content-between">
                         <LogoPlaceHolder url={url} width={80} height={80} />
                         <div className="lh-100 ml-3">
-                            <Link to={this.state.data.url} 
-                                onClick={e => { openDeepLink(url.deep_link); e.preventDefault() }}
+                            <a href={this.state.data.url} 
+                                onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}
                                 style={{color: url.color}}>
                                 <h6 className="mb-0 lh-100">
                                     {this.state.data.info.name} 
                                     <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" style={{fontWeight: 300, fontSize: 12}} />
                                 </h6>
-                            </Link>
+                            </a>
                             <br />
                             <small className="mb-3" style={{ color: '#000', fontWeight: 700 }}>
                                 {formatPrice(this.state.data.latest_price, false, this.state.data.info.currency)} 

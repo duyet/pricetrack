@@ -8,7 +8,6 @@ Auto collect, visualize and alert for product items.
 ![Home page](.screenshot/screenshot-detail.png)
 ![Home page](.screenshot/screenshot-about.png)
 ![Raw API](.screenshot/intro-raw-api.png)
-![Raw API](.screenshot/intro-redash.png)
 
 
 # Installation
@@ -27,7 +26,28 @@ Auto collect, visualize and alert for product items.
 
 2. Go to https://console.firebase.google.com and create new project.
 
-3. **Deploy serverless functions and hosting to Firebase**
+3. Setup env variables, copy and modify `env.example.sh` to `env.local.sh`
+	```
+	firebase functions:config:set pricetrack.sentry_dsn=https://abc@sentry.io/1362210
+	firebase functions:config:set pricetrack.cronjob_key=696969
+	firebase functions:config:set pricetrack.apiKey=xxxxxxooooooKMgWKRhUdY91
+	firebase functions:config:set pricetrack.admin_token=xxxxxxxxxx
+	firebase functions:config:set pricetrack.gmail_email=pricetrack.apps@gmail.com
+	firebase functions:config:set pricetrack.gmail_password=xxxxxxxxxx
+	firebase functions:config:set pricetrack.hosting_url=https://tracker.duyet.net
+	firebase functions:config:set pricetrack.accesstrade_deeplink_base=https://fast.accesstrade.com.vn/deep_link/4557459014401077484
+	firebase functions:config:set pricetrack.admin_email=lvduit08@gmail.com
+	```
+
+	Run: `bash ./env.local.sh`
+
+3. Test in local: https://firebase.google.com/docs/functions/local-emulator
+	- Export local configs: `firebase functions:config:get > functions/.runtimeconfig.json`
+	- Start firebase: `firebase serve`
+	- Start hosting local: `cd hosting && npm run develop`
+	- Open UI: http://localhost:8000
+
+4. **Deploy serverless functions and hosting to Firebase**
 	```
 	firebase deploy
 	```
@@ -38,7 +58,7 @@ Auto collect, visualize and alert for product items.
 
 	![Firebase Dashboard](.screenshot/setup-dashboard-functions.png)
 
-4. **Test your API**
+5. **Test your API**
 	
 	Add new URL: `https://<your-project>.cloudfunctions.net/addUrl?url=<your-url>`
 
@@ -57,34 +77,14 @@ Auto collect, visualize and alert for product items.
 	![Test API](.screenshot/setup-test-4.png)
 
 
-5. **Setup the cronjob for /pullData**: https://cron-job.org
+6. **Setup the cronjob for /pullData**: https://cron-job.org
 
 	![Cronjob pulling](.screenshot/setup-cronjob.png)
 
-5. **Setup Redash on Heroku**: https://github.com/willnet/redash-on-heroku
-	![Redash on Heroku](.screenshot/setup-redash.png)
 
-	At API as Data Source:
-	![Redash on Heroku](.screenshot/setup-redash-data-source.png)
+7. Check out the UI: https://tracker.duyet.net
 
-	Enter your api URL:
-	![Redash on Heroku](.screenshot/setup-data-source-add.png)
-
-	Query in Data Source:
-	![Redash on Heroku](.screenshot/setup-redash-query.png)
-
-	Visualize from Redash Query:
-	![Redash on Heroku](.screenshot/setup-redash-vis.png)
-
-	Redash Dashboard:
-	![Redash on Heroku](.screenshot/setup-redash-vis-add-dashboard.png)
-
-	Final Dashboard:
-	![Redash on Heroku](.screenshot/setup-redash-dashboard.png)
-
-	Alert when price change:
-	![Redash on Heroku](.screenshot/setup-redash-alert.png)
-
+	![Home page](.screenshot/screenshot-home.png)
 
 # Technology
 

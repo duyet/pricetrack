@@ -60,4 +60,4 @@ exports.redirect = require('./modules/redirect')
 
 // Admin api
 exports.adminData = require('./modules/adminData')
-exports.adminAlertNewUser = require('./modules/adminAlertNewUser')
+exports.onNewUser = require('./modules/onNewUser')

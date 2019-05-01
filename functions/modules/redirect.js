@@ -14,14 +14,24 @@ const router = new Router()
 
 router.get('/:id?', async (ctx) => {
     let urlId = ctx.params.id || ctx.query.id
+    let email = ctx.params.email || ''
+    let ref = ctx.params.ref || ''
     try {
         let snapshot = await db.collection(collection.URLS)
                              .doc(documentIdFromHashOrUrl(urlId))
                              .get()
-        const deepLink = getDeepLink(snapshot.get('url'))
-        
+        const deepLink = getDeepLink(snapshot.get('url'), {
+            utm_campaign: 'tracker',
+            utm_content: email
+        })
+
+
+        const deeplinkClickFromEmail = snapshot.get('deeplinkClickFromEmail') || 0
         const deeplinkClick = snapshot.get('deeplinkClick') || 0
-        snapshot.ref.set({ deeplinkClick: deeplinkClick + 1 }, { merge: true })
+        snapshot.ref.set({
+            deeplinkClick: deeplinkClick + 1,
+            deeplinkClickFromEmail: ref === 'email' ? deeplinkClickFromEmail + 1 : deeplinkClickFromEmail
+        }, { merge: true })
         return ctx.redirect(deepLink)
     } catch (err) {
         ctx.status = 404

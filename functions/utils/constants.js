@@ -3,6 +3,7 @@ module.exports = {
     URLS: 'urls',
     RAW_DATA: 'raw',
     SUBSCRIBE: 'subscribe',
+    USER: 'user',
     METADATA: 'metadata',
     CRONJOB_LOGS: 'cronjob_logs',
     MESSAGING_TOKEN: 'messaging_token',

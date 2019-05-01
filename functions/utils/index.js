@@ -1,5 +1,4 @@
 const url = require('url')
-const crypto = require('crypto')
 const querystring = require('querystring')
 const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {
   retries: 3

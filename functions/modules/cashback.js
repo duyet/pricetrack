@@ -85,7 +85,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
                 id: docId,
                 url,
                 deeplinkUrl,
-                cashbackUrl: urlFor(`cashback`, { id: docId, frontend: 1 }),
+                cashbackUrl,
                 email,
                 created_at: FieldValue.serverTimestamp(),
                 click: 0

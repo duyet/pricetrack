@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const functions = require('firebase-functions')
-const { formatPrice, hostingUrl, getDeepLink } = require('../../utils')
+const { formatPrice, hostingUrl, getDeepLink, urlFor } = require('../../utils')
 
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
@@ -49,6 +49,8 @@ const sendEmail = async (email, params) => {
                                     ? `<li>Giá mong đợi: ${formatPrice(params.expect_price)}</li>`
                                     : ``
 
+    const productLink = urlFor(`redirect/${params.id}`, { ref: 'email' })
+
     // The user subscribed to the newsletter.
     mailOptions.subject = EMAIL_SUBJECT[templateType]({PRODUCT_NAME: params.info.name, APP_NAME})
     mailOptions.html = `Xin chào ${email || ''}
@@ -57,12 +59,12 @@ const sendEmail = async (email, params) => {
 
     <ul>
         <li>
-            Sản phẩm: <a href="${getDeepLink(params.url)}">${params.info.name}</a>
-            <a href="${getDeepLink(params.url)}">(${params.domain})</a>
+            Sản phẩm: <a href="${productLink}">${params.info.name}</a>
+            <a href="${productLink}">(${params.domain})</a>
         </li>
         <li>
             Price Track: <a href="${hostingUrl}/view/${params.id}"><strong>Lịch sử giá</strong></a> | 
-            <a href="${getDeepLink(params.url)}"><strong>Tới trang sản phẩm (${params.domain})</strong></a>
+            <a href="${productLink}"><strong>Tới trang sản phẩm (${params.domain})</strong></a>
         </li>
         <li>
             Giá: ${formatPrice(params.latest_price, false, params.info.currency)} 
