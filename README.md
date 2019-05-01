@@ -88,19 +88,15 @@ Auto collect, visualize and alert for product items.
 
 # Technology
 
-- UI Website for result (Vue.js)
+- UI Website for result (Gatsby.js, React.js)
 - Cronjob trigger worker (https://www.google.com/search?num=20&q=cron+job+trigger, https://cron-job.org)
 - Deployment:
 	+ API: Firebase Functions
 	+ Database: Firebase Firestore
-	+ Web: Firebase Hosting
-- Visualization tools: Redash
+	+ Web: Firebase Hosting, GatsbyJS
 
 # Next Step
 
 - Support for more domain
 - Move worker pullData to Google Scripts to reduce cost.
-- Web UI
-- Secure API
-- Add Alert, Price Tracing
 - Auto trigger BUY, Add to cart
