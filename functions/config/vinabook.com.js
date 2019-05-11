@@ -2,25 +2,43 @@ const { regexProcess } = require('../utils/parser/utils')
 const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {retries: 3})
 const { JSDOM } = require('jsdom')
 
+const select = (dom, path, attr) => {
+  let item = dom.querySelector(path) || {}
+  return item[attr] || ''
+}
+
 const getRawHtml = async (params) => {
-  const url = `https://www.vinabook.com/p-p${params.product_id}.html`
-  const req = await fetch(url)
-  const html = await req.text()
+  const url = params.url
+  let res = await fetch(url)
+  let html = await res.text()
+
+  if (html.indexOf('meta http-equiv="Refresh') > -1) {
+    let newUrl = html.split('0;URL=')[1].split('"')[0]
+    const cookies = res.headers.get('set-cookie')
+    let res2 = await fetch(newUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36',
+        'Cookie': cookies
+      },
+    })
+    html = await res2.text()
+  }
+
   const dom = new JSDOM(html, {features: {QuerySelector: true}})
   const { document } = dom.window
-
+  
   let json = {
-    product_id:   params.product_id,
-    name:         document.querySelector('[itemprop="name"]').textContent        || '',
-    description:  document.querySelector('[itemprop="description"]').textContent || '',
-    currency:     document.querySelector('[itemprop="priceCurrency"]').content || '',
-    availability: document.querySelector('[itemprop="availability"]').href     || '',
-    price:        document.querySelector('[itemprop="price"]').textContent       || '',
-    image:        document.querySelector('[itemprop="image"]').src             || '',
+    product_id:   params.productId,
+    name:         select(document, '[itemprop="name"]', 'textContent'),
+    description:  select(document, '[itemprop="description"]', 'textContent'),
+    currency:     select(document, '[itemprop="priceCurrency"]', 'content'),
+    availability: select(document, '[itemprop="availability"]', 'href'),
+    price:        select(document, `#sec_discounted_price_${params.productId}`, 'textContent'),
+    image:        select(document, '[itemprop="image"]', 'src'),
     qty:          '0',
   }
 
-  console.log(url, `=>`, json)
+  console.log(`=>`, json)
 
   return json
 }

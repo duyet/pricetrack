@@ -22,7 +22,8 @@ module.exports = {
     ERR_MISSING_URL: 'URL là bắt buộc',
     ERR_CANNOT_FETCH_DATA: 'Không thể fetch data',
     ERR_NOT_IS_ADMIN: 'User is not an admin user',
-    ERR_ID_NOT_FOUND: 'ID không tồn tại'
+    ERR_ID_NOT_FOUND: 'ID không tồn tại',
+    ERR_500: '500'
   },
 
   URL_PARAMS_WHITELIST: [ 'spid' ],
@@ -30,5 +31,10 @@ module.exports = {
   email: {
     APP_NAME: `Pricetrack`,
     FROM_EMAIL: `pricetrack.apps@gmail.com`
+  },
+
+  UTM: {
+    utm_source: 'pricetrack',
+    utm_campaign: 'cashback',
   }
 }

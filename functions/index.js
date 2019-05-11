@@ -45,6 +45,7 @@ exports.statistics = require('./modules/statistics')
 
 // Cashback url
 exports.cashback = require('./modules/cashback')
+exports.cashbackInfo = require('./modules/cashbackInfo')
 
 // About page API
 exports.about = require('./modules/about')

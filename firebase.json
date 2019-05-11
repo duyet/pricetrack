@@ -28,6 +28,7 @@
       { "source": "/api/subscribe", "function": "subscribe" },
       { "source": "/api/about", "function": "about" },
       { "source": "/api/cashback", "function": "cashback" },
+      { "source": "/api/cashbackInfo", "function": "cashbackInfo" },
       { "source": "/api/updateMessagingToken", "function": "updateMessagingToken" },
       {
         "source": "view/**", 

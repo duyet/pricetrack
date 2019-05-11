@@ -21,7 +21,8 @@ const {
     text: {
         ERR_URL_NOT_SUPPORTED, 
         ERR_ID_NOT_FOUND
-    }
+    },
+    UTM
 } = require('../utils/constants')
 
 module.exports = httpsFunctions.onRequest(async (req, res) => {
@@ -52,8 +53,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         }
     
         const deeplinkUrl = getDeepLink(url, {
-            utm_source: 'pricetrack',
-            utm_campaign: 'cashback',
+            ...UTM,
             utm_content: email
         })
     

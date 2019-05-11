@@ -6,4 +6,6 @@ firebase functions:config:set pricetrack.gmail_email=
 firebase functions:config:set pricetrack.gmail_password=
 firebase functions:config:set pricetrack.hosting_url=
 firebase functions:config:set pricetrack.accesstrade_deeplink_base=
+firebase functions:config:set pricetrack.accesstrade_token=
 firebase functions:config:set pricetrack.admin_email=
+firebase functions:config:set pricetrack.cashback_rate=0.5

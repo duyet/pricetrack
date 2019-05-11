@@ -1,29 +1,29 @@
+const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {retries: 3})
+const { JSDOM } = require('jsdom')
+
 const { regexProcess } = require('../utils/parser/utils')
-const chrome = require('chrome-aws-lambda')
-const puppeteer = require('puppeteer-core')
 const { initDataJajum } = require('../utils/fetch')
 
-let browser = null
 
 const adayroiSnippetData = async (params) => {
-  browser = browser || await puppeteer.launch({
-    args: chrome.args,
-    executablePath: await chrome.executablePath,
-    headless: chrome.headless,
-  })
 
-  const url = `https://www.adayroi.com/abc-p-${params.product_id}`
-  const page = await browser.newPage()
-  await page.goto(url)
+  const url = params.url
+  const req = await fetch(url)
+  const html = await req.text()
+  const dom = new JSDOM(html, {features: {QuerySelector: true}})
+  const { document } = dom.window
 
-  // Get the "viewport" of the page, as reported by the page.
-  const json = await page.evaluate(() => {
-    return JSON.parse(document.getElementById('detailSnippet').innerText)
-  })
+  let json = {
+    product_id:   params.productId,
+    name:         document.querySelector('title').textContent                   || '',
+    description:  (document.querySelector('[name="description"]') || {}).content        || '',
+    currency:     'VND',
+    availability: null,
+    price:        (document.querySelector('.price-info__sale') || {}).textContent     || '',
+    image:        (document.querySelector('[property="og:image"]') || {}).content       || '',
+    qty:          0,
+  }
 
-  json['product_id'] = params.product_id
-
-  delete json.review
   console.info(json)
 
   return json
@@ -46,21 +46,22 @@ module.exports = {
 
   product_api: adayroiSnippetData,
   format_func: json => {
-    let offers = json.offers || {}
-    let price = offers.price || 0
+    let price = 0
+    try {
+      price = parseInt( (json.price || '').replace(/[^0-9]+/g, '') )
+    } catch (e) { console.error(e) }
+
     let is_deal = false
     let qty = 0
-    let product_id = json.product_id
     let inventory_status = price > 0 ? true : false
-    return { price, is_deal, qty, product_id, inventory_status }
+    return { ...json, price, is_deal, qty, inventory_status }
   },
 
   // TODO: rename this attr
   product_info_api: adayroiSnippetData,
   format_product_info: json => {
-    let offers = json.offers || {}
     let { name, description, image } = json
-    let priceCurrency = offers.priceCurrency || ''
+    let priceCurrency = 'VND'
     return { name, description, currency: priceCurrency, image }
   },
 
