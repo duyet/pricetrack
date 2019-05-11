@@ -17,6 +17,7 @@ import notiIcon from './notification.svg'
 import profileIcon from './profile.svg'
 
 const SIGN_IN = 'Đăng nhập'
+const TITLE = 'Theo dõi giá và hoàn tiền | Price tracker & Cashback'
 
 const UserButton = ({authUser, onClickSignIn, onClickProfile}) => {
   const className = 'btn btn-sm btn-outline-secondary ml-2'
@@ -44,7 +45,7 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl, fir
         class: 'bg-light'
     }}>
       <meta charSet="utf-8" />
-      <title>Price Track</title>
+      <title>{TITLE}</title>
     </Helmet>
     <header className="blog-header py-3">
       <div className="row flex-nowrap justify-content-between align-items-center">

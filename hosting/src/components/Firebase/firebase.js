@@ -23,9 +23,15 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
-    this.messaging = app.messaging();
+    this.perf = app.performance();
 
-    this.messaging.usePublicVapidKey(process.env.GATSBY_VAPID_KEY)
+    this.messaging = null;
+    try {
+      this.messaging = app.messaging();
+      this.messaging.usePublicVapidKey(process.env.GATSBY_VAPID_KEY)
+    } catch(e) {
+      console.error(e)
+    }
 
     /* Social Sign In Method Provider */
 
@@ -67,7 +73,7 @@ class Firebase {
 
   // *** Messaging *** //
   doMessagingRequestPermission = () => 
-    this.messaging.requestPermission().then(() => {
+    this.messaging && this.messaging.requestPermission().then(() => {
       console.log('Notification permission granted.')
       // TODO(developer): Retrieve an Instance ID token for use with FCM.
       // ...
@@ -85,8 +91,8 @@ class Firebase {
     }
   }
 
-  onMessagingRequestPermission = (next, fallback) =>
-    this.messaging.getToken().then(currentToken => {
+  onMessagingRequestPermission = (next, fallback) => 
+    this.messaging && this.messaging.getToken().then(currentToken => {
       if (currentToken) {
         console.log(`Messaging token`, currentToken)
         this.sendTokenToServer(currentToken)
@@ -108,7 +114,7 @@ class Firebase {
     })
 
   onMessagingTokenRefresh = (next, fallback) =>
-    this.messaging.onTokenRefresh(() => this.onMessagingRequestPermission(next, fallback))
+    this.messaging && this.messaging.onTokenRefresh(() => this.onMessagingRequestPermission(next, fallback))
 
   // *** Merge Auth and DB User API *** //
 
@@ -137,9 +143,9 @@ class Firebase {
 
 let firebase;
 
-function getFirebase(app, auth, database, messaging) {
+function getFirebase(app, auth, database, messaging, performance) {
   try {
-    firebase = new Firebase(app, auth, database, messaging);
+    firebase = new Firebase(app.firebase, auth, database, messaging, performance);
   } catch (e) {
     if (e.code !== "app/duplicate-app") throw new Error(e)
   }

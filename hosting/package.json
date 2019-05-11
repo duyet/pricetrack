@@ -12,6 +12,11 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
+    "@firebase/app": "^0.4.1",
+    "@firebase/auth": "^0.11.2",
+    "@firebase/database": "^0.4.1",
+    "@firebase/messaging": "^0.3.20",
+    "@firebase/performance": "^0.2.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-brands-svg-icons": "^5.6.3",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
@@ -20,7 +25,8 @@
     "axios": "^0.18.0",
     "axios-progress-bar": "^1.2.0",
     "bootstrap": "^4.2.1",
-    "firebase": "^5.7.2",
+    "core-js": "^2.6.5",
+    "firebase": "^5.11.1",
     "gatsby": "^2.4.3",
     "gatsby-plugin-create-client-paths": "^2.0.3",
     "gatsby-plugin-google-analytics": "^2.0.9",
