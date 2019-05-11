@@ -3,7 +3,6 @@ import { Link } from 'gatsby'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
-import assert from 'assert'
 
 import Layout from '../components/layout'
 import { withAuthentication, AuthUserContext } from '../components/Session'

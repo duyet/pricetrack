@@ -3,7 +3,6 @@ import axios from 'axios'
 
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
-import { Link } from "gatsby"
 import { faExternalLinkAlt, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment from "moment"
@@ -21,6 +20,7 @@ const PRICE_TEXT = 'giá'
 const GO_TO = 'Tới'
 const CREATE_AT = 'Tạo'
 const LAST_PULL_AT = 'Cập nhật giá'
+const OUT_OF_STOCK = 'Hết hàng'
 
 class ViewPage extends Component {
     constructor(props) {
@@ -150,6 +150,9 @@ class ViewPage extends Component {
                     <div className="d-flex flex-row justify-content-between">
                         <LogoPlaceHolder url={url} width={80} height={80} />
                         <div className="lh-100 ml-3">
+                        { url.inventory_status === false 
+                            ? <span className="badge badge-danger mr-1" style={{fontSize: '1em', fontWeight: 300}}>{OUT_OF_STOCK}</span>
+                            : '' } 
                             <a href={this.state.data.url} 
                                 onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}
                                 style={{color: url.color}}>

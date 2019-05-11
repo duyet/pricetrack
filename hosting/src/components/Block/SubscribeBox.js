@@ -67,7 +67,7 @@ class SubscribeBox extends Component {
             let newInfoState = this.state.info || {}
             console.log(e.target.checked, e.target.value, 'target')
             if (inputType === 'checkbox') {
-                if (inputId == 'methods') {
+                if (inputId === 'methods') {
                     newInfoState['methods'] = newInfoState['methods'] ? new Set(newInfoState['methods']) : new Set()
                     console.log("newInfoState['methods']", newInfoState['methods'])
                     let value = e.target.value

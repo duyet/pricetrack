@@ -1,6 +1,13 @@
 import React, { Component } from "react"
 import axios from "axios"
 
+// Import React Table
+import ReactTable from "react-table"
+import "react-table/react-table.css"
+
+// Modal
+import Modal from 'react-awesome-modal'
+
 import Layout from "../components/layout"
 import { withAuthentication, AuthUserContext } from '../components/Session'
 import HeadSlogan from "../components/Block/HeadSlogan";
@@ -11,6 +18,22 @@ const ERROR_MESSAGE = 'Something went wrong'
 const YOUR_CASHBACK_BALANCE = 'Số dư cashback'
 const YOUR_CASHBACK_BALANCE_CHECKED_OUT = 'Đã thanh toán'
 const UPDATING = 'Đang cập nhật'
+
+const COL_TIME ='Thời gian'
+const COL_ORDER_ID ='Mã đơn hàng'
+const COL_STATUS ='Trạng thái'
+const COL_BILLING ='Giá trị đơn hàng'
+const COL_AMOUNT ='Giá trị'
+const COL_CASHBACK_VALUE ='Cashback'
+const COL_MERCHANT ='Website'
+const COL_QUANTITY ='Số lượng'
+const COL_PRODUCT_NAME ='Tên sản phẩm'
+
+const TEXT_STATUS = {
+    0: 'Chờ duyệt',
+    1: 'Đã duyệt',
+    2: 'Hủy',
+}
 
 class CashbackForm extends Component {
     state = { cashbackUrl: null, inputUrl: null }
@@ -54,7 +77,7 @@ class CashbackForm extends Component {
             ?  <div className="input-group mb-3">
                     <input type="text" className="form-control" value={this.state.cashbackUrl} />
                     <div className="input-group-append">
-                        <a href={this.state.cashbackUrl} target="_blank" className="input-group-text">Go</a>
+                        <a href={this.state.cashbackUrl} target="_blank" rel="noopener noreferrer" className="input-group-text">Go</a>
                     </div>
                 </div>
             : null
@@ -65,7 +88,7 @@ class CashbackForm extends Component {
                     <div className="input-group mb-3">
                         <input type="text" className="form-control" onChange={this.onChangeInput} />
                         <div className="input-group-append">
-                            <button class="btn btn-outline-secondary">{BTN_CREATE}</button>
+                            <button className="btn btn-outline-secondary">{BTN_CREATE}</button>
                         </div>
                     </div>
 
@@ -103,7 +126,9 @@ class SupportedProvider extends Component {
                         let provider = this.state.providers[name]
                         if (!provider.active) return null
                         return <img src={provider.logo} 
+                                    key={provider.logo} 
                                     className="img-fluid mr-5" 
+                                    alt=""
                                     style={{width: 100}} 
                                     title={provider.domain}  />
                     })
@@ -114,31 +139,138 @@ class SupportedProvider extends Component {
 }
 
 class CashbackBalance extends Component {
-    state = { balance: 0, loading: false }
+    state = {
+        data: [],
+        totalCommission: 0, 
+        loading: false,
+        modal: false,
+        modalContent: null
+    }
 
-    componentDidMount() {}
+    componentDidMount() {
+        const idToken = localStorage.getItem('authUserIdToken')
+
+        this.setState({ loading: true })
+        axios.get('/api/cashbackInfo', { params: { idToken } })
+            .then(response => {
+                let { data, totalCommission } = response.data
+                this.setState({ data, totalCommission, loading: false })
+            })
+            .catch(err => {
+                this.setState({ loading: false, error: true })
+            })
+    }
+
+    _price() {
+        if (this.state.loading) return '...'
+        return `${this.state.totalCommission} VND`
+    }
+
+    _data() {
+        if (!this.state.data) return null
+        return this.state.data
+    }
+
+    showModal = (e, row) => {
+        e.preventDefault()
+        this.setState({ modal: true, modalContent: row._original })
+    }
+
+    _getModalContent() {
+        if (!this.state.modalContent) return null
+        return (
+            <ReactTable
+                    data={this.state.modalContent.products}
+                    columns={[
+                        { Header: COL_TIME, accessor: "click_time" },
+                        { Header: COL_PRODUCT_NAME, id: "product_name",
+                            Cell: ({ row }) => (
+                                <span className="btn btn-link">{row._original.product_id}</span>
+                            )
+                        },
+                        { Header: COL_STATUS, id: "status", 
+                            accessor: d => <>
+                                <span className={
+                                    [
+                                        "badge",
+                                        "mr-1",
+                                        d.status === 0 ? 'badge-warning' : '',
+                                        d.status === 1 ? 'badge-success' : '',
+                                        d.status === 2 ? 'badge-danger' : '',
+                                    ].join(' ')
+                                }>
+                                    { TEXT_STATUS[d.status] }
+                                </span>
+                            </>
+                        },
+                        { Header: COL_QUANTITY, accessor: "product_quantity" },
+                        { Header: COL_AMOUNT, accessor: "amount" }
+                    ]}
+                    defaultPageSize={10}
+                    minRows={2}
+                    className="-striped -highlight bg-white shadow-sm text-center size-sm"
+                />
+        )
+    }
 
     render() {
         if (this.state.loading) return 'Loading ...'
 
         return (
-            <div className="d-flex justify-content-center my-3 p-3 bg-white rounded shadow-sm text-center">
-                <div className="mr-5">
-                    <span>{YOUR_CASHBACK_BALANCE}: </span>
-                    <span style={{color: '#1791d3', fontWeight: 700}}>{this.state.balance} VND</span>
+            <>
+                <div className="d-flex justify-content-center my-3 p-3 bg-white rounded shadow-sm text-center">
+                    <div className="mr-5">
+                        <span>{YOUR_CASHBACK_BALANCE}: </span>
+                        <span style={{color: '#1791d3', fontWeight: 700}}>{this._price()}</span>
+                        <div>
+                            <small><em>({UPDATING})</em></small>
+                        </div>
+                    </div>
+                    
                     <div>
-                        <small><em>({UPDATING})</em></small>
+                        <span>{YOUR_CASHBACK_BALANCE_CHECKED_OUT}: </span>
+                        <span style={{color: '#1791d3', fontWeight: 700}}>0 VND</span>
+                        <div>
+                            <small><em></em></small>
+                        </div>
                     </div>
                 </div>
-                
-                <div>
-                    <span>{YOUR_CASHBACK_BALANCE_CHECKED_OUT}: </span>
-                    <span style={{color: '#1791d3', fontWeight: 700}}>{this.state.balance} VND</span>
+
+                <ReactTable
+                    data={this._data()}
+                    columns={[
+                        { Header: COL_TIME, accessor: "click_time" },
+                        { Header: COL_ORDER_ID, id: "order_id",
+                            Cell: ({ row }) => (
+                                <button className="btn btn-link" onClick={e => this.showModal(e, row)}>
+                                    {row._original.order_id}
+                                </button>
+                            )
+                        },
+                        { Header: COL_STATUS, id: "status", 
+                            accessor: d => <>
+                                <span className="badge badge-warning mr-1">{d.order_pending}</span>
+                                <span className="badge badge-success mr-1">{d.order_success}</span>
+                                <span className="badge badge-danger mr-1">{d.order_reject}</span>
+                            </>
+                        },
+                        { Header: COL_BILLING, accessor: "billing" },
+                        { Header: COL_CASHBACK_VALUE, accessor: "pub_commission" },
+                        { Header: COL_MERCHANT, accessor: "merchant" },
+                    ]}
+                    defaultPageSize={10}
+                    className="-striped -highlight bg-white shadow-sm text-center size-sm"
+                />
+                <Modal 
+                    visible={this.state.modal}
+                    effect="fadeInUp"
+                    onClickAway={() => this.setState({ modal: false })}
+                >
                     <div>
-                        <small><em></em></small>
+                        {this._getModalContent()}
                     </div>
-                </div>
-            </div>
+                </Modal>
+            </>
         )
     }
 }
