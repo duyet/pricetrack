@@ -10,9 +10,10 @@
   "storage": {
     "rules": "storage.rules"
   },
-  "hosting": {
+  "hosting": [{
     "cleanUrls": true,
     "trailingSlash": false,
+    "target": "pricetrack",
     "public": "hosting/public",
     "ignore": [
       "firebase.json",
@@ -39,5 +40,36 @@
         "destination": "/index.html"
       }
     ]
-  }
+  },
+  {
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "target": "pricetrack-dev",
+    "public": "hosting/public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      { "source": "/api/listUrls", "function": "listUrls" },
+      { "source": "/api/getUrl", "function": "getUrl" },
+      { "source": "/api/addUrl", "function": "addUrl" },
+      { "source": "/api/query", "function": "query" },
+      { "source": "/api/statistics", "function": "statistics" },
+      { "source": "/api/subscribe", "function": "subscribe" },
+      { "source": "/api/about", "function": "about" },
+      { "source": "/api/cashback", "function": "cashback" },
+      { "source": "/api/cashbackInfo", "function": "cashbackInfo" },
+      { "source": "/api/updateMessagingToken", "function": "updateMessagingToken" },
+      {
+        "source": "view/**", 
+        "destination": "/view/index.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }]
 }

@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "duyet-price-tracker"
+  },
+  "targets": {
+    "duyet-price-tracker": {
+      "hosting": {
+        "pricetrack": [
+          "pricetrack"
+        ],
+        "pricetrack-dev": [
+          "duyet-price-tracker"
+        ]
+      }
+    }
   }
 }
