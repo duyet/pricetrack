@@ -2,7 +2,7 @@
 
 Auto collect, visualize and alert for product items.
 
-**Live**: [https://tracker.duyet.net](https://tracker.duyet.net)
+**Live**: [https://pricetrack.web.app](https://pricetrack.web.app) or [https://tracker.duyet.net](https://tracker.duyet.net)
 
 ![Home page](.screenshot/screenshot-home.png)
 ![Home page](.screenshot/screenshot-detail.png)
