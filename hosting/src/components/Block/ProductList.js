@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from "react"
 import { Link } from "gatsby"
+import { OutboundLink as A } from 'gatsby-plugin-google-analytics'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHistory, faCaretDown, faCaretUp, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import moment from "moment"
@@ -29,9 +30,9 @@ class ProductList extends React.Component {
                   <div className="d-flex justify-content-center">
                     <div className="d-flex flex-column align-items-center">
                         <LogoPlaceHolder className="d-block" url={url} />
-                        <a className="d-block d-sm-none mt-1" href={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
+                        <A className="d-block d-sm-none mt-1" href={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
                             <img className="img-fluid" style={{width: 40}} src={url.domain_logo} alt="" />
-                        </a>
+                        </A>
                     </div>
 
 
@@ -58,15 +59,15 @@ class ProductList extends React.Component {
 
                         <br />
 
-                        <a href={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }} style={{ color: '#797979 !important' }}>
+                        <A href={url.url} onClick={e => { openDeepLink(url.redirect); e.preventDefault() }} style={{ color: '#797979 !important' }}>
                             {url.url.length > 100 ? url.url.slice(0, 100) + '...' : url.url}
-                        </a>
+                        </A>
                         <br />
 
-                        <a href={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
+                        <A href={url.url} className='btn btn-primary btn-sm mt-2 mb-2 mr-1' 
                             onClick={e => { openDeepLink(url.redirect); e.preventDefault() }}>
                             <FontAwesomeIcon icon={faShoppingCart} /> {GO_TO} {url.domain}
-                        </a>
+                        </A>
                         <Link className='btn btn-default btn-sm mt-2 mb-2 mr-1' to={'/view/' + url.id}>
                             <FontAwesomeIcon icon={faHistory} /> {VIEW_HISTORY}
                         </Link>
@@ -74,7 +75,7 @@ class ProductList extends React.Component {
                         <br />
 
                         <small>
-                            <a href={'/view/' + url.id}>{ADD_BY} {url.add_by}</a> | &nbsp;
+                            <A href={'/view/' + url.id}>{ADD_BY} {url.add_by}</A> | &nbsp;
                             {url.deeplinkClick ? `${url.deeplinkClick} click${url.deeplinkClick > 1 ? 's' : ''} | ` : ''}
                             {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
                             {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}

@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import axios from "axios"
+import { OutboundLink as A } from 'gatsby-plugin-google-analytics'
 
 // Import React Table
 import ReactTable from "react-table"
@@ -77,7 +78,7 @@ class CashbackForm extends Component {
             ?  <div className="input-group mb-3">
                     <input type="text" className="form-control" value={this.state.cashbackUrl} />
                     <div className="input-group-append">
-                        <a href={this.state.cashbackUrl} target="_blank" rel="noopener noreferrer" className="input-group-text">Go</a>
+                        <A href={this.state.cashbackUrl} target="_blank" rel="noopener noreferrer" className="input-group-text">Go</A>
                     </div>
                 </div>
             : null

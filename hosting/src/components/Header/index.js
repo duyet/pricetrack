@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react"
 import { Helmet } from "react-helmet"
 import { navigate } from "gatsby"
+import { OutboundLink as A } from 'gatsby-plugin-google-analytics'
 
 import { withFirebase } from '../Firebase'
 import { AuthUserContext } from '../Session'
@@ -57,9 +58,9 @@ const NavigationAuth = ({ authUser, onClickSignIn, onClickProfile, inputUrl, fir
         </div>
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
-            <a className="text-muted" href="/" >
+            <A className="text-muted" href="/" >
               <img src={notiIcon} alt="" />
-            </a>
+            </A>
 
             <UserButton authUser={authUser} onClickProfile={onClickProfile} onClickSignIn={onClickSignIn} />
           </div>

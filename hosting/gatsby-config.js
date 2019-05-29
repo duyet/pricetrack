@@ -31,7 +31,7 @@ module.exports = {
             options: {
               name: `pricetrack`,
               short_name: `pricetrack`,
-              start_url: `/`,
+              start_url: "/?utm_source=homescreen&utm_medium=shortcut",
               background_color: `#f8f9fa`,
               theme_color: `#f8f9fa`,
               // a hard-coded value indicating that FCM is authorized to send messages to this app
@@ -42,6 +42,15 @@ module.exports = {
               display: `standalone`,
               icon: `static/icon.png`, // This path is relative to the root of the site.
               include_favicon: true, // Include favicon
+              share_target: {
+                "action": "add",
+                "method": "GET",
+                "params": {
+                    "title": "title",
+                    "text": "text",
+                    "url": "url"
+                }
+              },
             },
         },
     ],
