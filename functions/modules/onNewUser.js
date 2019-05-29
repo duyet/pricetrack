@@ -22,7 +22,11 @@ module.exports = functions.auth.user().onCreate(async user => {
         from: `${APP_NAME} <${FROM_EMAIL}>`,
         to: ADMIN_EMAIL,
         subject: `[${APP_NAME}] New account ${email}`,
-        html: `New account is registered: ${displayName} (${email})<br /><br /><pre>${JSON.stringify(user, null, 4)}</pre>`
+        html: `New account is registered: ${displayName} (${email})<br /><br />
+        
+        <img src="${user.photoURL}" width="200" />
+
+        <pre>${JSON.stringify(user, null, 4)}</pre>`
     }
 
     try {

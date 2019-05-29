@@ -25,6 +25,8 @@ const {
 const ADMIN_TOKEN = getConfig('admin_token')
 const ONE_HOUR = 3600000
 
+let snapshotCache = {}
+
 module.exports = functions
   .region(asiaRegion)
   .runWith({
@@ -61,9 +63,12 @@ module.exports = functions
 
     // Fetch current url info
     try {
-      snapshot = await db.collection(collection.URLS).doc(urlHash).get()
+      snapshot = snapshotCache[urlHash] || await db.collection(collection.URLS).doc(urlHash).get()
       assert(snapshot != null)
       assert(snapshot.exists)
+
+      // Cache to reduce number of request to DB
+      snapshotCache[urlHash] = snapshot
     } catch (err) {
       console.error(err)
       return resError(res, err.message, 500)
@@ -92,7 +97,7 @@ module.exports = functions
     }
 
     // Update statistic
-    if (latest_price && new_price - latest_price != 0) {
+    if (latest_price && new_price - latest_price !== 0) {
       // Price change in VND and percentage
       let price_change = new_price - latest_price
       let price_change_percent = (latest_price > 0) ? (100 * price_change / latest_price) : 100
@@ -136,11 +141,11 @@ module.exports = functions
     }
 
     // Update URL info
-    db.collection(collection.URLS).doc(urlHash).set(updateInfoData, {
+    await db.collection(collection.URLS).doc(urlHash).set(updateInfoData, {
       merge: true
     })
 
-    // Only save when changed or last_append_raw > 1h
+    // Only add new Raw when changed or last_append_raw > 1h
     if (jsonData['is_change'] 
           || !snapshot.get('lastest_append_raw') 
           || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR
@@ -151,12 +156,22 @@ module.exports = functions
 
     // Trigger alert if is_change
     if (updateInfoData.is_change) {
-      const alertTriggerUrl = urlFor('alert', {
-        url: snapshot.get('url'),
-        token: ADMIN_TOKEN
-      })
-      fetch(alertTriggerUrl)
-      console.info(`Trigger alert ${alertTriggerUrl}`)
+      setTimeout(() => {
+        const alertTriggerUrl = urlFor('alert', {
+          url: snapshot.get('url'),
+          token: ADMIN_TOKEN
+        })
+        fetch(alertTriggerUrl)
+        console.info(`Trigger alert ${alertTriggerUrl}`)
+        // Done
+        res.json({
+          msg: 'ok',
+          alert_triggered: !!jsonData.is_change,
+          jsonData
+        })
+      }, 2000)
+
+      return true
     }
 
     // Done

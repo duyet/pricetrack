@@ -30,6 +30,7 @@ exports.ping = require('firebase-functions')
 
 // Cronjob
 exports.cronjob = require('./modules/cronjob')
+exports.scheduler = require('./modules/scheduler')
 
 // Pull price
 exports.pullData = require('./modules/pullData')
