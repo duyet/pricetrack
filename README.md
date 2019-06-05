@@ -5,7 +5,8 @@ Auto collect, visualize and alert for product items.
 **Live**: [https://pricetrack.web.app](https://pricetrack.web.app) or [https://tracker.duyet.net](https://tracker.duyet.net)
 
 **Support**
-<a href="https://www.patreon.com/duyet"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
+
+<a href="https://s.duyet.net/r/patreon"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
 
 ![Home page](.screenshot/screenshot-home.png)
 ![Home page](.screenshot/screenshot-detail.png)
