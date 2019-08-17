@@ -18,7 +18,7 @@
     "chrome-aws-lambda": "^1.11.2",
     "express": "^4.16.4",
     "firebase-admin": "^7.3.0",
-    "firebase-functions": "^2.3.1",
+    "firebase-functions": "^3.2.0",
     "iltorb": "^2.4.1",
     "jsdom": "^13.1.0",
     "koa": "^2.7.0",

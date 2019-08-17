@@ -26,6 +26,7 @@ const ADMIN_TOKEN = getConfig('admin_token')
 const ONE_HOUR = 3600000
 
 let snapshotCache = {}
+const sleep = require('util').promisify(setTimeout)
 
 module.exports = functions
   .region(asiaRegion)
@@ -158,7 +159,9 @@ module.exports = functions
 
     // Trigger alert if is_change
     if (updateInfoData.is_change && currentRawCount > 1) {
-      setTimeout(() => {
+      (async () => {
+        await sleep(1000)
+
         const alertTriggerUrl = urlFor('alert', {
           url: snapshot.get('url'),
           token: ADMIN_TOKEN
@@ -171,7 +174,7 @@ module.exports = functions
           alert_triggered: !!jsonData.is_change,
           jsonData
         })
-      }, 2000)
+      })()
 
       return true
     }
