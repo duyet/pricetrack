@@ -50,6 +50,22 @@ module.exports = functions
     let snapshot = null
     let jsonData = null
 
+    // Fetch current url info
+    try {
+      snapshot = snapshotCache[urlHash] || await db.collection(collection.URLS).doc(urlHash).get()
+      assert(snapshot != null)
+      assert(snapshot.exists)
+
+      let isActive = snapshot.get('is_active') || true
+      assert(isActive === true)
+
+      // Cache to reduce number of request to DB
+      snapshotCache[urlHash] = snapshot
+    } catch (err) {
+      console.error(err)
+      return resError(res, err.message, 500)
+    }
+
     // Fetch remote data
     try {
       jsonData = await pullProductDataFromUrl(url)
@@ -61,27 +77,14 @@ module.exports = functions
       return resError(res, err.message, 500)
     }
 
-    // Fetch current url info
-    try {
-      snapshot = snapshotCache[urlHash] || await db.collection(collection.URLS).doc(urlHash).get()
-      assert(snapshot != null)
-      assert(snapshot.exists)
-
-      // Cache to reduce number of request to DB
-      snapshotCache[urlHash] = snapshot
-    } catch (err) {
-      console.error(err)
-      return resError(res, err.message, 500)
-    }
-
     let raw_count = snapshot.get('raw_count') || 0
     let latest_price = snapshot.get('latest_price') || 0
     let num_price_change = snapshot.get('num_price_change') || 0
     let num_price_change_up = snapshot.get('num_price_change_up') || 0
     let num_price_change_down = snapshot.get('num_price_change_down') || 0
-    let lastestAppendRaw = snapshot.get('lastest_append_raw') 
-                              ? snapshot.get('lastest_append_raw')
-                              : Timestamp.now()
+    let lastestAppendRaw = snapshot.get('lastest_append_raw')
+      ? snapshot.get('lastest_append_raw')
+      : Timestamp.now()
     let currentRawCount = snapshot.get('raw_count') || 0
 
 
@@ -97,7 +100,7 @@ module.exports = functions
     }
 
     // Update statistic
-    if (latest_price && new_price - latest_price !== 0) {
+    if (latest_price !== 0 && new_price - latest_price !== 0) {
       // Price change in VND and percentage
       let price_change = new_price - latest_price
       let price_change_percent = (latest_price > 0) ? (100 * price_change / latest_price) : 100
@@ -111,7 +114,6 @@ module.exports = functions
       num_price_change_down = price_change_percent < 0 ? num_price_change_down + 1 : num_price_change_down
 
       updateInfoData = Object.assign(updateInfoData, {
-        // Price change
         latest_price: new_price,
         price_change,
         price_change_percent,
@@ -122,13 +124,7 @@ module.exports = functions
         num_price_change_down,
         is_deal: jsonData['is_deal']
       })
-
       jsonData = Object.assign(jsonData, { is_change: true })
-    }
-
-    // Update lastest_append_raw_at
-    if (!snapshot.get('lastest_append_raw') || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR) {
-      updateInfoData = Object.assign(updateInfoData, { lastest_append_raw: Timestamp.now() })
     }
 
     // inventory_status change
@@ -140,22 +136,28 @@ module.exports = functions
       jsonData = Object.assign(jsonData, { is_change: true })
     }
 
+    // Update lastest_append_raw_at
+    if (!snapshot.get('lastest_append_raw') || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR) {
+      updateInfoData = Object.assign(updateInfoData, { lastest_append_raw: Timestamp.now() })
+    }
+
     // Update URL info
     await db.collection(collection.URLS).doc(urlHash).set(updateInfoData, {
       merge: true
     })
 
     // Only add new Raw when changed or last_append_raw > 1h
-    if (jsonData['is_change'] 
-          || !snapshot.get('lastest_append_raw') 
-          || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR
-          || currentRawCount < 2) {
-      console.log('Save new raw data (> 1hour) or raw_count < 2', Timestamp.now().toMillis() - lastestAppendRaw.toMillis())
+    if (jsonData['is_change']
+      || !snapshot.get('lastest_append_raw')
+      || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR
+      || currentRawCount < 2) {
+      console.log('Save new raw data (> 1hour) or raw_count < 2',
+                  Timestamp.now().toMillis() - lastestAppendRaw.toMillis())
       db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
     }
 
     // Trigger alert if is_change
-    if (updateInfoData.is_change) {
+    if (updateInfoData.is_change && currentRawCount > 1) {
       setTimeout(() => {
         const alertTriggerUrl = urlFor('alert', {
           url: snapshot.get('url'),

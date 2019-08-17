@@ -26,7 +26,7 @@ module.exports = {
     ERR_500: '500'
   },
 
-  URL_PARAMS_WHITELIST: [ 'spid' ],
+  URL_PARAMS_WHITELIST: [],
 
   email: {
     APP_NAME: `Pricetrack`,

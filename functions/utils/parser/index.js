@@ -20,7 +20,8 @@ const pullProductDataFromUrl = async (u) => {
     try {
         return await parseUrlWithConfig(u, parseRules[provider])
     } catch (err) {
-        throw Error(err)
+        console.error(err)
+        return null
     }
 }
 

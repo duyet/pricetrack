@@ -37,7 +37,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     if (!idToken || authUser === null) return resError(res, `Invalid Token`)
 
     try {
-        url = normalizeUrl(url)
+        url = normalizeUrl(url) 
     } catch (err) {
         console.error(err)
         return resError(res, ERR_URL_NOT_SUPPORTED)

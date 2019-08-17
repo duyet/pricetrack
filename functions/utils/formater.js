@@ -52,6 +52,13 @@ const normalizeUrl = (u, paramsWhitelist = []) => {
              .map(key => params.set(key, urlObj.searchParams.get(key)))
     params.sort()
 
+    // Normalize tiki.vn url
+    // e.g. https://tiki.vn/abc-p0000.html?spid=99999 => https://tiki.vn/abc-p99999.html
+    if (u.indexOf('tiki.vn') > -1 && urlObj.searchParams.get('spid') !== null) {
+      let spid = urlObj.searchParams.get('spid')
+      u = u.replace(/-p([0-9]+)\.html/, `-p${spid}.html`)
+    }
+
     let paramString = params.toString() ? `?${params.toString()}` : ''
     return resolve(normalUrl(u, normalizeUrlConfig), paramString)
   } catch (e) {
