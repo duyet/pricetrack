@@ -1003,10 +1003,10 @@ chownr@^1.0.1, chownr@^1.1.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.1.tgz#54726b8b8fff4df053c42187e801fb4412df1494"
   integrity sha512-j38EvO5+LHX84jlo6h4UzmOwi0UgW61WRyPtJz4qaadK5eY3BTS5TY/S1Stc3Uk2lIM6TPevAlULiEJwie860g==
 
-chrome-aws-lambda@1.17.1:
-  version "1.17.1"
-  resolved "https://registry.yarnpkg.com/chrome-aws-lambda/-/chrome-aws-lambda-1.17.1.tgz#d3ca2ae13a5cacd465582a9084c07976adc1ff3a"
-  integrity sha512-ooUkcyWRUyRLg4XCEVbM0fKMQUf5XRWb1flc1755w/0S9UMp+5fT0MRl0YQLlU2WIDo82fqWLY7mKtuBPkTOmg==
+chrome-aws-lambda@1.19.0:
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/chrome-aws-lambda/-/chrome-aws-lambda-1.19.0.tgz#1078e9fe1a30584a26eb5ef5270df41d6223099d"
+  integrity sha512-GTrnlZLjFni+qlGTWFcjiJPhmaV+cR/QVDTcDdNRxZm8NQKfopaVv03PLSLP6StzpC0BHquUg6tqz5QH0w1lIw==
 
 circular-json@^0.3.1:
   version "0.3.3"

@@ -15,7 +15,7 @@
     "@zeit/fetch-retry": "3.0.0",
     "axios": "0.18.1",
     "axios-retry": "3.1.2",
-    "chrome-aws-lambda": "1.17.1",
+    "chrome-aws-lambda": "1.19.0",
     "express": "4.17.1",
     "firebase-admin": "7.4.0",
     "firebase-functions": "3.2.0",
