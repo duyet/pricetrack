@@ -50,7 +50,7 @@
     "react-table": "6.10.0"
   },
   "devDependencies": {
-    "babel-loader": "8.0.5",
+    "babel-loader": "8.0.6",
     "ify-loader": "1.1.0",
     "transform-loader": "0.2.4"
   }
