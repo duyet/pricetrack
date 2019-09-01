@@ -46,7 +46,7 @@
     "react-chartkick": "0.3.2",
     "react-dom": "16.7.0",
     "react-flash-message": "1.0.2",
-    "react-helmet": "5.2.0",
+    "react-helmet": "5.2.1",
     "react-table": "6.10.0"
   },
   "devDependencies": {
