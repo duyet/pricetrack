@@ -32,4 +32,4 @@ jobs:
         cd hostings
         npm install && npm install -g firebase-tools
         npm run build
-        firebase deploy --only hostings --token "$FIREBASE_TOKEN"
+        firebase deploy --project duyet-price-tracker --only hostings --token "$FIREBASE_TOKEN"
