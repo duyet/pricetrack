@@ -35,7 +35,7 @@
     "eslint-config-standard": "12.0.0",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-node": "8.0.1",
-    "eslint-plugin-promise": "3.8.0",
+    "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
     "firebase-functions-test": "0.1.6",
     "mocha": "5.2.0",
