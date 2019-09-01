@@ -24,7 +24,7 @@
     "koa": "2.7.0",
     "koa-firebase-functions": "1.0.1",
     "koa-router": "7.4.0",
-    "node-fetch": "2.3.0",
+    "node-fetch": "2.6.0",
     "nodemailer": "5.1.1",
     "normalize-url": "4.1.0",
     "puppeteer-core": "1.19.0"
