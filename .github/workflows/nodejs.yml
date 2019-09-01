@@ -25,10 +25,12 @@ jobs:
       env:
         CI: true
   deploy:
+    runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v1
       - name: Deploy hosting
-      - run: |
+        run: |
           cd hostings
           npm install && npm install -g firebase-tools
           npm run build
