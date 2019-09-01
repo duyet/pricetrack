@@ -32,7 +32,7 @@
     "gatsby-plugin-google-analytics": "2.1.12",
     "gatsby-plugin-manifest": "2.2.12",
     "gatsby-plugin-postcss-sass": "1.0.22",
-    "gatsby-plugin-purgecss": "3.1.0",
+    "gatsby-plugin-purgecss": "3.1.1",
     "gatsby-plugin-purify-css": "2.2.1",
     "gatsby-plugin-react-helmet": "3.1.5",
     "highcharts": "7.0.1",
