@@ -35,7 +35,7 @@
     "gatsby-plugin-purgecss": "4.0.1",
     "gatsby-plugin-purify-css": "2.2.1",
     "gatsby-plugin-react-helmet": "3.1.6",
-    "highcharts": "7.1.3",
+    "highcharts": "7.2.0",
     "highcharts-react-official": "2.2.2",
     "jsdom": "15.1.1",
     "moment": "2.24.0",
