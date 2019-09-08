@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  functons:
+  functions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
