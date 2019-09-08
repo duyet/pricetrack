@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-import { navigate } from 'gatsby'
+import React, { Component } from 'react';
+import { navigate } from 'gatsby';
 
-import * as ROUTES from '../../constants/routes'
+import * as ROUTES from '../../constants/routes';
 
-const ERROR_CODE_ACCOUNT_EXISTS =
-  'auth/account-exists-with-different-credential';
+const ERROR_CODE_ACCOUNT_EXISTS = 'auth/account-exists-with-different-credential';
 const ERROR_MSG_ACCOUNT_EXISTS = `
   An account with an E-Mail address to
   this social account already exists. Try to login from
@@ -13,29 +12,28 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 `;
 
 
-class SignInGoogleBase extends Component {
+export default class SignInGoogleBase extends Component {
   constructor(props) {
     super(props);
 
     this.state = { error: null };
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     this.props.firebase
       .doSignInWithGoogle()
-      .then(socialAuthUser => {
-        // Create a user in your Firebase Realtime Database too
-        return this.props.firebase.user(socialAuthUser.user.uid).set({
-          username: socialAuthUser.user.displayName,
-          email: socialAuthUser.user.email,
-          roles: [],
-        });
-      })
+
+      // Create a user in your Firebase Realtime Database too
+      .then((socialAuthUser) => this.props.firebase.user(socialAuthUser.user.uid).set({
+        username: socialAuthUser.user.displayName,
+        email: socialAuthUser.user.email,
+        roles: [],
+      }))
       .then(() => {
         this.setState({ error: null });
         navigate(ROUTES.HOME);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
           error.message = ERROR_MSG_ACCOUNT_EXISTS;
         }
@@ -47,7 +45,7 @@ class SignInGoogleBase extends Component {
   };
 
   render() {
-    const { error } = this.state
+    const { error } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
         <button type="submit">Sign In with Google</button>

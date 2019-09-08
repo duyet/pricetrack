@@ -16,13 +16,13 @@ jobs:
           cd functions
           npm install
           npm run lint
-          echo ${{ secrets.FIREBASE_URL }}
           export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
           npm run deploy
       - name: Deploy hosting
         run: |
           cd hosting
           npm install
-          npm install -g firebase-tools
+          npm run lint
           npm run build
-          firebase deploy --token "$FIREBASE_TOKEN" --only hosting
+          export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
+          npm run deploy

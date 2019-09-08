@@ -1,0 +1,4 @@
+/flow-typed/*
+/public/*
+/node_modules/*
+firebase-messaging-sw.js

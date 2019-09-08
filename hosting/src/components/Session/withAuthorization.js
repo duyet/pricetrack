@@ -5,7 +5,7 @@ import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
-const withAuthorization = condition => Component => {
+const withAuthorization = (condition) => (Component) => {
   class WithAuthorization extends React.Component {
     _initFirebase = false;
 
@@ -14,7 +14,7 @@ const withAuthorization = condition => Component => {
         this._initFirebase = true;
 
         this.listener = this.props.firebase.onAuthUserListener(
-          authUser => {
+          (authUser) => {
             if (!condition(authUser)) {
               navigate(ROUTES.SIGN_IN);
             }
@@ -33,14 +33,14 @@ const withAuthorization = condition => Component => {
     }
 
     componentWillUnmount() {
-      this.listener && this.listener();
+      return this.listener && this.listener();
     }
 
     render() {
       return (
         <AuthUserContext.Consumer>
-          {authUser =>
-            condition(authUser) ? <Component {...this.props} /> : null
+          {
+            (authUser) => (condition(authUser) ? <Component {...this.props} /> : null)
           }
         </AuthUserContext.Consumer>
       );

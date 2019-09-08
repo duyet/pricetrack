@@ -3,14 +3,13 @@ import React from 'react';
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
 
-const needsEmailVerification = authUser =>
-  authUser &&
-  !authUser.emailVerified &&
-  authUser.providerData
-    .map(provider => provider.providerId)
+const needsEmailVerification = (authUser) => authUser
+  && !authUser.emailVerified
+  && authUser.providerData
+    .map((provider) => provider.providerId)
     .includes('password');
 
-const withEmailVerification = Component => {
+const withEmailVerification = (Component) => {
   class WithEmailVerification extends React.Component {
     constructor(props) {
       super(props);
@@ -27,8 +26,7 @@ const withEmailVerification = Component => {
     render() {
       return (
         <AuthUserContext.Consumer>
-          {authUser =>
-            needsEmailVerification(authUser) ? (
+          {(authUser) => (needsEmailVerification(authUser) ? (
               <div>
                 {this.state.isSent ? (
                   <p>
@@ -52,9 +50,9 @@ const withEmailVerification = Component => {
                   Send confirmation E-Mail
                 </button>
               </div>
-            ) : (
+          ) : (
               <Component {...this.props} />
-            )
+          ))
           }
         </AuthUserContext.Consumer>
       );

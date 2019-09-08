@@ -3,7 +3,7 @@ import React from 'react';
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
 
-const withAuthentication = Component => {
+const withAuthentication = (Component) => {
   class WithAuthentication extends React.Component {
     _initFirebase = false;
 
@@ -21,47 +21,47 @@ const withAuthentication = Component => {
         this._initFirebase = true;
 
         this.listener = this.props.firebase.onAuthUserListener(
-          authUser => {
+          (authUser) => {
             localStorage.setItem(
               'authUser',
               JSON.stringify(authUser),
-            )
-            authUser.getIdToken(true).then(function(idToken) {
+            );
+            authUser.getIdToken(true).then((idToken) => {
               localStorage.setItem(
                 'authUserIdToken',
                 idToken
-              )
-            }).catch(function(error) {
-              console.error(error)
-            })
-            
-            this.setState({ authUser })
+              );
+            }).catch((error) => {
+              console.error(error);
+            });
+
+            this.setState({ authUser });
           },
           () => {
-            localStorage.removeItem('authUser')
-            this.setState({ authUser: null })
+            localStorage.removeItem('authUser');
+            this.setState({ authUser: null });
           },
-        )
+        );
 
-        const onMessagingSuccess = token => {
+        const onMessagingSuccess = (token) => {
           localStorage.setItem(
             'messagingToken',
             JSON.stringify(token)
-          )
-          this.setState({ messagingToken: token })
-        }
+          );
+          this.setState({ messagingToken: token });
+        };
         const onMessagingError = () => {
-          localStorage.removeItem('messagingToken')
-          this.setState({ messagingToken: null })
-        }
+          localStorage.removeItem('messagingToken');
+          this.setState({ messagingToken: null });
+        };
         this.props.firebase.onMessagingRequestPermission(
           onMessagingSuccess,
           onMessagingError
-        )
+        );
         this.props.firebase.onMessagingTokenRefresh(
           onMessagingSuccess,
           onMessagingError
-        )
+        );
       }
     };
 
@@ -78,7 +78,7 @@ const withAuthentication = Component => {
     }
 
     componentWillUnmount() {
-      this.listener && this.listener()
+      return this.listener && this.listener();
     }
 
     render() {
