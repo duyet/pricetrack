@@ -1,6 +1,11 @@
-name: PriceTrack Workflow on Push
+name: PriceTrack Deploy Functions
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'functions/*'
 
 jobs:
   deploy:
@@ -11,18 +16,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 8.x
-      - name: Deploy functions
+      - name: Run Eslint
         run: |
           cd functions
           npm install
           npm run lint
-          export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
-          npm run deploy
-      - name: Deploy hosting
+      - name: Deploy functions
         run: |
-          cd hosting
-          npm install
-          npm run lint
-          npm run build
           export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
           npm run deploy

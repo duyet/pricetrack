@@ -1,0 +1,28 @@
+name: PriceTrack Deploy Functions
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'hosting/*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 
+        uses: actions/setup-node@v1
+        with:
+          node-version: 8.x
+      - name: Run Eslint
+        run: |
+          cd hosting
+          npm install
+          npm run lint
+      - name: Deploy hosting
+        run: |
+          npm run build
+          export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
+          npm run deploy
