@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "description": "PriceTrack",
+  "description": "pricetrack-functions",
   "version": "0.0.2",
   "scripts": {
     "lint": "eslint .",
