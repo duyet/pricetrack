@@ -16,7 +16,8 @@ jobs:
           cd functions
           npm install
           npm run lint
-          echo $FIREBASE_URL
+          echo ${{ secrets.FIREBASE_URL }}
+          export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
           npm run deploy
       - name: Deploy hosting
         run: |
