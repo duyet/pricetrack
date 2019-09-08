@@ -69,3 +69,7 @@ node_modules/
 *local*
 .runtimeconfig.json
 duyet-price-tracker-8b683b4e75b0.json
+
+# VS Code
+*.code-workspace
+.vscode

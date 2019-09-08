@@ -11,10 +11,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 8.x
+      - name: Deploy functions
+        run: |
+          cd functions
+          npm run lint
+          npm install -g firebase-tools
+          firebase deploy --token "$FIREBASE_TOKEN" --only functions
       - name: Deploy hosting
         run: |
           cd hosting
           npm install
           npm install -g firebase-tools
           npm run build
-          firebase deploy --token "$FIREBASE_TOKEN"
+          firebase deploy --token "$FIREBASE_TOKEN" --only hosting
