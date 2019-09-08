@@ -4,9 +4,14 @@ on:
   push:
     branches:
       - 'releases/*'
+  pull_request:
+    branches:
+      - 'releases/*'
+
+
 jobs:
 
-  functons:
+  functions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
