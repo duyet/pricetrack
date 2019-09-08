@@ -28,7 +28,7 @@
     "axios-progress-bar": "1.2.0",
     "bootstrap": "4.3.1",
     "core-js": "3.2.1",
-    "dotenv": "^8.1.0",
+    "dotenv": "8.1.0",
     "firebase": "6.6.0",
     "gatsby": "2.15.9",
     "gatsby-plugin-create-client-paths": "2.1.6",
@@ -43,7 +43,7 @@
     "jsdom": "15.1.1",
     "moment": "2.24.0",
     "postcss-import": "12.0.1",
-    "prop-types": "^15.7.2",
+    "prop-types": "15.7.2",
     "react": "16.9.0",
     "react-awesome-modal": "2.0.5",
     "react-bootstrap": "0.32.4",
@@ -55,10 +55,10 @@
   },
   "devDependencies": {
     "babel-loader": "8.0.6",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-jest": "^22.17.0",
-    "eslint-plugin-react": "^7.14.3",
-    "firebase-tools": "^7.3.1",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-plugin-jest": "22.17.0",
+    "eslint-plugin-react": "7.14.3",
+    "firebase-tools": "7.3.1",
     "ify-loader": "1.1.0",
     "transform-loader": "0.2.4"
   }
