@@ -5,8 +5,14 @@ on:
     branches:
       - master
     paths:
-      - 'functions'
-
+      # F*king golang https://help.github.com/en/articles/workflow-syntax-for-github-actions#onpushpull_requestpaths
+      - 'functions/*'
+      - 'functions/*/*'
+      - 'functions/*/*/*'
+      - 'functions/*/*/*/*'
+      - 'functions/*/*/*/*/*'
+      - 'functions/*/*/*/*/*/*'
+      - 'functions/*/*/*/*/*/*/*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
