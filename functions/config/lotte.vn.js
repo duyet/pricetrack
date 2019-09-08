@@ -10,7 +10,7 @@ module.exports = {
 
   // Get {productId} and {shopId}
   productId: u => regexProcess(u, /\/product\/([0-9]+)\//, 1),
-  shopId: u => null,
+  shopId: () => null,
   required: ['productId'],
 
   product_api: 'https://www.lotte.vn/api/v1/products/{product_id}/detail',

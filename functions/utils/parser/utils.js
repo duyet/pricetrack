@@ -203,7 +203,7 @@ const getSupportedDomain = dir => {
     return SUPPORTED_DOMAIN
 }
 
-const getData = async (url, config) => {
+const getData = async (url) => {
     try {
         const json = await fetchContent(url, true)
         return json
@@ -255,7 +255,7 @@ const getProductInfoFromUrl = async u => {
             return false
         }
 
-        const data = await getData(product_info_api, config)
+        const data = await getData(product_info_api)
         return config.format_product_info(data)
     }
 

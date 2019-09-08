@@ -1,4 +1,3 @@
-const assert = require('assert')
 const functions = require('firebase-functions')
 const {
     getConfig,
@@ -8,7 +7,7 @@ const axios = require('axios')
 
 const CRONJOB_KEY = getConfig('cronjob_key')
 
-module.exports = functions.pubsub.schedule('every 15 minutes').onRun(async (ctx) => {
+module.exports = functions.pubsub.schedule('every 15 minutes').onRun(async () => {
     console.log('Run every 15 minutes!');
 
     let triggerUrl = urlFor(`cronjob`, {

@@ -10,7 +10,6 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "rules": {
-        "camelcase": [2, {"properties": "never"}],
         "no-console": 0
     }
 };

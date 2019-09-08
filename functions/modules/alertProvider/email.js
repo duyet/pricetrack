@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const functions = require('firebase-functions')
-const { formatPrice, hostingUrl, getDeepLink, urlFor } = require('../../utils')
+const { formatPrice, hostingUrl, urlFor } = require('../../utils')
 
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:

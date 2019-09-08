@@ -54,7 +54,7 @@ module.exports = {
   // Get {productId} and {shopId}
   // https://www.vinabook.com/leonardo-da-vinci-1-p85106.html
   productId: u => regexProcess(u, /-p([0-9]+)\.html/, 1),
-  shopId: u => null,
+  shopId: () => null,
   required: ['productId'],
 
   product_api: getRawHtml,

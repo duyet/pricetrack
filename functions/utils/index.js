@@ -59,7 +59,7 @@ const domainLogos = Object.keys(parseRules)
  * @param  {function} error   error callback function
  */
 const verifyUserTokenId = (token, success, error) => {
-  admin.auth().verifyIdToken(idToken)
+  admin.auth().verifyIdToken(token)
     .then(function (decodedToken) {
       var uid = decodedToken.uid;
       success(uid)

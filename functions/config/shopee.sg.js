@@ -1,5 +1,4 @@
-const { regexProcess } = require('../utils/parser/utils')
-const shopeeVN = require('./shopee.vn')
+const shopeeVN = require('./shopee.vn');
 
 module.exports = {
   ...shopeeVN,

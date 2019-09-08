@@ -15,9 +15,8 @@ jobs:
         run: |
           cd functions
           npm install
-          # npm run lint # temp disable lint
-          npm install -g firebase-tools
-          firebase deploy --token "$FIREBASE_TOKEN" --only functions
+          npm run lint
+          npm run deploy
       - name: Deploy hosting
         run: |
           cd hosting

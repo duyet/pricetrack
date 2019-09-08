@@ -106,10 +106,10 @@ const urlFor = (path, qs = {}) => {
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&')
 
-  if (qs.hasOwnProperty('region') && qs.region.indexOf('asia') > -1) {
+  if (Object.prototype.hasOwnProperty.call(qs, 'region') && qs.region.indexOf('asia') > -1) {
     return functionsUrlAsia + '/' + path + '?' + query
   }
-  if (qs.hasOwnProperty('frontend') || qs.hasOwnProperty('hosting_url')) {
+  if (Object.prototype.hasOwnProperty.call(qs, 'frontend') || Object.prototype.hasOwnProperty.call(qs, 'hosting_url')) {
     return hostingUrl + '/' + path + '?' + query
   }
 

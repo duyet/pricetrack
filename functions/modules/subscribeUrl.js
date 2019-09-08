@@ -42,22 +42,19 @@ module.exports = httpsFunctions.onRequest((req, res) => {
                 methods,
                 create_at: new Date()
             }
-            urlDoc.onSnapshot(doc => {
-                urlDoc.collection(collection.SUBSCRIBE).doc(email).set(subscribe, {
-                        merge: true
-                    }).then(docRef => {
-                        console.log(`Added ${email}: ${JSON.stringify(docRef)}`)
-                        res.json({
-                            msg: 'ok',
-                            subscribe,
-                            hashUrl
-                        })
+            urlDoc.collection(collection.SUBSCRIBE).doc(email).set(subscribe, { merge: true })
+                .then(docRef => {
+                    console.log(`Added ${email}: ${JSON.stringify(docRef)}`)
+                    res.json({
+                        msg: 'ok',
+                        subscribe,
+                        hashUrl
                     })
-                    .catch(error => {
-                        console.error("Error writing document: ", error)
-                        res.status(400).json(error)
-                    })
-            })
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error)
+                    res.status(400).json(error)
+                })
         } else {
             return resError(res, 'URL is not exist')
         }

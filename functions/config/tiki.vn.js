@@ -44,7 +44,7 @@ module.exports = {
 
     // Fix tiki ?spid=<product_id> redirect
     if (html.indexOf('window.location.href = urlTarget') > -1) {
-      const regex = /var\surlTarget\s=\s\"([^\"]+)\";/gm;
+      const regex = /var\surlTarget\s=\s"([^"]+)";/gm;
       let m;
       while ((m = regex.exec(html)) !== null) {
           // This is necessary to avoid infinite loops with zero-width matches

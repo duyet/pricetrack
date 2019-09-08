@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 const assert = require('assert')
 const fetch = require('node-fetch')
 const functions = require('firebase-functions')
@@ -53,15 +54,23 @@ module.exports = functions
 
     // Fetch current url info
     try {
-      snapshot = snapshotCache[urlHash] || await db.collection(collection.URLS).doc(urlHash).get()
+      if (snapshotCache[urlHash]) {
+        snapshot = snapshotCache[urlHash]
+      } else {
+        let freshSnapshot = await db.collection(collection.URLS).doc(urlHash).get()
+        snapshot = freshSnapshot
+
+
+      // Validate
       assert(snapshot != null)
-      assert(snapshot.exists)
+      assert(snapshot.exists === true)
 
       let isActive = snapshot.get('is_active') || true
       assert(isActive === true)
 
-      // Cache to reduce number of request to DB
-      snapshotCache[urlHash] = snapshot
+        // Cache to reduce number of request to DB
+        snapshotCache[urlHash] = snapshot
+      }
     } catch (err) {
       console.error(err)
       return resError(res, err.message, 500)
@@ -153,7 +162,7 @@ module.exports = functions
       || Timestamp.now().toMillis() - lastestAppendRaw.toMillis() > ONE_HOUR
       || currentRawCount < 2) {
       console.log('Save new raw data (> 1hour) or raw_count < 2',
-                  Timestamp.now().toMillis() - lastestAppendRaw.toMillis())
+        Timestamp.now().toMillis() - lastestAppendRaw.toMillis())
       db.collection(collection.URLS).doc(urlHash).collection('raw').add(jsonData)
     }
 

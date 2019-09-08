@@ -1,8 +1,10 @@
-const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {retries: 3})
-const { JSDOM } = require('jsdom')
+const nodeFetch = require('node-fetch');
+const fetchRetry = require('@zeit/fetch-retry');
+const { JSDOM } = require('jsdom');
 
-const { regexProcess } = require('../utils/parser/utils')
-const { initDataJajum } = require('../utils/fetch')
+const fetch = fetchRetry(nodeFetch, { retries: 3 });
+const { regexProcess } = require('../utils/parser/utils');
+const { initDataJajum } = require('../utils/fetch');
 
 
 const adayroiSnippetData = async (params) => {
@@ -10,24 +12,24 @@ const adayroiSnippetData = async (params) => {
   const url = params.url
   const req = await fetch(url)
   const html = await req.text()
-  const dom = new JSDOM(html, {features: {QuerySelector: true}})
+  const dom = new JSDOM(html, { features: { QuerySelector: true } })
   const { document } = dom.window
 
   let json = {
-    product_id:   params.productId,
-    name:         document.querySelector('title').textContent                   || '',
-    description:  (document.querySelector('[name="description"]') || {}).content        || '',
-    currency:     'VND',
+    product_id: params.productId,
+    name: document.querySelector('title').textContent || '',
+    description: (document.querySelector('[name="description"]') || {}).content || '',
+    currency: 'VND',
     availability: null,
-    price:        (document.querySelector('.price-info__sale') || {}).textContent     || '',
-    image:        (document.querySelector('[property="og:image"]') || {}).content       || '',
-    qty:          0,
+    price: (document.querySelector('.price-info__sale') || {}).textContent || '',
+    image: (document.querySelector('[property="og:image"]') || {}).content || '',
+    qty: 0,
   }
 
   console.info(json)
 
   return json
-  
+
 }
 
 module.exports = {
@@ -41,14 +43,14 @@ module.exports = {
   // Get {productId} and {shopId}
   // https://www.adayroi.com/vsmart-active-1-6gb-64gb-den-p-2087332
   productId: u => regexProcess(u, /-p-([A-Z]*([0-9]+))/, 1),
-  shopId: u => null,
+  shopId: () => null,
   required: ['productId'],
 
   product_api: adayroiSnippetData,
   format_func: json => {
     let price = 0
     try {
-      price = parseInt( (json.price || '').replace(/[^0-9]+/g, '') )
+      price = parseInt((json.price || '').replace(/[^0-9]+/g, ''))
     } catch (e) { console.error(e) }
 
     let is_deal = false

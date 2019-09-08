@@ -21,14 +21,10 @@ const getSubByEmail = async (url, email) => {
                     .doc(email)
 
     let snapshot = null
-    try {
-        snapshot = await urlDoc.get()
-        if (!snapshot.exists) throw Error(ERR_EMAIL_NOT_FOUND)
-        let data = snapshot.data()
-        return data
-    } catch (err) {
-        throw err
-    }
+    snapshot = await urlDoc.get()
+    if (!snapshot.exists) throw Error(ERR_EMAIL_NOT_FOUND)
+    let data = snapshot.data()
+    return data
 }
 
 module.exports = httpsFunctions.onRequest(async (req, res) => {
