@@ -32,14 +32,14 @@ jobs:
         run: |
           cd hosting
           npm install
-          echo "GATSBY_API_KEY=${{ secrets.GATSBY_API_KEY }}\n"                           >> .env
-          echo "GATSBY_AUTH_DOMAIN=${{ secrets.FIREBASE_DOMAIN }}\n"                      > .env
-          echo "GATSBY_DATABASE_URL=${{ secrets.GATSBY_DATABASE_URL }}\n"                 > .env
-          echo "GATSBY_PROJECT_ID=${{ secrets.GATSBY_PROJECT_ID }}\n"                     > .env
-          echo "GATSBY_STORAGE_BUCKET=${{ secrets.GATSBY_STORAGE_BUCKET }}\n"             > .env
-          echo "GATSBY_MESSAGING_SENDER_ID=${{ secrets.GATSBY_MESSAGING_SENDER_ID }}\n"   > .env
-          echo "GATSBY_VAPID_KEY=${{ secrets.GATSBY_VAPID_KEY }}\n"                       > .env
-          echo "GATSBY_APPID=${{ secrets.GATSBY_APPID }}\n"                               > .env
+          echo "GATSBY_API_KEY=${{ secrets.GATSBY_API_KEY }}\n"                           > .env
+          echo "GATSBY_AUTH_DOMAIN=${{ secrets.FIREBASE_DOMAIN }}\n"                      >> .env
+          echo "GATSBY_DATABASE_URL=${{ secrets.GATSBY_DATABASE_URL }}\n"                 >> .env
+          echo "GATSBY_PROJECT_ID=${{ secrets.GATSBY_PROJECT_ID }}\n"                     >> .env
+          echo "GATSBY_STORAGE_BUCKET=${{ secrets.GATSBY_STORAGE_BUCKET }}\n"             >> .env
+          echo "GATSBY_MESSAGING_SENDER_ID=${{ secrets.GATSBY_MESSAGING_SENDER_ID }}\n"   >> .env
+          echo "GATSBY_VAPID_KEY=${{ secrets.GATSBY_VAPID_KEY }}\n"                       >> .env
+          echo "GATSBY_APPID=${{ secrets.GATSBY_APPID }}\n"                               >> .env
           npm run build
           export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
           npm run deploy
