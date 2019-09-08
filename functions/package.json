@@ -7,7 +7,7 @@
     "serve": "firebase serve --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions --token \"$FIREBASE_TOKEN\"",
+    "deploy": "firebase deploy --only functions --token \"$FIREBASE_TOKEN\" --non-interactive",
     "logs": "firebase functions:log",
     "test": "mocha --reporter spec"
   },

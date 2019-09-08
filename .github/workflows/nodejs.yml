@@ -16,6 +16,7 @@ jobs:
           cd functions
           npm install
           npm run lint
+          echo $FIREBASE_URL
           npm run deploy
       - name: Deploy hosting
         run: |
