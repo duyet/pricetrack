@@ -94,14 +94,15 @@ Auto collect, visualize and alert for product items.
 # Technology
 
 - UI Website for result (Gatsby.js, React.js)
-- Cronjob trigger worker (https://www.google.com/search?num=20&q=cron+job+trigger, https://cron-job.org)
+- Cronjob: Firebase Cloud Scheduler
 - Deployment:
 	+ API: Firebase Functions
 	+ Database: Firebase Firestore
 	+ Web: Firebase Hosting, GatsbyJS
+- CICD: Github Workflows
 
 # Next Step
 
-- Support for more domain
-- Move worker pullData to Google Scripts to reduce cost.
-- Auto trigger BUY, Add to cart
+- Support for more ecommerce websites.
+- Move worker `pullData` to another services (`worker.dev`, Google App Scripts, ...) to reduce cost.
+- Auto trigger `BUY`, `Add to cart`, ...
