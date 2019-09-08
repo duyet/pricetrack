@@ -18,6 +18,11 @@ const pullProductDataFromUrl = async (u) => {
     if (supportedDomain.indexOf(provider) === -1) return null
 
     try {
+        let rule = parseRules[provider]
+        if (!rule.active) {
+            console.info(`${provider} is disabled!`)
+            return null;
+        }
         return await parseUrlWithConfig(u, parseRules[provider])
     } catch (err) {
         console.error(err)

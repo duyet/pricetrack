@@ -36,7 +36,7 @@ module.exports = {
   color: '#189eff',
   logo: 'https://i.imgur.com/e6AX9Lb.png',
   time_check: 15,
-  active: true,
+  active: false,
 
   // Get {productId} and {shopId}
   // https://www.adayroi.com/vsmart-active-1-6gb-64gb-den-p-2087332

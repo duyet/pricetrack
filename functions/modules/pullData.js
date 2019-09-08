@@ -32,7 +32,7 @@ module.exports = functions
   .region(asiaRegion)
   .runWith({
     memory: '512MB',
-    timeoutSeconds: 60
+    timeoutSeconds: 30
   })
   .https
   .onRequest(async (req, res) => {

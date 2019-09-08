@@ -49,7 +49,7 @@ module.exports = {
   color: '#007c36',
   logo: 'https://www.vinabook.com/images/thumbnails/img/252/33/vnb_logo_2x.png',
   time_check: 15,
-  active: true,
+  active: false,
 
   // Get {productId} and {shopId}
   // https://www.vinabook.com/leonardo-da-vinci-1-p85106.html

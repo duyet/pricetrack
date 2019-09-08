@@ -6,7 +6,7 @@ module.exports = {
   color: '#f2655c',
   logo: 'https://i.imgur.com/IKaf79s.png',
   time_check: 15,
-  active: true,
+  active: false,
 
   // Get {productId} and {shopId}
   productId: u => regexProcess(u, /\/product\/([0-9]+)\//, 1),

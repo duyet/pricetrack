@@ -10,8 +10,8 @@ import HeadSlogan from "../components/Block/HeadSlogan";
  */
 
 export default class IndexComponent extends Component {
-    about_image = '//images.unsplash.com/photo-1533727352519-7553fbcbf061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=80'
-    about_image_credit = 'Photo by Alvaro Reyes on Unsplash'
+    about_image = '//i.imgur.com/FgA3sgu.png'
+    about_image_credit = ''
 
     render() {
         return (
