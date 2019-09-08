@@ -1,7 +1,7 @@
 {
   "name": "functions",
   "description": "PriceTrack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "lint": "eslint .",
     "serve": "firebase serve --only functions",
