@@ -1,4 +1,4 @@
-name: Node CI
+name: PriceTrack Workflow on Push
 
 on: [push]
 

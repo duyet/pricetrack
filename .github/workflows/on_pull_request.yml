@@ -1,0 +1,23 @@
+name: PriceTrack Workflow on Pull Request
+
+on: [pull_request]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 
+        uses: actions/setup-node@v1
+        with:
+          node-version: 8.x
+      - name: Lint functions
+        run: |
+          cd functions
+          npm install
+          npm run lint
+      - name: Lint hosting
+        run: |
+          cd hosting
+          npm install
+          npm run lint
