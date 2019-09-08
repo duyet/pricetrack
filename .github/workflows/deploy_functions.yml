@@ -29,5 +29,7 @@ jobs:
           npm run lint
       - name: Deploy functions
         run: |
+          cd functions
+          npm install
           export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
           npm run deploy

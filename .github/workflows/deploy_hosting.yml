@@ -30,6 +30,8 @@ jobs:
           npm run lint
       - name: Deploy hosting
         run: |
+          cd hosting
+          npm install
           echo "GATSBY_API_KEY=${{ secrets.GATSBY_API_KEY }}\n"                           >> .env
           echo "GATSBY_AUTH_DOMAIN=${{ secrets.FIREBASE_DOMAIN }}\n"                      > .env
           echo "GATSBY_DATABASE_URL=${{ secrets.GATSBY_DATABASE_URL }}\n"                 > .env
