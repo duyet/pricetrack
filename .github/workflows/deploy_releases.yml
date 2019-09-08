@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - 'releases/*'
-  pull_request:
-    branches:
-      - 'releases/*'
-
 
 jobs:
 
