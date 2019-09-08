@@ -2,7 +2,7 @@
   "name": "pricetrack-frontend",
   "private": true,
   "description": "PriceTrack UI build by Gatsby",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "scripts": {
     "develop": "gatsby develop",
