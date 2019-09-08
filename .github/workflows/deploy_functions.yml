@@ -1,4 +1,4 @@
-name: PriceTrack Deploy Functions
+name: Deploy Functions
 
 on:
   push:

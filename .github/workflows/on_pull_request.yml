@@ -1,4 +1,4 @@
-name: PriceTrack Workflow on Pull Request
+name: Pull Request
 
 on: [pull_request]
 
