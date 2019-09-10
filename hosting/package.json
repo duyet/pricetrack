@@ -51,7 +51,7 @@
     "react-dom": "16.9.0",
     "react-flash-message": "1.0.2",
     "react-helmet": "5.2.1",
-    "react-table": "6.10.2"
+    "react-table": "6.10.3"
   },
   "devDependencies": {
     "babel-loader": "8.0.6",
