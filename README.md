@@ -1,5 +1,8 @@
 # Price Track Project (inprogress)
 
+![GitHub top language](https://img.shields.io/github/languages/top/duyetdev/pricetrack?style=flat-square)
+![Website](https://img.shields.io/website/https/tracker.duyet.net?style=flat-square)
+
 Auto collect, visualize and alert for product items.
 
 **Live**: [https://pricetrack.web.app](https://pricetrack.web.app) or [https://tracker.duyet.net](https://tracker.duyet.net)
