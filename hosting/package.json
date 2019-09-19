@@ -17,7 +17,7 @@
     "@firebase/app": "0.4.17",
     "@firebase/auth": "0.12.0",
     "@firebase/database": "0.5.4",
-    "@firebase/messaging": "0.4.10",
+    "@firebase/messaging": "0.4.11",
     "@firebase/performance": "0.2.18",
     "@fortawesome/fontawesome-svg-core": "1.2.24",
     "@fortawesome/free-brands-svg-icons": "5.11.1",
