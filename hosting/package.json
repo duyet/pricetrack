@@ -58,7 +58,7 @@
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-jest": "22.17.0",
     "eslint-plugin-react": "7.14.3",
-    "firebase-tools": "7.3.2",
+    "firebase-tools": "7.4.0",
     "ify-loader": "1.1.0",
     "transform-loader": "0.2.4"
   }
