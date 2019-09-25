@@ -16,7 +16,7 @@
   "dependencies": {
     "@firebase/app": "0.4.18",
     "@firebase/auth": "0.12.0",
-    "@firebase/database": "0.5.4",
+    "@firebase/database": "0.5.5",
     "@firebase/messaging": "0.4.11",
     "@firebase/performance": "0.2.19",
     "@fortawesome/fontawesome-svg-core": "1.2.25",
