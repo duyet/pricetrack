@@ -21,7 +21,7 @@
     "firebase-functions": "3.2.0",
     "iltorb": "2.4.3",
     "jsdom": "15.1.1",
-    "koa": "2.8.1",
+    "koa": "2.8.2",
     "koa-firebase-functions": "1.0.1",
     "koa-router": "7.4.0",
     "node-fetch": "2.6.0",
