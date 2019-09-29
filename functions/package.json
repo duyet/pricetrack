@@ -39,7 +39,7 @@
     "eslint-plugin-standard": "4.0.1",
     "firebase-functions-test": "0.1.6",
     "firebase-tools": "7.4.0",
-    "mocha": "6.2.0",
+    "mocha": "6.2.1",
     "nanogen": "0.4.2"
   },
   "private": true,
