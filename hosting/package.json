@@ -14,7 +14,7 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
-    "@firebase/app": "0.4.19",
+    "@firebase/app": "0.4.20",
     "@firebase/auth": "0.12.1",
     "@firebase/database": "0.5.7",
     "@firebase/messaging": "0.5.1",
