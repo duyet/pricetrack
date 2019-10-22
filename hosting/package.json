@@ -44,11 +44,11 @@
     "moment": "2.24.0",
     "postcss-import": "12.0.1",
     "prop-types": "15.7.2",
-    "react": "16.10.2",
+    "react": "16.11.0",
     "react-awesome-modal": "2.0.5",
     "react-bootstrap": "0.32.4",
     "react-chartkick": "0.3.2",
-    "react-dom": "16.10.2",
+    "react-dom": "16.11.0",
     "react-flash-message": "1.0.2",
     "react-helmet": "5.2.1",
     "react-table": "6.10.3"
