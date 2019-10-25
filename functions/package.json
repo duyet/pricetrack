@@ -19,7 +19,7 @@
     "express": "4.17.1",
     "firebase-admin": "8.6.1",
     "firebase-functions": "3.3.0",
-    "iltorb": "2.4.3",
+    "iltorb": "2.4.4",
     "jsdom": "15.2.0",
     "koa": "2.10.0",
     "koa-firebase-functions": "1.0.1",
