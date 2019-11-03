@@ -39,7 +39,7 @@ export default class CrawlerStatus extends Component {
 
   render() {
     if (this.state.loading) return 'Loading ...';
-    if (!Object.keys(this.state.status).length) return 'No info';
+    if (!this.state.status || !Object.keys(this.state.status).length) return 'No info';
 
     const active = <FontAwesomeIcon icon={faCheckCircle} color="green" />;
     const deactive = <FontAwesomeIcon icon={faTimesCircle} color="red" />;

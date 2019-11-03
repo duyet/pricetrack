@@ -33,8 +33,9 @@ module.exports = functions
         let validTask = ['pullData', 'updateInfo', 'patchData'];
         let task = req.query.task || 'pullData';
 
-        if (!task || validTask.indexOf(task) == -1)
+        if (validTask.indexOf(task) == -1) {
             return resError(res, 'Invalid cronjob task')
+        }
 
         console.log(`Start cronjob task ${task} ...`);
 
