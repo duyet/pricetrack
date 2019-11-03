@@ -36,10 +36,7 @@ class Firebase {
     }
 
     /* Social Sign In Method Provider */
-
     this.googleProvider = new app.auth.GoogleAuthProvider();
-    this.facebookProvider = new app.auth.FacebookAuthProvider();
-    this.twitterProvider = new app.auth.TwitterAuthProvider();
 
     return this;
   }
@@ -51,10 +48,6 @@ class Firebase {
   doSignInWithEmailAndPassword = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
 
   doSignInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider);
-
-  doSignInWithFacebook = () => this.auth.signInWithPopup(this.facebookProvider);
-
-  doSignInWithTwitter = () => this.auth.signInWithPopup(this.twitterProvider);
 
   doSignOut = () => this.auth.signOut();
 
@@ -108,7 +101,6 @@ class Firebase {
   onMessagingTokenRefresh = (next, fallback) => this.messaging && this.messaging.onTokenRefresh(() => this.onMessagingRequestPermission(next, fallback))
 
   // *** Merge Auth and DB User API *** //
-
   onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {
     if (authUser) {
       console.debug(authUser);
@@ -133,9 +125,9 @@ class Firebase {
 
 let firebase;
 
-function getFirebase(app, auth, database, messaging, performance) {
+function getFirebase(app) {
   try {
-    firebase = new Firebase(app.firebase, auth, database, messaging, performance);
+    firebase = new Firebase(app);
   } catch (e) {
     if (e.code !== 'app/duplicate-app') throw new Error(e);
   }

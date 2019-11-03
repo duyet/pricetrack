@@ -24,11 +24,11 @@ class Layout extends Component {
   }
 
   componentDidMount() {
-    const app = import('@firebase/app');
-    const auth = import('@firebase/auth');
-    const database = import('@firebase/database');
-    const messaging = import('@firebase/messaging');
-    const performance = import('@firebase/performance');
+    const app = import('firebase/app');
+    const auth = import('firebase/auth');
+    const database = import('firebase/database');
+    const messaging = import('firebase/messaging');
+    const performance = import('firebase/performance');
 
     Promise.all([app, auth, database, messaging, performance]).then((values) => {
       const firebase = getFirebase(values[0]);
