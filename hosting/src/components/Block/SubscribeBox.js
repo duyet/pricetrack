@@ -95,7 +95,7 @@ class SubscribeBox extends Component {
       return;
     }
 
-    const stateInfo = this.state.info || {};
+    const stateInfo = this.state.info;
     if (!this.state.info.expect_when) stateInfo['expect_when'] = NOTI_WHEN_MAP[0].type;
     if (!this.state.info.methods) stateInfo['methods'] = [NOTI_METHOD_MAP[0].type];
     if (!this.state.info.email) stateInfo['email'] = this.props.authUser.email || '';

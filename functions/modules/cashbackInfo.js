@@ -31,7 +31,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
     }
 
     try {
-        const resp = await axios.get('https://api.accesstrade.vn/v1/orders', 
+        const resp = await axios.get('https://api.accesstrade.vn/v1/orders',
             {
                 params: {
                     ...UTM,
@@ -50,7 +50,7 @@ module.exports = httpsFunctions.onRequest(async (req, res) => {
         data.data = data.data.map(t => Object.assign(t, { pub_commission: Math.round(t.pub_commission * RATE) }))
 
         const totalCommission = data.data.filter(t => t.order_success > 0).map(t => t.pub_commission).reduce((a, b) => a + b, 0)
-        
+
         data = Object.assign(data, { email, totalCommission })
 
         return res.json(data)
