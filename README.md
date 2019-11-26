@@ -85,12 +85,7 @@ Auto collect, visualize and alert for product items.
 	![Test API](.screenshot/setup-test-4.png)
 
 
-6. **Setup the cronjob for /pullData**: https://cron-job.org
-
-	![Cronjob pulling](.screenshot/setup-cronjob.png)
-
-
-7. Check out the UI: https://tracker.duyet.net
+6. Check out the UI: https://tracker.duyet.net
 
 	![Home page](.screenshot/screenshot-home.png)
 
