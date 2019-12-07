@@ -10,12 +10,12 @@ import HeadSlogan from '../components/Block/HeadSlogan';
  */
 
 export default class IndexComponent extends Component {
-    aboutImage = '//i.imgur.com/FgA3sgu.png'
+    aboutImage = '//i.imgur.com/FgA3sgu.png';
 
-    imageCredit = ''
+    imageCredit = '';
 
-    render () {
-        return (
+    render() {
+      return (
             <Layout>
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{ background: '#03A9F4' }}>
                     <HeadSlogan icon="image" sub_headline="Giới thiệu" />
@@ -47,6 +47,6 @@ export default class IndexComponent extends Component {
                 </div>
 
             </Layout>
-        );
+      );
     }
 }

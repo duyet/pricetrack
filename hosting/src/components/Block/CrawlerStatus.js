@@ -22,7 +22,7 @@ export default class CrawlerStatus extends Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setState({ loading: true });
     axios.get('/api/about')
       .then((response) => {
@@ -37,11 +37,9 @@ export default class CrawlerStatus extends Component {
   }
 
 
-  render () {
+  render() {
     if (this.state.loading) return 'Loading ...';
     if (!this.state.status || !Object.keys(this.state.status).length) return 'No info';
-
-    console.log(this.state.status)
 
     const active = <FontAwesomeIcon icon={faCheckCircle} color="green" />;
     const deactive = <FontAwesomeIcon icon={faTimesCircle} color="red" />;
