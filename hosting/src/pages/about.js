@@ -14,9 +14,9 @@ export default class IndexComponent extends Component {
 
     imageCredit = ''
 
-    render() {
-      return (
-          <Layout>
+    render () {
+        return (
+            <Layout>
                 <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{ background: '#03A9F4' }}>
                     <HeadSlogan icon="image" sub_headline="Giới thiệu" />
                 </div>
@@ -46,7 +46,7 @@ export default class IndexComponent extends Component {
                     </div>
                 </div>
 
-          </Layout>
-      );
+            </Layout>
+        );
     }
 }

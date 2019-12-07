@@ -41,10 +41,12 @@ export default class CrawlerStatus extends Component {
     if (this.state.loading) return 'Loading ...';
     if (!this.state.status || !Object.keys(this.state.status).length) return 'No info';
 
+    console.log(this.state.status)
+
     const active = <FontAwesomeIcon icon={faCheckCircle} color="green" />;
     const deactive = <FontAwesomeIcon icon={faTimesCircle} color="red" />;
 
-    const _table = this.state.status.map((domain) => (
+    const _table = Object.values(this.state.status).map((domain) => (
         <tr key={domain.domain}>
               <th scope="row">
               <LogoOrDomain logo={domain.logo} domain={domain.domain} />
