@@ -22,7 +22,7 @@ export default class CrawlerStatus extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.setState({ loading: true });
     axios.get('/api/about')
       .then((response) => {
@@ -37,7 +37,7 @@ export default class CrawlerStatus extends Component {
   }
 
 
-  render() {
+  render () {
     if (this.state.loading) return 'Loading ...';
     if (!this.state.status || !Object.keys(this.state.status).length) return 'No info';
 
@@ -47,24 +47,26 @@ export default class CrawlerStatus extends Component {
     const deactive = <FontAwesomeIcon icon={faTimesCircle} color="red" />;
 
     const _table = Object.values(this.state.status).map((domain) => (
-        <tr key={domain.domain}>
-              <th scope="row">
-              <LogoOrDomain logo={domain.logo} domain={domain.domain} />
-          </th>
-              <td>{domain.time_check} phút</td>
-              <td>{domain.active ? active : deactive}</td>
-          </tr>
+      <tr key={domain.domain}>
+        <th scope="row">
+          <LogoOrDomain logo={domain.logo} domain={domain.domain} />
+        </th>
+        <td>{domain.time_check} phút</td>
+        <td>{domain.active ? active : deactive}</td>
+      </tr>
     ));
 
-    return (<table className="table">
-                <thead>
-                <tr>
-                  <th scope="col">Dịch vụ</th>
-                  <th scope="col">Thời gian cập nhật</th>
-                  <th scope="col text-center">Trạng thái</th>
-                </tr>
-              </thead>
-              <tbody>{_table}</tbody>
-        </table>);
+    return (
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Dịch vụ</th>
+            <th scope="col">Thời gian cập nhật</th>
+            <th scope="col text-center">Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>{_table}</tbody>
+      </table>
+    );
   }
 }
