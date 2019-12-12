@@ -2273,10 +2273,10 @@ firebase-functions@3.3.0:
     jsonwebtoken "^8.5.1"
     lodash "^4.17.14"
 
-firebase-tools@7.9.0:
-  version "7.9.0"
-  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-7.9.0.tgz#32661980943f5ebbb2d82c126762c468ae0cff9c"
-  integrity sha512-dYxuFflaPAkic2KQyPJ6spox8KzlQRb4Xyk6oVDorBV0YmBIJ3VQhJYbwSZwwDlbCmiPiMXNBM26JUifp09Qfw==
+firebase-tools@7.10.0:
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-7.10.0.tgz#597a11c468f8e3fa09fec8e8bd23603d9df1a88a"
+  integrity sha512-ic8rkM7DIY0lh7wONChTdPYnF0IF8AoeP5nGj4VfvunGcLU++ih6zgIll6C8WaNG3P8iEG4PtemMbYKBwE+sbQ==
   dependencies:
     "@google-cloud/pubsub" "^1.1.5"
     JSONStream "^1.2.1"
@@ -2312,7 +2312,7 @@ firebase-tools@7.9.0:
     portfinder "^1.0.23"
     progress "^2.0.3"
     request "^2.87.0"
-    semver "^5.0.3"
+    semver "^5.7.1"
     superstatic "^6.0.1"
     tar "^4.3.0"
     tcp-port-used "^1.0.1"
@@ -4921,7 +4921,7 @@ semver-diff@^2.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.0.tgz#790a7cf6fea5459bac96110b29b60412dc8ff96b"
   integrity sha512-Ya52jSX2u7QKghxeoFGpLwCtGlt7j0oY9DYb5apt9nPlJ42ID+ulTXESnt/qAQcoSERyZ5sl3LDIOw0nAn/5DA==
 
-semver@^5.0.1, semver@^5.0.3, semver@^5.1.0, semver@^5.6.0, semver@^5.7.0:
+semver@^5.0.1, semver@^5.0.3, semver@^5.1.0, semver@^5.6.0, semver@^5.7.0, semver@^5.7.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
