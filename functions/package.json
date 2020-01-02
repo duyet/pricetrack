@@ -12,7 +12,7 @@
     "test": "mocha --reporter spec"
   },
   "dependencies": {
-    "@zeit/fetch-retry": "4.0.1",
+    "@zeit/fetch-retry": "4.1.0",
     "axios": "0.19.0",
     "axios-retry": "3.1.2",
     "chrome-aws-lambda": "2.0.1",
