@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@zeit/fetch-retry": "4.1.0",
-    "axios": "0.19.1",
+    "axios": "0.19.2",
     "axios-retry": "3.1.2",
     "chrome-aws-lambda": "2.0.2",
     "express": "4.17.1",
