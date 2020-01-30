@@ -24,7 +24,7 @@
     "bootstrap": "4.4.1",
     "core-js": "3.6.4",
     "dotenv": "8.2.0",
-    "firebase": "7.7.0",
+    "firebase": "7.8.0",
     "gatsby": "2.19.10",
     "gatsby-plugin-create-client-paths": "2.1.21",
     "gatsby-plugin-google-analytics": "2.1.34",
