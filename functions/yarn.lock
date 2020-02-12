@@ -2351,10 +2351,10 @@ firebase-functions@3.3.0:
     jsonwebtoken "^8.5.1"
     lodash "^4.17.14"
 
-firebase-tools@7.12.1:
-  version "7.12.1"
-  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-7.12.1.tgz#af78bbc446ae46d722938bd8009c351d52ec01f3"
-  integrity sha512-4cfHltsfUzKyt03OH9JUYrCPsq0OIZ9i54IzJRjJgs68NJDLrhUislBipw5Am0QgF8QDYpzz8wLTH56fNgmx8g==
+firebase-tools@7.13.0:
+  version "7.13.0"
+  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-7.13.0.tgz#5ef016c42ab41bc50039ac7e314662df3aed995b"
+  integrity sha512-7D1vVZxPfU/4Pif1gEw9jfDnCEPxjA707J7HbV5RvXd9DGPvg6oZY991Q/Ccu2XWqqzQtDJrloapP39BoU/KUA==
   dependencies:
     "@google-cloud/pubsub" "^1.1.5"
     JSONStream "^1.2.1"
