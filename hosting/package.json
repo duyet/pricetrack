@@ -52,7 +52,7 @@
     "babel-loader": "8.0.6",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-jest": "23.8.2",
-    "eslint-plugin-react": "7.18.3",
+    "eslint-plugin-react": "7.19.0",
     "firebase-tools": "7.14.0",
     "ify-loader": "1.1.0",
     "transform-loader": "0.2.4"
