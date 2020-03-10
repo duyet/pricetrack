@@ -4239,10 +4239,10 @@ node-forge@^0.8.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.8.5.tgz#57906f07614dc72762c84cef442f427c0e1b86ee"
   integrity sha512-vFMQIWt+J/7FLNyKouZ9TazT74PRV3wgv9UT4cRjC8BffxFbKXkgIWR42URCPSnHm/QDz6BOlb2Q0U4+VQT67Q==
 
-nodemailer@6.4.4:
-  version "6.4.4"
-  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.4.4.tgz#f4bb26a833786e8908b3ac8afbf2d0382ac24feb"
-  integrity sha512-2GqGu5o3FBmDibczU3+LZh9lCEiKmNx7LvHl512p8Kj+Kn5FQVOICZv85MDFz/erK0BDd5EJp3nqQLpWCZD1Gg==
+nodemailer@6.4.5:
+  version "6.4.5"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.4.5.tgz#45614c6454d1a947242105eeddae03df87e29916"
+  integrity sha512-NH7aNVQyZLAvGr2+EOto7znvz+qJ02Cb/xpou98ApUt5tEAUSVUxhvHvgV/8I5dhjKTYqUw0nasoKzLNBJKrDQ==
 
 noop-logger@^0.1.1:
   version "0.1.1"
