@@ -38,11 +38,11 @@ app
     .use(router.routes())
     .use(router.allowedMethods());
 
-router.get('/ping', (ctx, next) => {
+router.all('/ping', (ctx, next) => {
     ctx.body = 'pong';
 });
 
-router.get('/:function', async (ctx, next) => {
+router.all('/:function', async (ctx, next) => {
     const functionName = ctx.params.function;
     if (['pullData', 'updateInfo'].indexOf(functionName) === -1) {
         ctx.body = { err: 1 };
