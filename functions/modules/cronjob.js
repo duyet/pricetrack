@@ -86,7 +86,7 @@ module.exports = functions
             }
 
             // Migrate to VM worker
-            if (task === 'pullData' && WORKER_CUSTOM_DOMAIN) {
+            if ((task === 'pullData' || task === 'updateInfo') && WORKER_CUSTOM_DOMAIN) {
                 params['custom_domain'] = WORKER_CUSTOM_DOMAIN;
             }
 
