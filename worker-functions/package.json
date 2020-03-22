@@ -11,7 +11,8 @@
   "dependencies": {
     "@koa/cors": "^2.2.3",
     "@koa/router": "^8.0.8",
-    "koa": "^2.11.0"
+    "koa": "^2.11.0",
+    "koa-logger": "^3.2.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
