@@ -9,7 +9,7 @@ exports.listUrls = require('./modules/listUrl')
 exports.addUrl = require('./modules/addUrl')
 
 // Update info
-exports.updateInfo = require('./modules/updateInfo')
+exports.updateInfo = require('./modules/updateInfo').function
 
 // Get URL Info
 exports.getUrl = require('./modules/getUrl')
@@ -33,7 +33,7 @@ exports.cronjob = require('./modules/cronjob')
 exports.scheduler = require('./modules/scheduler')
 
 // Pull price
-exports.pullData = require('./modules/pullData')
+exports.pullData = require('./modules/pullData').functions
 
 // Raw Data
 exports.rawData = require('./modules/rawData')

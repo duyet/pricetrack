@@ -1,0 +1,19 @@
+{
+  "name": "worker-functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@koa/cors": "^2.2.3",
+    "@koa/router": "^8.0.8",
+    "koa": "^2.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

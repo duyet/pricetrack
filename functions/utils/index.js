@@ -168,6 +168,7 @@ module.exports = {
    */
   validateToken: token => {
     const adminToken = configUtils.getConfig('admin_token')
+    console.log('adminToken', adminToken)
     return token && adminToken === token
   },
 
