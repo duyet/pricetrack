@@ -37,4 +37,4 @@ router.get('/:function', async (ctx, next) => {
     await func(ctx.req, ctx.res)
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 5000);
