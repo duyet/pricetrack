@@ -2,8 +2,6 @@
 const { fetchContent } = require('../utils/parser/utils')
 const { JSDOM } = require('jsdom')
 
-// tiki.vn sendo.vn adayroi.com lotte.vn lazada.vn
-
 const initDataJajum = async (domain, params) => {
     const url = `https://jajum.com/products/${domain}/-p${params.product_id}`
     console.log(`fetch data from ${url}`)
