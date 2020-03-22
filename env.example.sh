@@ -1,6 +1,6 @@
 firebase functions:config:set pricetrack.sentry_dsn=
 firebase functions:config:set pricetrack.cronjob_key=
-firebase functions:config:set pricetrack.apiKey=
+firebase functions:config:set pricetrack.api_key=
 firebase functions:config:set pricetrack.admin_token=
 firebase functions:config:set pricetrack.gmail_email=
 firebase functions:config:set pricetrack.gmail_password=
@@ -9,3 +9,4 @@ firebase functions:config:set pricetrack.accesstrade_deeplink_base=
 firebase functions:config:set pricetrack.accesstrade_token=
 firebase functions:config:set pricetrack.admin_email=
 firebase functions:config:set pricetrack.cashback_rate=0.5
+firebase functions:config:set pricetrack.worker_custom_domain=

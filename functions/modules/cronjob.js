@@ -13,6 +13,7 @@ const axios = require('axios')
 
 const CRONJOB_KEY = getConfig('cronjob_key')
 const ADMIN_TOKEN = getConfig('admin_token')
+const WORKER_CUSTOM_DOMAIN = getConfig('worker_custom_domain')
 
 /**
  * List of Cronjobs:
@@ -77,11 +78,19 @@ module.exports = functions
                 })
             }
 
-            let triggerUrl = urlFor(task, {
+            // Trigger url params
+            const params = {
                 url,
                 token: ADMIN_TOKEN,
                 region: 'asia'
-            })
+            }
+
+            // Migrate to VM worker
+            if (task === 'pullData' && WORKER_CUSTOM_DOMAIN) {
+                params['custom_domain'] = WORKER_CUSTOM_DOMAIN;
+            }
+
+            let triggerUrl = urlFor(task, params);
             console.log(`Fetch data for ${url} => triggered ${triggerUrl}`);
 
             tasks.push(

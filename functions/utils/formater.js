@@ -106,6 +106,9 @@ const urlFor = (path, qs = {}) => {
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&')
 
+  if (Object.prototype.hasOwnProperty.call(qs, 'custom_domain') && qs.custom_domain) {
+    return qs.custom_domain + '/' + path + '?' + query
+  }
   if (Object.prototype.hasOwnProperty.call(qs, 'region') && qs.region.indexOf('asia') > -1) {
     return functionsUrlAsia + '/' + path + '?' + query
   }

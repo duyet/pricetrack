@@ -39,13 +39,14 @@ Auto collect, visualize and alert for product items.
 	```
 	firebase functions:config:set pricetrack.sentry_dsn=https://abc@sentry.io/1362210
 	firebase functions:config:set pricetrack.cronjob_key=696969
-	firebase functions:config:set pricetrack.apiKey=xxxxxxooooooKMgWKRhUdY91
+	firebase functions:config:set pricetrack.api_key=xxxxxxooooooKMgWKRhUdY91
 	firebase functions:config:set pricetrack.admin_token=xxxxxxxxxx
 	firebase functions:config:set pricetrack.gmail_email=pricetrack.apps@gmail.com
 	firebase functions:config:set pricetrack.gmail_password=xxxxxxxxxx
 	firebase functions:config:set pricetrack.hosting_url=https://tracker.duyet.net
 	firebase functions:config:set pricetrack.accesstrade_deeplink_base=https://fast.accesstrade.com.vn/deep_link/4557459014401077484
 	firebase functions:config:set pricetrack.admin_email=lvduit08@gmail.com
+	firebase functions:config:set pricetrack.worker_custom_domain=
 	```
 
 	Run: `bash ./env.local.sh`
