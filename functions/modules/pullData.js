@@ -50,16 +50,14 @@ module.exports.onRequest = async (req, res) => {
     if (snapshotCache[urlHash]) {
       snapshot = snapshotCache[urlHash]
     } else {
-      let freshSnapshot = await db.collection(collection.URLS).doc(urlHash).get()
-      snapshot = freshSnapshot
+      snapshot = await db.collection(collection.URLS).doc(urlHash).get()
 
+      // Validate
+      assert(snapshot != null)
+      assert(snapshot.exists === true)
 
-    // Validate
-    assert(snapshot != null)
-    assert(snapshot.exists === true)
-
-    let isActive = snapshot.get('is_active') || true
-    assert(isActive === true)
+      let isActive = snapshot.get('is_active') || true
+      assert(isActive === true)
 
       // Cache to reduce number of request to DB
       snapshotCache[urlHash] = snapshot

@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/logging": "^7.3.0",
     "@koa/cors": "^2.2.3",
     "@koa/router": "^8.0.8",
     "koa": "^2.11.0",

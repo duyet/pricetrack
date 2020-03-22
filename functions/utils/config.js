@@ -27,10 +27,10 @@ const getSortKey = key => {
 }
 
 
-const IS_PROD = process.env.GCP_PROJECT && process.env.FUNCTION_REGION ? true : false
+const IS_PROD = process.env.FUNCTION_TARGET ? true : false
 console.log(`IS_PROD: ${IS_PROD} `
-            + `GCP_PROJECT="${process.env.GCP_PROJECT}" `
-            + `FUNCTION_REGION="${process.env.FUNCTION_REGION}"`)
+            + `FUNCTION_TARGET="${process.env.FUNCTION_TARGET}" `
+            + `K_SERVICE="${process.env.K_SERVICE}"`)
 
 /**
  * Firebase functions url
@@ -38,10 +38,10 @@ console.log(`IS_PROD: ${IS_PROD} `
  */
 const functionsUrl = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
-  : `https://us-central1-${process.env.GCP_PROJECT}.cloudfunctions.net`
+  : `https://us-central1-${process.env.FUNCTION_TARGET}.cloudfunctions.net`
 const functionsUrlAsia = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
-  : `https://asia-northeast1-${process.env.GCP_PROJECT}.cloudfunctions.net`
+  : `https://asia-northeast1-${process.env.FUNCTION_TARGET}.cloudfunctions.net`
 
 
 /**
