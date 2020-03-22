@@ -3,7 +3,7 @@
  */
 
 // List urls
-exports.listUrls = require('./modules/listUrl')
+exports.listUrls = require('./modules/listUrl');
 
 // Add new URL
 exports.addUrl = require('./modules/addUrl')
@@ -24,9 +24,9 @@ exports.removeUrl = require('./modules/removeUrl')
 
 // Ping
 exports.ping = require('firebase-functions')
-                    .runWith({ memory: '128MB' })
-                    .https
-                    .onRequest((req, res) => res.json({ msg: 'pong' }))
+    .runWith({ memory: '128MB' })
+    .https
+    .onRequest((req, res) => res.json({ msg: 'pong' }))
 
 // Cronjob
 exports.cronjob = require('./modules/cronjob')
