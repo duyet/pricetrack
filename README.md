@@ -4,6 +4,9 @@
 ![Website](https://img.shields.io/website/https/tracker.duyet.net?style=flat-square)
 ![Uptime Robot ratio (7 days)](https://img.shields.io/uptimerobot/ratio/7/m783954368-3c5526c1e57d14f0eb83e7a4?label=uptime%20%28pricetrack.web.app%29)
 
+![Deploy Functions](https://github.com/duyetdev/pricetrack/workflows/Deploy%20Functions/badge.svg)
+![Deploy Hostings](https://github.com/duyetdev/pricetrack/workflows/Deploy%20Hostings/badge.svg)
+
 Auto collect, visualize and alert for product items.
 
 **Live**: [https://pricetrack.web.app](https://pricetrack.web.app) or [https://tracker.duyet.net](https://tracker.duyet.net)
