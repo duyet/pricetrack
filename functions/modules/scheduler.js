@@ -16,6 +16,7 @@ const triggerCronjobTask = (task) => async () => {
         region: 'asia'
     })
 
+    console.log('Trigger URL', triggerUrl)
     const res = await axios.get(triggerUrl)
     console.log('Cronjob:', res)
 }
