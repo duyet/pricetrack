@@ -370,10 +370,10 @@
     "@types/node" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.0":
-  version "4.17.1"
-  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.1.tgz#4cf7849ae3b47125a567dfee18bfca4254b88c5c"
-  integrity sha512-VfH/XCP0QbQk5B5puLqTLEeFgR8lfCJHZJKkInZ9mkYd+u8byX0kztXEQxEk4wZXJs8HI+7km2ALXjn4YKcX9w==
+"@types/express@^4.17.3":
+  version "4.17.3"
+  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.3.tgz#38e4458ce2067873b09a73908df488870c303bd9"
+  integrity sha512-I8cGRJj3pyOLs/HndoP+25vOqhqWkAZsWMEmq1qXy/b/M3ppufecUwaK2/TVDVxcV61/iSdhykUjQQ2DLSrTdg==
   dependencies:
     "@types/body-parser" "*"
     "@types/express-serve-static-core" "*"
@@ -2358,12 +2358,12 @@ firebase-functions-test@0.2.0:
     "@types/lodash" "^4.14.104"
     lodash "^4.17.5"
 
-firebase-functions@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/firebase-functions/-/firebase-functions-3.4.0.tgz#95c0f4ccb95c06b53a78d4fd76fa4932141383c5"
-  integrity sha512-/PgB2KuxfNXMWZBuu3blpOSYU7VQD10XqX0t+NWmUn0YOgB4T66PUadgK7Vv87v8m0uqFO6hxBQpjRim831i6A==
+firebase-functions@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/firebase-functions/-/firebase-functions-3.5.0.tgz#c42accc7a965b03b00a69d230ff06eeaff9e6fe2"
+  integrity sha512-BnhfsMyhi2eQfKO6RlOKg7bidiIzTrKY+7qF3M02c5yCczUaSQN3TvggqxphaZPOdEdPF2OjoBBK9xO2R2RHeg==
   dependencies:
-    "@types/express" "^4.17.0"
+    "@types/express" "^4.17.3"
     cors "^2.8.5"
     express "^4.17.1"
     jsonwebtoken "^8.5.1"
