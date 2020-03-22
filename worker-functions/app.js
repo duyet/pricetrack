@@ -11,7 +11,7 @@ app
     .use(router.allowedMethods());
 
 router.get('/ping', (ctx, next) => {
-    ctx.body = 'ping';
+    ctx.body = 'pong';
 });
 
 router.get('/:function', async (ctx, next) => {
