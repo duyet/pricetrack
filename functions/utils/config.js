@@ -26,6 +26,8 @@ const getSortKey = key => {
   return key
 }
 
+// TODO: Get PROJECT_ID from env
+const PROJECT_ID = 'duyet-price-tracker'
 
 const IS_PROD = process.env.FUNCTION_TARGET ? true : false
 console.log(`IS_PROD: ${IS_PROD} `
@@ -38,10 +40,10 @@ console.log(`IS_PROD: ${IS_PROD} `
  */
 const functionsUrl = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
-  : `https://us-central1-${process.env.FUNCTION_TARGET}.cloudfunctions.net`
+  : `https://us-central1-${PROJECT_ID}.cloudfunctions.net`
 const functionsUrlAsia = !IS_PROD
   ? `http://localhost:5001/duyet-price-tracker/us-central1`
-  : `https://asia-northeast1-${process.env.FUNCTION_TARGET}.cloudfunctions.net`
+  : `https://asia-northeast1-${PROJECT_ID}.cloudfunctions.net`
 
 
 /**
