@@ -24,6 +24,7 @@ const {
 } = require('../utils/constants')
 
 const ADMIN_TOKEN = getConfig('admin_token')
+const WORKER_CUSTOM_DOMAIN = getConfig('worker_custom_domain')
 const ONE_HOUR = 3600000
 
 let snapshotCache = {}
@@ -164,7 +165,8 @@ module.exports.onRequest = async (req, res) => {
 
       const alertTriggerUrl = urlFor('alert', {
         url: snapshot.get('url'),
-        token: ADMIN_TOKEN
+        token: ADMIN_TOKEN,
+        custom_domain: WORKER_CUSTOM_DOMAIN
       })
       fetch(alertTriggerUrl)
       console.info(`Trigger alert ${alertTriggerUrl}`)
