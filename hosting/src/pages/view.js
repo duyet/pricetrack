@@ -128,7 +128,8 @@ class ViewPage extends Component {
             softThreshold: true
           }
         },
-        responsive: true
+        responsive: true,
+        timezone: 'Asia/Ho_Chi_Minh'
       };
     }
 
