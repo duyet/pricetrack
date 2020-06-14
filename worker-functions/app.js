@@ -42,9 +42,9 @@ router.all('/ping', (ctx, next) => {
     ctx.body = 'pong';
 });
 
-router.all('/:function', async (ctx, next) => {
+const handler = async (ctx, next) => {
     const functionName = ctx.params.function;
-    if (['pullData', 'updateInfo'].indexOf(functionName) === -1) {
+    if (['pullData', 'updateInfo', 'notification', 'cronjob'].indexOf(functionName) === -1) {
         ctx.body = { err: 1 };
         return;
     }
@@ -63,6 +63,9 @@ router.all('/:function', async (ctx, next) => {
     }
 
     await func(ctx.req, ctx.res)
-});
+}
+
+router.all('/:function', handler);
+router.all('/:project/:zone/:function', handler);
 
 app.listen(process.env.PORT || 5000);
