@@ -66,7 +66,7 @@ const handler = async (ctx, next) => {
     await func(ctx.req, ctx.res)
 }
 
-router.all('/:function', handler);
 router.all('/:project/:zone/:function', handler);
+router.all('/:function', handler);
 
 app.listen(process.env.PORT || 5000);
