@@ -49,6 +49,7 @@ const handler = async (ctx, next) => {
         return;
     }
 
+    console.log(`Call function ${functionName}`);
     const func = require('../functions/modules/' + functionName).onRequest;
 
     // Patch
