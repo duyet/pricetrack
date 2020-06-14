@@ -71,7 +71,7 @@ module.exports = {
       console.error(e, url)
     }
 
-    let image = dom.window.document.querySelector('.product-image img').src 
+    let image = (dom.window.document.querySelector('.product-image img') || {}).src
 
     return {
       name,
