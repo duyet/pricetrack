@@ -60,7 +60,8 @@ module.exports = {
     const dom = new JSDOM(html)
 
     let currency = 'VND'
-    let name = dom.window.document.getElementById('product-name').textContent.trim()
+    let name = (dom.window.document.getElementById('product-name') || {}).textContent
+    if (name) name = name.trim()
     
     let description = ''
     try {

@@ -8,7 +8,8 @@ module.exports = {
     CRONJOB_LOGS: 'cronjob_logs',
     MESSAGING_TOKEN: 'messaging_token',
     ADMIN: 'admin',
-    CASHBACK: 'cashback'
+    CASHBACK: 'cashback',
+    NOTIFICATION: 'notification'
   },
   eventType: {
     WRITE: 'google.firestore.document.write'

@@ -160,25 +160,29 @@ module.exports.onRequest = async (req, res) => {
 
   // Trigger alert if is_change
   if (updateInfoData.is_change && currentRawCount > 1) {
-    (async () => {
-      await sleep(1000)
+    // Push to queue
+    db.collection(collection.NOTIFICATION).add({
+      url: snapshot.get('url')
+    });
 
-      const alertTriggerUrl = urlFor('alert', {
-        url: snapshot.get('url'),
-        token: ADMIN_TOKEN,
-        custom_domain: WORKER_CUSTOM_DOMAIN
-      })
-      fetch(alertTriggerUrl)
-      console.info(`Trigger alert ${alertTriggerUrl}`)
-      // Done
-      res.json({
-        msg: 'ok',
-        alert_triggered: !!jsonData.is_change,
-        jsonData
-      })
-    })()
+    // (async () => {
+    //   await sleep(1000)
 
-    return true
+    //   const alertTriggerUrl = urlFor('alert', {
+    //     url: snapshot.get('url'),
+    //     token: ADMIN_TOKEN,
+    //     custom_domain: WORKER_CUSTOM_DOMAIN
+    //   })
+    //   fetch(alertTriggerUrl)
+    //   console.info(`Trigger alert ${alertTriggerUrl}`)
+    //   // Done
+    //   res.json({
+    //     msg: 'ok',
+    //     alert_triggered: !!jsonData.is_change,
+    //     jsonData
+    //   })
+    // })()
+    // return true
   }
 
   // Done
