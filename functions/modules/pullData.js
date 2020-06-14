@@ -1,6 +1,5 @@
 /* eslint-disable require-atomic-updates */
 const assert = require('assert')
-const fetch = require('node-fetch')
 const functions = require('firebase-functions')
 const {
   asiaRegion,
@@ -9,8 +8,6 @@ const {
   documentIdFromHashOrUrl,
   collection,
   validateToken,
-  getConfig,
-  urlFor,
   resError
 } = require('../utils')
 const FieldValue = require('firebase-admin').firestore.FieldValue
@@ -23,12 +20,9 @@ const {
   }
 } = require('../utils/constants')
 
-const ADMIN_TOKEN = getConfig('admin_token')
-const WORKER_CUSTOM_DOMAIN = getConfig('worker_custom_domain')
 const ONE_HOUR = 3600000
 
 let snapshotCache = {}
-const sleep = require('util').promisify(setTimeout)
 
 module.exports.onRequest = async (req, res) => {
   const token = String(req.query.token || '')
