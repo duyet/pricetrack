@@ -157,7 +157,10 @@ module.exports.onRequest = async (req, res) => {
     // Push to queue
     console.log(`[TRIGGERED] Push message to ${collection.NOTIFICATION}`);
     db.collection(collection.NOTIFICATION).add({
-      url: snapshot.get('url')
+      url: snapshot.get('url'),
+      created_at: Timestamp.now()
+    }).then(ref => {
+      console.log('Added document with ID: ', ref.id);
     });
 
     // (async () => {
