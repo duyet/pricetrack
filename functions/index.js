@@ -29,7 +29,7 @@ exports.ping = require('firebase-functions')
     .onRequest((req, res) => res.json({ msg: 'pong' }))
 
 // Cronjob
-exports.cronjob = require('./modules/cronjob')
+exports.cronjob = require('./modules/cronjob').functions
 exports.schedulerPullData = require('./modules/scheduler').pullData
 exports.schedulerUpdateInfo = require('./modules/scheduler').updateInfo
 
