@@ -155,6 +155,7 @@ module.exports.onRequest = async (req, res) => {
   // Trigger alert if is_change
   if (updateInfoData.is_change && currentRawCount > 1) {
     // Push to queue
+    console.log(`[TRIGGERED] Push message to ${collection.NOTIFICATION}`);
     db.collection(collection.NOTIFICATION).add({
       url: snapshot.get('url')
     });
