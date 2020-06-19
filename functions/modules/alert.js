@@ -142,10 +142,9 @@ module.exports.alertFromQueue = functions.firestore
         const data = snap.data();
         let result, err = await triggerNoti(data.url);
         console.log(result, err);
-        if (!err) {
-            snap.ref.update({
-                'triggered': true,
-                'triggered_detail': result
-            });
-        }
+        snap.ref.update({
+            'triggered': true,
+            'triggered_detail': result ? JSON.stringify(result) : '',
+            'triggered_error': err ? err : '',
+        });
     });
