@@ -124,6 +124,7 @@ const getUserFromToken = async idToken => {
 
 module.exports = {
   db,
+  functions,
   httpsFunctions,
   asiaRegion,
   supportedDomain,

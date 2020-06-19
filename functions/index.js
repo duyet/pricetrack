@@ -17,7 +17,10 @@ exports.getUrl = require('./modules/getUrl')
 // Subscribe to URL
 exports.subscribeUrl = require('./modules/subscribeUrl')
 exports.subscribe = require('./modules/subscribe')
-exports.alert = require('./modules/alert')
+
+// Alert
+exports.alert = require('./modules/alert').functions
+exports.alertFromQueue = require('./modules/alert').alertFromQueue
 
 // Delete an URL
 exports.removeUrl = require('./modules/removeUrl')
