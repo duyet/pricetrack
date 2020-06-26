@@ -139,12 +139,12 @@ module.exports.functions = httpsFunctions.onRequest(async (req, res) => {
 module.exports.alertFromQueue = functions.firestore
     .document(`${collection.NOTIFICATION}/{id}`)
     .onCreate(async (snap) => {
-        const data = snap.data();
-        let result, err = await triggerNoti(data.url);
-        console.log(result, err);
-        snap.ref.update({
-            'triggered': true,
-            'triggered_detail': result ? JSON.stringify(result) : '',
-            'triggered_error': err ? err : '',
-        });
+        // const data = snap.data();
+        // let result, err = await triggerNoti(data.url);
+        // console.log(result, err);
+        // snap.ref.update({
+        //     'triggered': true,
+        //     'triggered_detail': result ? JSON.stringify(result) : '',
+        //     'triggered_error': err ? err : '',
+        // });
     });
