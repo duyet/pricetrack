@@ -138,6 +138,7 @@ module.exports.functions = httpsFunctions.onRequest(async (req, res) => {
 
 module.exports.alertFromQueue = functions.firestore
     .document(`${collection.NOTIFICATION}/{id}`)
+    // eslint-disable-next-line no-unused-vars
     .onCreate(async (snap) => {
         // const data = snap.data();
         // let result, err = await triggerNoti(data.url);
