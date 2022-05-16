@@ -19,7 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "5.13.1",
     "@fortawesome/react-fontawesome": "0.1.11",
     "autoprefixer": "9.7.4",
-    "axios": "0.19.2",
+    "axios": "0.21.2",
     "axios-progress-bar": "1.2.0",
     "bootstrap": "4.5.0",
     "core-js": "3.6.4",
