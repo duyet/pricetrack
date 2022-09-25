@@ -49,7 +49,7 @@
     "react-table": "7.0.0"
   },
   "devDependencies": {
-    "babel-loader": "8.1.0",
+    "babel-loader": "8.2.5",
     "eslint-config-airbnb-base": "14.1.0",
     "eslint-plugin-jest": "23.8.2",
     "eslint-plugin-react": "7.19.0",
