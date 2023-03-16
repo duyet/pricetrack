@@ -16,6 +16,6 @@
     "koa-logger": "^3.2.1"
   },
   "devDependencies": {
-    "nodemon": "2.0.2"
+    "nodemon": "2.0.17"
   }
 }
