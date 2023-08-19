@@ -14,10 +14,10 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.29",
-    "@fortawesome/free-brands-svg-icons": "5.13.1",
-    "@fortawesome/free-solid-svg-icons": "5.13.1",
-    "@fortawesome/react-fontawesome": "0.1.11",
+    "@fortawesome/fontawesome-svg-core": "1.2.36",
+    "@fortawesome/free-brands-svg-icons": "5.15.4",
+    "@fortawesome/free-solid-svg-icons": "5.15.4",
+    "@fortawesome/react-fontawesome": "0.2.0",
     "autoprefixer": "9.7.4",
     "axios": "0.19.2",
     "axios-progress-bar": "1.2.0",
