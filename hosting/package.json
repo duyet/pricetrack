@@ -22,7 +22,7 @@
     "axios": "0.19.2",
     "axios-progress-bar": "1.2.0",
     "bootstrap": "4.5.0",
-    "core-js": "3.6.4",
+    "core-js": "3.36.1",
     "dotenv": "8.2.0",
     "firebase": "7.12.0",
     "gatsby": "2.22.9",
