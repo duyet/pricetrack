@@ -1,4 +1,3 @@
 module.exports = {
-  presets: [],
-  plugins: [],
+  presets: ['@babel/preset-react'],
 };

@@ -51,6 +51,7 @@
   "devDependencies": {
     "@babel/core": "7.27.4",
     "@babel/eslint-parser": "7.27.0",
+    "@babel/preset-react": "7.27.1",
     "babel-loader": "8.4.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-jest": "28.11.0",
