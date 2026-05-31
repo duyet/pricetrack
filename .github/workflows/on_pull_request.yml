@@ -12,6 +12,9 @@ jobs:
         with:
           node-version: 20.x
           cache: 'npm'
+          cache-dependency-path: |
+            functions/package-lock.json
+            hosting/package-lock.json
       - name: Lint functions
         run: |
           cd functions

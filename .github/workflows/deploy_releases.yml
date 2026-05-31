@@ -68,7 +68,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'npm'
       - name: Deploy Firebase Database, Storage, Firestore config
         run: |
           npm install -g firebase-tools
