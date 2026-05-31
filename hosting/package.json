@@ -58,5 +58,8 @@
     "firebase-tools": "14.4.0",
     "ify-loader": "1.1.0",
     "transform-loader": "0.2.4"
+  },
+  "overrides": {
+    "node-sass": "npm:sass@1.89.0"
   }
 }
