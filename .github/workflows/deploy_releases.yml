@@ -10,11 +10,13 @@ jobs:
   functions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 10.x
+          node-version: 20.x
+          cache: 'npm'
+          cache-dependency-path: 'functions/package-lock.json'
       - name: Run Eslint
         run: |
           cd functions
@@ -30,11 +32,13 @@ jobs:
   hosting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 8.x
+          node-version: 20.x
+          cache: 'npm'
+          cache-dependency-path: 'hosting/package-lock.json'
       - name: Run Eslint
         run: |
           cd hosting
@@ -59,11 +63,12 @@ jobs:
   database_storage_firestore:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 8.x
+          node-version: 20.x
+          cache: 'npm'
       - name: Deploy Firebase Database, Storage, Firestore config
         run: |
           npm install -g firebase-tools

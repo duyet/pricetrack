@@ -1,8 +1,5 @@
-const nodeFetch = require('node-fetch');
-const fetchRetry = require('@zeit/fetch-retry');
+const fetch = require('node-fetch');
 const { JSDOM } = require('jsdom');
-
-const fetch = fetchRetry(nodeFetch, { retries: 3 });
 const { regexProcess } = require('../utils/parser/utils');
 const { initDataJajum } = require('../utils/fetch');
 
