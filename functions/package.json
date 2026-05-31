@@ -33,7 +33,7 @@
     "eslint": "8.57.1",
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-import": "2.31.0",
-    "eslint-plugin-n": "17.18.0",
+    "eslint-plugin-n": "16.6.2",
     "eslint-plugin-promise": "6.6.0",
     "firebase-functions-test": "3.4.0",
     "firebase-tools": "14.4.0",
