@@ -1,7 +1,7 @@
 const fs = require('fs')
 const url = require('url')
 const path = require('path')
-const fetch = require('@zeit/fetch-retry')(require('node-fetch'))
+const fetch = require('node-fetch')
 
 let SUPPORTED_DOMAIN = []
 

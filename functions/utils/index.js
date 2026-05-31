@@ -1,8 +1,6 @@
 const url = require('url')
 const querystring = require('querystring')
-const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {
-  retries: 3
-})
+const fetch = require('node-fetch')
 
 // The Firebase Admin SDK to access the FireStore DB.
 const functions = require('firebase-functions')
@@ -28,11 +26,8 @@ const nodemailer = require('./nodemailer')
 const urlHash = require('./hash')
 
 // Setting DB
-admin.initializeApp(functions.config().firebase)
-var db = admin.firestore()
-db.settings({
-  timestampsInSnapshots: true
-})
+admin.initializeApp()
+const db = admin.firestore()
 
 // Setting functions region
 const httpsFunctions = functions.https

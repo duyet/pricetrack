@@ -1,5 +1,5 @@
 const { regexProcess } = require('../utils/parser/utils')
-const fetch = require('@zeit/fetch-retry')(require('node-fetch'), {retries: 3})
+const fetch = require('node-fetch')
 const { JSDOM } = require('jsdom')
 
 const getRawHtml = async (params) => {

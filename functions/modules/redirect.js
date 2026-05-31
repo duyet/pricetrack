@@ -1,6 +1,6 @@
 const Koa = require('koa')
 const koaFirebase = require('koa-firebase-functions')
-const Router = require('koa-router')
+const Router = require('@koa/router')
 const {
     httpsFunctions,
     db,

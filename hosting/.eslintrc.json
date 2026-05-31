@@ -1,16 +1,17 @@
 {
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 2022,
+        "sourceType": "module"
+    },
     "extends": "airbnb-base",
     "env": {
       "browser": true,
       "node": true,
-      "es6": true,
-      "jest/globals": true
+      "es6": true
     },
     "plugins": [
         "react",
-        "jest",
-        "jsx-a11y",
         "import"
     ],
     "globals": {
@@ -50,6 +51,8 @@
       "no-use-before-define": 0,
       "eol-last": 0,
       "no-shadow": 0,
+      "no-multiple-empty-lines": 0,
+      "import/no-unresolved": 0,
       "quotes": [
         2,
         "single"

@@ -3,10 +3,9 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    "parser": "babel-eslint",
     "parserOptions": {
-        "ecmaVersion": 2017,
-        "sourceType": "module"
+        "ecmaVersion": 2022,
+        "sourceType": "script"
     },
     "extends": "eslint:recommended",
     "rules": {

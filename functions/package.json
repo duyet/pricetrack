@@ -12,37 +12,33 @@
     "test": "mocha --reporter spec"
   },
   "dependencies": {
-    "@zeit/fetch-retry": "5.0.0",
-    "axios": "0.19.2",
-    "axios-retry": "3.1.2",
-    "chrome-aws-lambda": "2.1.1",
-    "express": "4.17.1",
-    "firebase-admin": "8.10.0",
-    "firebase-functions": "3.7.0",
-    "iltorb": "2.4.5",
-    "jsdom": "16.2.1",
-    "koa": "2.11.0",
+    "@sparticuz/chromium": "133.0.0",
+    "axios": "1.9.0",
+    "axios-retry": "4.5.0",
+    "express": "4.21.2",
+    "firebase-admin": "12.7.0",
+    "firebase-functions": "6.3.0",
+    "jsdom": "26.0.0",
+    "koa": "2.16.1",
     "koa-firebase-functions": "1.0.1",
-    "koa-router": "8.0.8",
-    "node-fetch": "2.6.0",
-    "nodemailer": "6.4.6",
-    "normalize-url": "5.0.0",
-    "puppeteer-core": "2.1.1"
+    "@koa/router": "13.0.1",
+    "node-fetch": "2.7.0",
+    "nodemailer": "7.0.3",
+    "normalize-url": "7.0.2",
+    "puppeteer-core": "24.9.0"
   },
   "devDependencies": {
-    "babel-eslint": "10.1.0",
-    "eslint": "6.8.0",
-    "eslint-config-standard": "14.1.1",
-    "eslint-plugin-import": "2.20.1",
-    "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-standard": "4.0.1",
-    "firebase-functions-test": "0.2.0",
-    "firebase-tools": "7.15.1",
-    "mocha": "7.1.1"
+    "eslint": "8.57.1",
+    "eslint-config-standard": "17.1.0",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-n": "16.6.2",
+    "eslint-plugin-promise": "6.6.0",
+    "firebase-functions-test": "3.4.0",
+    "firebase-tools": "14.4.0",
+    "mocha": "11.5.0"
   },
   "private": true,
   "engines": {
-    "node": "10"
+    "node": "20"
   }
 }
