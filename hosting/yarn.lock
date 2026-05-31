@@ -12032,10 +12032,12 @@ react-fast-compare@^2.0.2:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-flash-message@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-flash-message/-/react-flash-message-1.0.2.tgz#c38a3ee4d8f216014c8ae4236cc2350e2cbfff0a"
-  integrity sha1-w4o+5NjyFgFMiuQjbMI1Diy//wo=
+react-flash-message@1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-flash-message/-/react-flash-message-1.0.8.tgz#25146e1a229d91e0f40d714344b366c210f4c271"
+  integrity sha512-XND1LenvTjZI9SvGgGxF74SDZih1fS+iN304/Lhwd/vukTyBLJ9PrOvJehdf9KkxdWtK3fxmQl+c/cpZktyMVg==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-helmet@5.2.1:
   version "5.2.1"

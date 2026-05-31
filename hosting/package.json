@@ -44,7 +44,7 @@
     "react-bootstrap": "0.33.1",
     "react-chartkick": "0.4.0",
     "react-dom": "16.13.1",
-    "react-flash-message": "1.0.2",
+    "react-flash-message": "1.0.8",
     "react-helmet": "5.2.1",
     "react-table": "7.0.0"
   },
