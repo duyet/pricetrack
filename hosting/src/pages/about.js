@@ -17,11 +17,11 @@ export default class IndexComponent extends Component {
     render() {
       return (
             <Layout>
-                <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{ background: '#03A9F4' }}>
+                <div className="pt-hero">
                     <HeadSlogan icon="image" sub_headline="Giới thiệu" />
                 </div>
 
-                <div className="my-3 p-3 bg-white rounded shadow-sm row">
+                <div className="pt-card my-3 row">
                     <div className="col mb-3">
                         Pricetrack là ứng dụng theo dõi giá trên các trang TMDT lớn
                         như tiki.vn, shopee.vn,... hoàn toàn miễn phí <br />

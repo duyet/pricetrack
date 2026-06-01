@@ -126,10 +126,10 @@ class IndexComponent extends PureComponent {
     render() {
       return (
             <Layout>
-                <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{ background: '#03A9F4' }}>
+                <div className="pt-hero">
                     <HeadSlogan />
 
-                    <div className="lh-100 mr-0 p-2 bd-highlight text-white justify-content-end">
+                    <div className="pt-sort-controls">
                       <SortControl
                           sortText={SORT_TEXT}
                           currentMode={this.state.currentMode}
@@ -137,7 +137,7 @@ class IndexComponent extends PureComponent {
                     </div>
                 </div>
 
-                <div className="my-3 p-3 bg-white rounded shadow-sm" id="listUrls">
+                <div className="pt-card my-3" id="listUrls">
                     {this.renderListUrl()}
                 </div>
             </Layout>

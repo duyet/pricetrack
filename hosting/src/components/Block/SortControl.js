@@ -19,10 +19,9 @@ export default class SortControl extends PureComponent {
       }
 
       return (
-          <span className="text-white ml-2 btn"
+          <span className={`pt-sort-btn ${currentMode === mode ? 'active' : ''}`}
                 key={mode}
-                onClick={() => this.setOtherBy(mode)}
-                style={{ fontWeight: currentMode === mode ? 700 : 300 }}>
+                onClick={() => this.setOtherBy(mode)}>
                 {sortText[mode]}
                 {sortIcon}
             </span>

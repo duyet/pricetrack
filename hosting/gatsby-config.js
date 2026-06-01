@@ -24,8 +24,8 @@ module.exports = {
         name: 'pricetrack',
         short_name: 'pricetrack',
         start_url: '/?utm_source=homescreen&utm_medium=shortcut',
-        background_color: '#f8f9fa',
-        theme_color: '#f8f9fa',
+        background_color: '#faf9f5',
+        theme_color: '#cc785c',
         // Enables "Add to Homescreen" prompt and disables browser UI (including back button)
         // see https://developers.google.com/web/fundamentals/web-app-manifest/#display
         display: 'standalone',

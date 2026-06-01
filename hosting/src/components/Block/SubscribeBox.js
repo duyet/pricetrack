@@ -145,7 +145,7 @@ class SubscribeBox extends Component {
             <React.Fragment>
                 { this.state.error ? <FlashMessage /> : null }
 
-                <form className="row align-items-start bg-white mt-3 mb-3 ml-1 mr-1 p-3 rounded shadow-sm"
+                <form className="pt-subscribe-box"
                     style={{ fontSize: '0.8em' }}>
                     <div className="col-auto mb-3">
                         <h6>{SUBSCRIBE_THIS_URL}</h6>

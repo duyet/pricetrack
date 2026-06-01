@@ -33,7 +33,7 @@ export default class Stats extends Component {
     if (!Object.keys(this.state.statistics).length) return 'No info';
 
     return (
-      <table className="table table-bordered">
+      <table className="pt-table">
         <tbody>
           <tr>
               <td style={{ textAlign: 'right' }}>{NUM_URL_TEXT}</td>

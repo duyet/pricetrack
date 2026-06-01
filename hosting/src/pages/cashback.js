@@ -225,10 +225,10 @@ class CashbackBalance extends Component {
 
     return (
       <>
-        <div className="d-flex justify-content-center my-3 p-3 bg-white rounded shadow-sm text-center">
+        <div className="pt-card d-flex justify-content-center my-3 text-center">
           <div className="mr-5">
             <span>{YOUR_CASHBACK_BALANCE}: </span>
-            <span style={{ color: '#1791d3', fontWeight: 700 }}>{this._price()}</span>
+            <span className="pt-product-price-value">{this._price()}</span>
             <div>
               <small><em>({UPDATING})</em></small>
             </div>
@@ -236,7 +236,7 @@ class CashbackBalance extends Component {
 
           <div>
             <span>{YOUR_CASHBACK_BALANCE_CHECKED_OUT}: </span>
-            <span style={{ color: '#1791d3', fontWeight: 700 }}>0 VND</span>
+            <span className="pt-product-price-value">0 VND</span>
             <div>
               <small><em></em></small>
             </div>
@@ -291,11 +291,11 @@ class IndexComponent extends Component {
     if (typeof window === 'undefined') return null;
     return (
       <Layout>
-        <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{ background: '#03A9F4' }}>
+        <div className="pt-hero">
           <HeadSlogan icon="checkmark" sub_headline="cashback" />
         </div>
 
-        <div className="my-3 p-3 bg-white rounded shadow-sm row">
+        <div className="pt-card my-3 row">
           <div className="col mb-3" style={{ fontSize: 13 }}>
             Cashback là chức năng nhận lại tiền hoàn trả từ Pricetrack.
             Lưu ý:
