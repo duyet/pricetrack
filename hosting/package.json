@@ -60,6 +60,6 @@
     "transform-loader": "0.2.4"
   },
   "overrides": {
-    "node-sass": "npm:sass@1.89.0"
+    "node-sass": "npm:sass@1.100.0"
   }
 }
