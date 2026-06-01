@@ -35,7 +35,7 @@
     "eslint-plugin-promise": "6.6.0",
     "firebase-functions-test": "3.5.0",
     "firebase-tools": "14.4.0",
-    "mocha": "11.5.0"
+    "mocha": "11.7.6"
   },
   "private": true,
   "engines": {
