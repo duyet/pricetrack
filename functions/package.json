@@ -21,7 +21,7 @@
     "jsdom": "26.0.0",
     "koa": "2.16.4",
     "koa-firebase-functions": "1.0.1",
-    "@koa/router": "13.0.1",
+    "@koa/router": "13.1.1",
     "node-fetch": "2.7.0",
     "nodemailer": "8.0.10",
     "normalize-url": "7.0.2",
