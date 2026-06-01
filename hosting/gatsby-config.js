@@ -12,20 +12,12 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-google-analytics',
+      resolve: 'gatsby-plugin-google-gtag',
       options: {
-        trackingId: process.env.GA || 'UA-92451506-4'
+        trackingIds: [process.env.GA || 'UA-92451506-4'],
       },
     },
-    {
-      resolve: 'gatsby-plugin-purgecss',
-      options: {
-        printRejected: true, // Print removed selectors and processed file names
-        develop: false, // Enable while using `gatsby develop`
-        whitelistPatterns: [/^text-/, /nprogress/, /fa/, /ReactTable/, /skylight/],
-        whitelistPatternsChildren: [/nprogress/, /fa/, /ReactTable/, /skylight/],
-      }
-    },
+    'gatsby-plugin-sass',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
@@ -34,9 +26,6 @@ module.exports = {
         start_url: '/?utm_source=homescreen&utm_medium=shortcut',
         background_color: '#f8f9fa',
         theme_color: '#f8f9fa',
-        // a hard-coded value indicating that FCM is authorized to send messages to this app
-        // The browser sender ID is a fixed value, common among all FCM JavaScript clients.
-        gcm_sender_id: '103953800507',
         // Enables "Add to Homescreen" prompt and disables browser UI (including back button)
         // see https://developers.google.com/web/fundamentals/web-app-manifest/#display
         display: 'standalone',
@@ -49,7 +38,7 @@ module.exports = {
             title: 'title',
             text: 'text',
             url: 'url'
-          }
+          },
         },
       },
     },

@@ -1,11 +1,11 @@
 /* eslint-disable no-alert */
 import React, { Component } from 'react';
 import axios from 'axios';
-import { OutboundLink as A } from 'gatsby-plugin-google-analytics';
+import { OutboundLink as A } from 'gatsby-plugin-google-gtag';
 
 // Import React Table
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
+import '../styles/react-table.css';
 
 // Modal
 import Modal from 'react-awesome-modal';
@@ -288,6 +288,7 @@ class CashbackBalance extends Component {
 
 class IndexComponent extends Component {
   render() {
+    if (typeof window === 'undefined') return null;
     return (
       <Layout>
         <div className="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm" style={{ background: '#03A9F4' }}>

@@ -1,0 +1,57 @@
+/* Minimal react-table styles (v7 is headless - no bundled CSS) */
+.ReactTable {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ReactTable .rt-thead {
+  font-weight: 600;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.ReactTable .rt-th,
+.ReactTable .rt-td {
+  padding: 8px;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.ReactTable .rt-tr-group {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.ReactTable .rt-tr-group:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.ReactTable.-striped .rt-tr.-odd {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.ReactTable .rt-noData {
+  padding: 20px;
+  text-align: center;
+}
+
+.ReactTable .pagination-bottom {
+  padding: 8px;
+}
+
+.ReactTable .-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.ReactTable .-pagination .-btn {
+  appearance: none;
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+}
+
+.ReactTable .-pagination .-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

@@ -64,6 +64,9 @@
       "react/jsx-no-undef": 1,
       "react/jsx-uses-react": 1,
       "react/jsx-uses-vars": 1,
-      "max-classes-per-file": 0
+      "max-classes-per-file": 0,
+      "function-paren-newline": 0,
+      "function-call-argument-newline": 0,
+      "no-constructor-return": 0
     }
 }
