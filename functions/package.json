@@ -23,7 +23,7 @@
     "koa-firebase-functions": "1.0.1",
     "@koa/router": "13.0.1",
     "node-fetch": "2.7.0",
-    "nodemailer": "8.0.5",
+    "nodemailer": "8.0.10",
     "normalize-url": "7.0.2",
     "puppeteer-core": "24.9.0"
   },
