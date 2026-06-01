@@ -21,10 +21,9 @@ const SIGN_IN = 'Đăng nhập';
 const TITLE = 'Theo dõi giá và hoàn tiền | Price tracker & Cashback';
 
 const UserButton = ({ authUser, onClickSignIn, onClickProfile }) => {
-  const className = 'btn btn-sm btn-outline-secondary ml-2';
   if (!authUser) {
     return (
-      <button className={className} onClick={onClickSignIn}>
+      <button className="pt-btn pt-btn-secondary pt-btn-sm" onClick={onClickSignIn}>
         {SIGN_IN} <FontAwesomeIcon icon={faGoogle} />
       </button>
     );
@@ -32,10 +31,10 @@ const UserButton = ({ authUser, onClickSignIn, onClickProfile }) => {
 
   return (
     <Fragment>
-      <button className={`${className} d-none d-sm-block`} onClick={onClickProfile}>
+      <button className="pt-btn pt-btn-secondary pt-btn-sm d-none d-sm-inline-flex" onClick={onClickProfile}>
         {authUser.displayName}
       </button>
-      <button className='btn btn-link text-muted d-block d-sm-none' onClick={onClickProfile}>
+      <button className="pt-btn-text d-block d-sm-none" onClick={onClickProfile}>
         <img src={profileIcon} style={{ width: 20 }} alt="" />
       </button>
     </Fragment>
@@ -52,16 +51,16 @@ const NavigationAuth = ({
       <meta charSet="utf-8" />
       <title>{TITLE}</title>
     </Helmet>
-    <header className="blog-header py-3">
-      <div className="row flex-nowrap justify-content-between align-items-center">
-        <div className="col-auto">
+    <header className="pt-header">
+      <div className="pt-header-inner">
+        <div>
           <Logo />
         </div>
-        <div className="col">
+        <div className="pt-search-form">
           <AddUrlForm authUser={authUser} inputUrl={inputUrl} firebase={firebase} />
         </div>
-        <div className="col-auto">
-          <div className="d-flex justify-content-end align-items-center">
+        <div>
+          <div className="d-flex justify-content-end align-items-center" style={{ gap: '8px' }}>
             <A className="text-muted" href="/" >
               <img src={notiIcon} alt="" />
             </A>

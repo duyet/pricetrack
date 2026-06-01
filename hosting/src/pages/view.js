@@ -147,59 +147,65 @@ class ViewPage extends Component {
       return (
             <Layout inputUrl={this.state.inputUrl}>
 
-                <div className="d-flex justify-content-between align-items-center bg-white p-3 my-3 rounded shadow-sm">
-                    <div className="d-flex flex-row justify-content-between">
-                        <LogoPlaceHolder url={url} width={80} height={80} />
-                        <div className="lh-100 ml-3">
-                        { url.inventory_status === false
-                          ? <span className="badge badge-danger mr-1" style={{ fontSize: '1em', fontWeight: 300 }}>{OUT_OF_STOCK}</span>
-                          : '' }
-                            <a href={this.state.data.url}
-                                onClick={(e) => { openDeepLink(url.redirect); e.preventDefault(); }}
-                                style={{ color: url.color }}>
-                                <h6 className="mb-0 lh-100">
-                                    {this.state.data.info.name}
-                                    <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" style={{ fontWeight: 300, fontSize: 12 }} />
-                                </h6>
-                            </a>
-                            <br />
-                            <small className="mb-3" style={{ color: '#000', fontWeight: 700 }}>
-                                {formatPrice(this.state.data.latest_price,
-                                  false, this.state.data.info.currency)}
-                                <span style={{ fontWeight: 700, color: this.state.data.price_change < 0 ? '#0eff45' : '#fd4d16' }} className='ml-1'>
-                                    {
-                                        this.state.data.price_change
-                                          ? `(${formatPrice(this.state.data.price_change, true)})`
-                                          : ''
-                                    }
-                                </span>
-                            </small>
-                            <br />
-                            <br />
-                            <a href={url.url} className='btn btn-primary btn-sm mr-1'
+                <div className="pt-card my-3">
+                    <div className="d-flex flex-row justify-content-between align-items-center">
+                        <div className="d-flex flex-row justify-content-between">
+                            <LogoPlaceHolder url={url} width={80} height={80} />
+                            <div className="ml-3">
+                            { url.inventory_status === false
+                              ? <span className="pt-badge pt-badge-danger mr-1">{OUT_OF_STOCK}</span>
+                              : '' }
+                                <a href={this.state.data.url}
                                     onClick={(e) => {
                                       openDeepLink(url.redirect);
                                       e.preventDefault();
-                                    }}>
-                                    <FontAwesomeIcon icon={faShoppingCart} /> {GO_TO} {url.domain}
-                            </a>
+                                    }}
+                                    style={{ color: url.color }}>
+                                    <h6 className="mb-0 lh-100">
+                                        {this.state.data.info.name}
+                                        <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" style={{ fontWeight: 300, fontSize: 12 }} />
+                                    </h6>
+                                </a>
+                                <br />
+                                <small className="mb-3">
+                                    <span className="pt-product-price-value">{formatPrice(this.state.data.latest_price,
+                                      false, this.state.data.info.currency)}</span>
+                                    <span className={`pt-product-price-change ${this.state.data.price_change < 0 ? 'pt-price-down' : 'pt-price-up'}`}>
+                                        {
+                                            this.state.data.price_change
+                                              ? `(${formatPrice(this.state.data.price_change, true)})`
+                                              : ''
+                                        }
+                                    </span>
+                                </small>
+                                <br />
+                                <br />
+                                <a href={url.url} className='pt-btn pt-btn-primary pt-btn-sm mr-1'
+                                        onClick={(e) => {
+                                          openDeepLink(url.redirect);
+                                          e.preventDefault();
+                                        }}>
+                                        <FontAwesomeIcon icon={faShoppingCart} />
+                                        {' '}{GO_TO} {url.domain}
+                                </a>
 
-                            <small className="ml-3">
-                                {url.deeplinkClick ? `${url.deeplinkClick} click${url.deeplinkClick > 1 ? 's' : ''} | ` : ''}
-                                {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
-                                {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}
-                            </small>
+                                <small className="ml-3 pt-product-meta">
+                                    {url.deeplinkClick ? `${url.deeplinkClick} click${url.deeplinkClick > 1 ? 's' : ''} | ` : ''}
+                                    {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
+                                    {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}
+                                </small>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="lh-100 my-3">
-                        <a href={url.url}
-                          onClick={(e) => {
-                            openDeepLink(url.redirect);
-                            e.preventDefault();
-                          }}>
-                            <img className="ml-3 img-fluid" style={{ height: 40 }} src={url.domain_logo} alt="" />
-                        </a>
+                        <div className="my-3">
+                            <a href={url.url}
+                              onClick={(e) => {
+                                openDeepLink(url.redirect);
+                                e.preventDefault();
+                              }}>
+                                <img className="img-fluid" style={{ height: 40 }} src={url.domain_logo} alt="" />
+                            </a>
+                        </div>
                     </div>
                 </div>
 

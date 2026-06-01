@@ -50,11 +50,11 @@ class Profile extends React.Component {
 
     return (
             <Layout>
-                <div className="container" style={style.textSm}>
-                    <div className="row my-3 p-3 bg-white rounded shadow-sm">
+                <div style={style.textSm}>
+                    <div className="pt-card row my-3">
                         <div className="col border-bottom border-light mb-3 p-3 d-flex flex-column justify-content-center">
                             <div className="d-flex flex-column justify-content-center mx-auto text-center">
-                                <img src={authUser.photoURL} style={{ maxWidth: 150 }} className="img-fluid rounded mb-3" alt="..." />
+                                <img src={authUser.photoURL} className="pt-profile-avatar mb-3" alt="..." />
                                 <h6>{authUser.displayName}</h6>
                                 <small>{authUser.email}</small>
                             </div>

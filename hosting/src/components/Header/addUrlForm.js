@@ -56,7 +56,7 @@ class AddUrlForm extends Component {
     render() {
       return (
             <form onSubmit={this.onSubmit}>
-                <input className="form-control mr-sm-2" type="search"
+                <input className="pt-search-input" type="search"
                        placeholder="URL e.g. tiki.vn, shopee.vn"
                        onChange={this.onChangeInput}
                        value={this.state.inputUrl}

@@ -55,7 +55,7 @@ export default class CrawlerStatus extends Component {
     ));
 
     return (
-      <table className="table">
+      <table className="pt-table">
         <thead>
           <tr>
             <th scope="col">Dịch vụ</th>

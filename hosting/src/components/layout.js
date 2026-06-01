@@ -5,11 +5,12 @@ import withAuthentication from './Session/withAuthentication';
 
 import './layout.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import '../styles/design-system.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
 const AppWithAuthentication = withAuthentication(({ children, inputUrl }) => (
   <Fragment>
-    <div className="container">
+    <div className="pt-container">
       <Header inputUrl={inputUrl} />
       <main role="main">
         {children}
