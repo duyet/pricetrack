@@ -19,7 +19,7 @@
     "firebase-admin": "12.7.0",
     "firebase-functions": "6.3.0",
     "jsdom": "26.0.0",
-    "koa": "2.16.1",
+    "koa": "2.16.4",
     "koa-firebase-functions": "1.0.1",
     "@koa/router": "13.0.1",
     "node-fetch": "2.7.0",
