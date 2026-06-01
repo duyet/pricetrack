@@ -54,7 +54,6 @@
     "@babel/preset-react": "7.27.1",
     "babel-loader": "8.4.0",
     "eslint-config-airbnb-base": "14.2.1",
-    "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-react": "7.37.5",
     "firebase-tools": "14.4.0",
     "ify-loader": "1.1.0",
