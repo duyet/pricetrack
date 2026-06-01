@@ -25,7 +25,7 @@
     "core-js": "3.42.0",
     "dotenv": "16.5.0",
     "firebase": "12.14.0",
-    "gatsby": "2.32.13",
+    "gatsby": "5.16.1",
     "gatsby-plugin-create-client-paths": "2.10.0",
     "gatsby-plugin-google-analytics": "2.11.0",
     "gatsby-plugin-manifest": "2.12.1",
