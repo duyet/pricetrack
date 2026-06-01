@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'gatsby';
-import { OutboundLink as A } from 'gatsby-plugin-google-analytics';
+import { OutboundLink as A } from 'gatsby-plugin-google-gtag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHistory, faCaretDown, faCaretUp, faShoppingCart

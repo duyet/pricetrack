@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import { navigate } from 'gatsby';
-import { OutboundLink as A } from 'gatsby-plugin-google-analytics';
+import { OutboundLink as A } from 'gatsby-plugin-google-gtag';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
