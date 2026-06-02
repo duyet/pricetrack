@@ -151,6 +151,10 @@ a:hover {
   line-height: 1;
 }
 
+.nav-brand img {
+  border-radius: var(--radius-md);
+}
+
 /* --- Navigation Menu --- */
 .pt-nav {
   display: flex;
@@ -284,10 +288,10 @@ a:hover {
 
 /* --- Hero / Slogan Bar --- */
 .pt-hero {
-  background-color: var(--color-primary);
+  background-color: var(--color-surface-dark);
   border-radius: var(--radius-lg);
   padding: var(--space-md) var(--space-lg);
-  color: var(--color-on-primary);
+  color: var(--color-on-dark);
   display: flex;
   align-items: center;
   gap: var(--space-md);
@@ -353,14 +357,14 @@ a:hover {
 .pt-hero h2 {
   font-family: var(--font-display);
   font-weight: 400;
-  color: var(--color-on-primary);
+  color: var(--color-on-dark);
   margin: 0;
   letter-spacing: -0.3px;
 }
 
 .pt-hero p {
   margin: 4px 0 0;
-  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
 }
 
@@ -603,20 +607,21 @@ a:hover {
   background: none;
   font-family: var(--font-body);
   font-size: 13px;
-  font-weight: 400;
-  color: var(--color-on-dark-soft, rgba(255, 255, 255, 0.6));
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
   cursor: pointer;
   border-radius: var(--radius-sm);
-  transition: background-color 0.15s;
+  transition: background-color 0.15s, color 0.15s;
 }
 
 .pt-sort-btn:hover {
   background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .pt-sort-btn.active {
   font-weight: 700;
-  color: var(--color-on-dark);
+  color: #ffffff;
 }
 
 /* --- Badge --- */
