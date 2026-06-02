@@ -30,7 +30,6 @@ class Firebase {
     this.messaging = null;
     try {
       this.messaging = app.messaging();
-      this.messaging.usePublicVapidKey(process.env.GATSBY_VAPID_KEY);
     } catch (e) {
       console.error(e);
     }
@@ -77,7 +76,9 @@ class Firebase {
     }
   }
 
-  onMessagingRequestPermission = (next, fallback) => this.messaging && this.messaging.getToken().then((currentToken) => {
+  onMessagingRequestPermission = (next, fallback) => this.messaging && this.messaging.getToken({
+    vapidKey: process.env.GATSBY_VAPID_KEY,
+  }).then((currentToken) => {
     if (currentToken) {
       console.log('Messaging token', currentToken);
       this.sendTokenToServer(currentToken);
@@ -98,7 +99,7 @@ class Firebase {
     fallback();
   })
 
-  onMessagingTokenRefresh = (next, fallback) => this.messaging && this.messaging.onTokenRefresh(() => this.onMessagingRequestPermission(next, fallback))
+  onMessagingTokenRefresh = () => {}
 
   // *** Merge Auth and DB User API *** //
   onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {

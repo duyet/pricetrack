@@ -1,9 +1,9 @@
 // Import and configure the Firebase SDK
 // These scripts are made available when the app is served or deployed on Firebase Hosting
 // If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup
-importScripts('http://localhost:5000/__/firebase/5.5.6/firebase-app.js');
-importScripts('http://localhost:5000/__/firebase/5.5.6/firebase-messaging.js');
-importScripts('http://localhost:5000/__/firebase/init.js');
+importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
+importScripts('/__/firebase/init.js');
 var messaging = firebase.messaging();
 
 /**
