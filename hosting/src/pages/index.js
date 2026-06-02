@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import axios from 'axios';
 import { loadProgressBar } from 'axios-progress-bar';
 import 'axios-progress-bar/dist/nprogress.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faList, faTableCells } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../components/layout';
 import ProductList from '../components/Block/ProductList';
@@ -12,6 +14,8 @@ import HeadSlogan from '../components/Block/HeadSlogan';
 import SortControl from '../components/Block/SortControl';
 
 loadProgressBar();
+
+const VIEW_STORAGE_KEY = 'pt_view_mode';
 
 const DEFAULT_NUMBER_ITEMS = 15;
 const SORT_TEXT = {
@@ -34,8 +38,16 @@ class IndexComponent extends PureComponent {
         currentMode: 'last_added',
         limit: DEFAULT_NUMBER_ITEMS,
         next: false,
-        latest_params: {}
+        latest_params: {},
+        viewMode: 'list'
       };
+    }
+
+    setViewMode(viewMode) {
+      this.setState({ viewMode });
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(VIEW_STORAGE_KEY, viewMode);
+      }
     }
 
     orderByModes = () => Object.keys(SORT_TEXT)
@@ -59,6 +71,10 @@ class IndexComponent extends PureComponent {
 
     async componentDidMount() {
       this._mounted = true;
+      if (typeof window !== 'undefined') {
+        const saved = window.localStorage.getItem(VIEW_STORAGE_KEY);
+        if (saved && saved !== this.state.viewMode) this.setState({ viewMode: saved });
+      }
       this._loadData();
     }
 
@@ -113,6 +129,7 @@ class IndexComponent extends PureComponent {
       if (this.state.error) return 'Some thing went wrong';
 
       return <ProductList urls={this.state.urls}
+            view={this.state.viewMode}
             loadMore={this.state.next}
             onClickLoadMore={
                 () => this.onClickLoadMore(this.state.latest_params)
@@ -129,11 +146,30 @@ class IndexComponent extends PureComponent {
                 <div className="pt-hero">
                     <HeadSlogan />
 
-                    <div className="pt-sort-controls">
-                      <SortControl
-                          sortText={SORT_TEXT}
-                          currentMode={this.state.currentMode}
-                          desc={this.state.desc} />
+                    <div className="pt-hero-controls">
+                      <div className="pt-sort-controls">
+                        <SortControl
+                            sortText={SORT_TEXT}
+                            currentMode={this.state.currentMode}
+                            desc={this.state.desc} />
+                      </div>
+
+                      <div className="pt-view-toggle">
+                        <button
+                            type="button"
+                            aria-label="List view"
+                            className={`pt-view-btn ${this.state.viewMode === 'list' ? 'is-active' : ''}`}
+                            onClick={() => this.setViewMode('list')}>
+                            <FontAwesomeIcon icon={faList} />
+                        </button>
+                        <button
+                            type="button"
+                            aria-label="Grid view"
+                            className={`pt-view-btn ${this.state.viewMode === 'grid' ? 'is-active' : ''}`}
+                            onClick={() => this.setViewMode('grid')}>
+                            <FontAwesomeIcon icon={faTableCells} />
+                        </button>
+                      </div>
                     </div>
                 </div>
 
