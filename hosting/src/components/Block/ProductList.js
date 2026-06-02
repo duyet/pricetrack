@@ -4,7 +4,8 @@ import { Link } from 'gatsby';
 import { OutboundLink as A } from 'gatsby-plugin-google-gtag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faHistory, faCaretDown, faCaretUp, faShoppingCart
+  faHistory, faCaretDown, faCaretUp, faShoppingCart,
+  faUser, faHandPointer, faClock, faRotate
 } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import 'moment/locale/vi';
@@ -16,18 +17,15 @@ const EMPTY_STRING = 'Không có';
 const GO_TO = 'Tới';
 const VIEW_HISTORY = 'Lịch sử giá';
 const CREATE_AT = 'Tạo';
-const ADD_BY = 'Thêm bởi';
 const LAST_PULL_AT = 'Cập nhật giá';
 const OUT_OF_STOCK = 'Hết hàng';
 const LOAD_MORE = 'Tải thêm';
 
 class ProductList extends React.Component {
-  render() {
-    if (!this.props.urls.length) return EMPTY_STRING;
-
-    const dom = this.props.urls.map((url) => (
+  renderItem(url) {
+    return (
         <div className="pt-product-item" key={url.url}>
-          <div className="d-flex flex-column align-items-center">
+          <div className="pt-product-logo-col">
               <LogoPlaceHolder className="pt-product-logo" url={url} />
               <A className="d-block d-sm-none mt-1" href={url.url} onClick={(e) => { openDeepLink(url.redirect); e.preventDefault(); }}>
                   <img className="img-fluid" style={{ width: 40 }} src={url.domain_logo} alt="" />
@@ -45,25 +43,24 @@ class ProductList extends React.Component {
                   </Link>
               </div>
 
-              <span className="pt-product-price-value">{formatPrice(url.latest_price, false, url.info.currency)} </span>
-              {
-                  url.price_change
-                    ? <span className={`pt-product-price-change ${url.price_change < 0 ? 'pt-price-down' : 'pt-price-up'}`}>
-                          <FontAwesomeIcon
-                            icon={url.price_change < 0 ? faCaretDown : faCaretUp } />
-                          {formatPrice(url.price_change, true, url.info.currency)}
-                      </span>
-                    : ''
-              }
+              <div className="pt-product-price">
+                  <span className="pt-product-price-value">{formatPrice(url.latest_price, false, url.info.currency)} </span>
+                  {
+                      url.price_change
+                        ? <span className={`pt-product-price-change ${url.price_change < 0 ? 'pt-price-down' : 'pt-price-up'}`}>
+                              <FontAwesomeIcon
+                                icon={url.price_change < 0 ? faCaretDown : faCaretUp } />
+                              {formatPrice(url.price_change, true, url.info.currency)}
+                          </span>
+                        : ''
+                  }
+              </div>
 
-              <br />
-
-              <A href={url.url} onClick={(e) => { openDeepLink(url.redirect); e.preventDefault(); }} style={{ color: '#797979 !important' }}>
+              <A className="pt-product-url" href={url.url} onClick={(e) => { openDeepLink(url.redirect); e.preventDefault(); }}>
                   {url.url.length > 100 ? `${url.url.slice(0, 100)}...` : url.url}
               </A>
-              <br />
 
-              <div className="pt-product-actions mt-2 mb-2">
+              <div className="pt-product-actions">
                 <A href={url.url} className='pt-btn pt-btn-primary pt-btn-sm'
                     onClick={(e) => { openDeepLink(url.redirect); e.preventDefault(); }}>
                     <FontAwesomeIcon icon={faShoppingCart} /> {GO_TO} {url.domain}
@@ -73,43 +70,69 @@ class ProductList extends React.Component {
                 </Link>
               </div>
 
-              <br />
-
-              <small className="pt-product-meta">
-                  <A href={`/view/${url.id}`}>{ADD_BY} {url.add_by}</A> | &nbsp;
-                  {url.deeplinkClick ? `${url.deeplinkClick} click${url.deeplinkClick > 1 ? 's' : ''} | ` : ''}
-                  {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
-                  {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}
-              </small>
+              <div className="pt-product-meta">
+                  <A href={`/view/${url.id}`} className="pt-meta-item">
+                      <FontAwesomeIcon icon={faUser} /> {url.add_by}
+                  </A>
+                  {url.deeplinkClick
+                    ? <span className="pt-meta-item">
+                          <FontAwesomeIcon icon={faHandPointer} />
+                          {' '}{url.deeplinkClick} click{url.deeplinkClick > 1 ? 's' : ''}
+                      </span>
+                    : ''}
+                  <span className="pt-meta-item">
+                      <FontAwesomeIcon icon={faClock} />
+                      {' '}{CREATE_AT} {moment(url.created_at).fromNow()}
+                  </span>
+                  <span className="pt-meta-item">
+                      <FontAwesomeIcon icon={faRotate} />
+                      {' '}{LAST_PULL_AT} {moment(url.last_pull_at).fromNow()}
+                  </span>
+              </div>
           </div>
 
-          <div className="d-none d-sm-block" style={{ width: 100 }}>
+          <div className="pt-product-domain-logo">
             <Link to={url.url} onClick={(e) => { openDeepLink(url.redirect); e.preventDefault(); }}>
-                <img className="img-fluid" style={{ width: 100 }} src={url.domain_logo} alt="" />
+                <img className="img-fluid" src={url.domain_logo} alt="" />
             </Link>
           </div>
         </div>
-    ));
+    );
+  }
 
-    if (this.props.loadMore) {
-      dom.push(
-        <span className="pt-btn pt-btn-primary mt-5"
-            onClick={this.props.onClickLoadMore}
-            key="load-more-btn">
-            {LOAD_MORE}
-        </span>
-      );
-    }
+  render() {
+    if (!this.props.urls.length) return EMPTY_STRING;
 
-    return dom;
+    const isGrid = this.props.view === 'grid';
+    const containerClass = isGrid ? 'pt-product-grid' : 'pt-product-list';
+
+    return (
+        <React.Fragment>
+            <div className={containerClass}>
+                {this.props.urls.map((url) => this.renderItem(url))}
+            </div>
+
+            {this.props.loadMore
+              ? <div className="pt-load-more-wrap">
+                    <span className="pt-btn pt-btn-secondary"
+                        onClick={this.props.onClickLoadMore}
+                        key="load-more-btn">
+                        {LOAD_MORE}
+                    </span>
+                </div>
+              : ''}
+        </React.Fragment>
+    );
   }
 }
 
 ProductList.propTypes = {
-  urls: PropTypes.array.isRequired
+  urls: PropTypes.array.isRequired,
+  view: PropTypes.string
 };
 ProductList.defaultProps = {
-  loadMore: true
+  loadMore: true,
+  view: 'list'
 };
 
 export default ProductList;

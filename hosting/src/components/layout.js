@@ -32,7 +32,8 @@ class Layout extends Component {
     const performance = import('firebase/compat/performance');
 
     Promise.all([app, auth, database, messaging, performance]).then((values) => {
-      const firebase = getFirebase(values[0]);
+      // firebase/compat/* exposes the v8 namespace as the module default export
+      const firebase = getFirebase(values[0].default);
       this.setState({ firebase });
     });
   }
