@@ -31,6 +31,8 @@ const db = admin.firestore()
 
 // Setting functions region
 const httpsFunctions = functions.https
+// Lightweight HTTP functions for trivial JSON responders (lower memory/CPU tier)
+const lightHttpsFunctions = functions.runWith({ memory: '128MB' }).https
 const asiaRegion = 'asia-northeast1'
 
 const ruleDir = __dirname + '/../config'
@@ -121,6 +123,7 @@ module.exports = {
   db,
   functions,
   httpsFunctions,
+  lightHttpsFunctions,
   asiaRegion,
   supportedDomain,
   parseRules,
