@@ -23,7 +23,10 @@ jobs:
           npm install
           npm run lint
       - name: Deploy hosting
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/firebase-service-account.json
         run: |
+          printf '%s' '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > "$GOOGLE_APPLICATION_CREDENTIALS"
           cd hosting
           npm install
           echo "GATSBY_API_KEY=${{ secrets.GATSBY_API_KEY }}"                           > .env
@@ -35,5 +38,4 @@ jobs:
           echo "GATSBY_VAPID_KEY=${{ secrets.GATSBY_VAPID_KEY }}"                       >> .env
           echo "GATSBY_APPID=${{ secrets.GATSBY_APPID }}"                               >> .env
           npm run build
-          export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
           npm run deploy

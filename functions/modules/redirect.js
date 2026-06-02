@@ -12,7 +12,7 @@ const {
 const app = new Koa()
 const router = new Router()
 
-router.get('/:id?', async (ctx) => {
+router.get('{/:id}', async (ctx) => {
     let urlId = ctx.params.id || ctx.query.id
     let email = ctx.params.email || ''
     let ref = ctx.params.ref || ''
