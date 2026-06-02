@@ -86,7 +86,7 @@ class ProductList extends React.Component {
                   </span>
                   <span className="pt-meta-item">
                       <FontAwesomeIcon icon={faRotate} />
-                      {' '}{LAST_PULL_AT} {moment(url.last_pull_at).fromNow()}
+                      {' '}{LAST_PULL_AT} {url.last_pull_at && moment(url.last_pull_at).isValid() ? moment(url.last_pull_at).fromNow() : 'chưa cập nhật'}
                   </span>
               </div>
           </div>

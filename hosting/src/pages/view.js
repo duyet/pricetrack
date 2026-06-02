@@ -192,7 +192,7 @@ class ViewPage extends Component {
                                 <small className="ml-3 pt-product-meta">
                                     {url.deeplinkClick ? `${url.deeplinkClick} click${url.deeplinkClick > 1 ? 's' : ''} | ` : ''}
                                     {CREATE_AT} {moment(url.created_at).fromNow()} | &nbsp;
-                                    {LAST_PULL_AT}: {moment(url.last_pull_at).fromNow()}
+                                    {LAST_PULL_AT}: {url.last_pull_at && moment(url.last_pull_at).isValid() ? moment(url.last_pull_at).fromNow() : 'chưa cập nhật'}
                                 </small>
                             </div>
                         </div>
