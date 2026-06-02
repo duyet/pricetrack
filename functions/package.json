@@ -12,7 +12,6 @@
     "test": "mocha --reporter spec"
   },
   "dependencies": {
-    "@sparticuz/chromium": "149.0.0",
     "axios": "1.16.1",
     "axios-retry": "4.5.0",
     "express": "4.22.2",
@@ -24,8 +23,7 @@
     "@koa/router": "15.6.0",
     "node-fetch": "2.7.0",
     "nodemailer": "8.0.10",
-    "normalize-url": "7.0.2",
-    "puppeteer-core": "25.1.0"
+    "normalize-url": "7.0.2"
   },
   "devDependencies": {
     "eslint": "8.57.1",

@@ -8,7 +8,7 @@ const axios = require('axios')
 const CRONJOB_KEY = getConfig('cronjob_key')
 
 const triggerCronjobTask = (task) => async () => {
-    console.log('Run every 15 minutes!');
+    console.log('Run every 60 minutes!');
 
     let triggerUrl = urlFor(`cronjob`, {
         key: CRONJOB_KEY,
@@ -22,5 +22,5 @@ const triggerCronjobTask = (task) => async () => {
 }
 
 
-module.exports.pullData = functions.pubsub.schedule('every 15 minutes').onRun(triggerCronjobTask('pullData'));
-module.exports.updateInfo = functions.pubsub.schedule('every 15 minutes').onRun(triggerCronjobTask('updateInfo'));
+module.exports.pullData = functions.pubsub.schedule('every 60 minutes').onRun(triggerCronjobTask('pullData'));
+module.exports.updateInfo = functions.pubsub.schedule('every 60 minutes').onRun(triggerCronjobTask('updateInfo'));
