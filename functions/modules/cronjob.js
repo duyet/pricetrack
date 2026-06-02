@@ -1,5 +1,5 @@
 const assert = require('assert')
-const functions = require('firebase-functions')
+const functions = require('firebase-functions/v1')
 const {
     asiaRegion,
     db,

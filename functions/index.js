@@ -26,7 +26,7 @@ exports.alertFromQueue = require('./modules/alert').alertFromQueue
 exports.removeUrl = require('./modules/removeUrl')
 
 // Ping
-exports.ping = require('firebase-functions')
+exports.ping = require('firebase-functions/v1')
     .runWith({ memory: '128MB' })
     .https
     .onRequest((req, res) => res.json({ msg: 'pong' }))

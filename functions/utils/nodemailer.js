@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const functions = require('firebase-functions')
+const functions = require('firebase-functions/v1')
 
 const gmailEmail = (functions.config().pricetrack || {}).gmail_email
 const gmailPassword = (functions.config().pricetrack || {}).gmail_password

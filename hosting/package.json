@@ -9,7 +9,7 @@
     "start": "npm run develop",
     "lint": "eslint .",
     "build": "rm -rf public && gatsby build",
-    "deploy": "firebase deploy --only hosting --token \"$FIREBASE_TOKEN\" --non-interactive",
+    "deploy": "firebase deploy --only hosting --project duyet-price-tracker --non-interactive",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },

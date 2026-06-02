@@ -22,8 +22,10 @@ jobs:
           npm install
           npm run lint
       - name: Deploy functions
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/firebase-service-account.json
         run: |
+          printf '%s' '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > "$GOOGLE_APPLICATION_CREDENTIALS"
           cd functions
           npm install
-          export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
           npm run deploy

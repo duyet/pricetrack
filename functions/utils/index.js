@@ -3,7 +3,7 @@ const querystring = require('querystring')
 const fetch = require('node-fetch')
 
 // The Firebase Admin SDK to access the FireStore DB.
-const functions = require('firebase-functions')
+const functions = require('firebase-functions/v1')
 const admin = require('firebase-admin')
 
 const {
