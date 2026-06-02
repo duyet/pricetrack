@@ -23,7 +23,7 @@
     "@koa/router": "15.6.0",
     "node-fetch": "2.7.0",
     "nodemailer": "8.0.10",
-    "normalize-url": "7.0.2"
+    "normalize-url": "7.2.0"
   },
   "devDependencies": {
     "eslint": "8.57.1",
