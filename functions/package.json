@@ -12,7 +12,7 @@
     "test": "mocha --reporter spec"
   },
   "dependencies": {
-    "axios": "1.16.1",
+    "axios": "1.18.1",
     "axios-retry": "4.5.0",
     "express": "4.22.2",
     "firebase-admin": "13.10.0",
