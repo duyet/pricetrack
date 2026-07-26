@@ -22,7 +22,7 @@
     "koa-firebase-functions": "1.0.1",
     "@koa/router": "15.6.0",
     "node-fetch": "2.7.0",
-    "nodemailer": "8.0.10",
+    "nodemailer": "9.0.1",
     "normalize-url": "7.0.2"
   },
   "devDependencies": {
