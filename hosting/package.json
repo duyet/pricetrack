@@ -33,7 +33,7 @@
     "gatsby-plugin-sass": "6.16.0",
     "highcharts": "12.6.0",
     "highcharts-react-official": "3.2.3",
-    "moment": "2.30.1",
+    "moment": "2.31.0",
     "postcss-import": "16.1.1",
     "prop-types": "15.8.1",
     "react": "18.3.1",
